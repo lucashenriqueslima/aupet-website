@@ -696,8 +696,9 @@ section.home_planos {
         section.home_planos .planos .planos_content .broche {
           position: relative;
           left: 50%;
-          top: 180px;
+          top: 130px;
           transform: translateX(-50%);
+          height: 150px;
         }
       section.home_planos .planos .planos_content .item .content {
         margin-bottom: 20px;
@@ -813,7 +814,7 @@ section.home_planos {
           section.home_planos .planos .planos_content .item a.quero_esse_plano {
             font-size: 12px; }
             section.home_planos .planos .planos_content .broche {
-              top: 130px; 
+              top: 70px; 
             }
           }
   @media (max-width: 1050px) {
