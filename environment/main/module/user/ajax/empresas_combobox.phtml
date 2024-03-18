@@ -1,0 +1,8 @@
+<select class="form-control input-sm" id="" name="empresas[]">
+    <option value="">Selecione..</option>
+    <?php if ($this->unidades->num_rows) : ?>
+        <?php foreach ($this->unidades->rows as $unidade) : ?>
+            <option <?php if ($unidade['id_unidade'] != "") echo "selected"; ?> value="<?php echo $unidade['id']; ?>"><?php echo $unidade['nome']; ?></option>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</select>

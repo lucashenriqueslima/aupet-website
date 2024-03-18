@@ -1,0 +1,31 @@
+<table border="1">
+    <tr>
+        <td colspan="5" align="center"><h1><?= "Relatório Associados"; ?></h1></td>
+    </tr>
+    <tr>
+        <th align="left" ><?= "Criação"?></th>
+        <th align="left" >Nome</th>
+        <th align="left" >Email-Telefone</th>
+        <th align="left" >Pets</th>
+        <th align="left" >Valor</th>
+    </tr>
+    <?php
+    if ($this->dados->num_rows) {
+        foreach ($this->dados->rows as $registro) { ?>
+            <tr>
+                <td align="left"><?= $registro ['criado_em_dt'].' '. $registro ['criado_em_hr'] ?></td>
+                <td align="left"><?= $registro["nome"]; ?></td>
+                <td align="left"><?= $registro["email"] .'-'. $registro["telefone"] ; ?></td>
+                <!-- <td align="left"><?= $registro["telefone"]; ?></td> -->
+                <td align="left"><?= $registro["pets"]; ?></td>
+                <td align="right"><?= $this->formataMoedaDeBanco($registro['valor']); ?></td>
+            </tr>
+            <?php
+		}
+    }
+    ?>
+	<tr>
+		<td colspan="4">TOTAL</td>
+		<td align="right"><?= $this->formataMoedaDeBanco(array_sum(array_column($this->dados->rows,'valor'))); ?></td>
+	</tr>
+</table>

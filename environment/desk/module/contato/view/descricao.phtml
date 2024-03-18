@@ -1,0 +1,119 @@
+<?php require_once $this->main_layouts . "headers.phtml"; ?>
+<script type="text/javascript">
+    var pagina = "<?php echo $this->getPath(); ?>/descricao";
+    var permissao = "<?php echo $this->permissao_ref; ?>";
+    var controller = "<?php echo $this->getPath(); ?>/descricaoSave";
+    var retorno = "<?php echo $this->retorno; ?>/descricao";
+</script>
+</head>
+<body>
+<?php require_once $this->main_layouts . "header.phtml"; ?>
+<!-- / #header -->
+<div id="wrapper">
+    <!-- #wrapper -->
+    <?php require_once $this->main_layouts . "sidebar.phtml"; ?>
+    <!--Body content-->
+    <div id="content" class="page-content clearfix">
+        <div class="contentwrapper">
+            <!--Content wrapper-->
+            <div class="heading">
+                <!--  .heading-->
+                <h3><?php echo $this->module_title; ?></h3>
+                <ul class="breadcrumb">
+                    <li>Você está aqui:</li>
+                    <li>
+                        <a href="#" class="tip" title="Painel">
+                            <i class="s16 icomoon-icon-screen-2"></i>
+                        </a>
+                        <span class="divider">
+                            <i class="s16 icomoon-icon-arrow-right-3"></i>
+                        </span>
+                    </li>
+                    <li>
+                        <a class="tip" title="<?php echo $this->module_title; ?>" href="<?php echo $this->module_link;?>">
+                            <i class="s16 <?php echo $this->module_icon; ?>"></i>
+                        </a>
+                    </li>
+                    <span class="divider">
+                        <i class="s16 icomoon-icon-arrow-right-3"></i>
+                    </span>
+                    <li class="active">Registro</li>
+                </ul>
+            </div>
+            <!-- End  / heading-->
+            <!-- Start .row -->
+            <form name="main" enctype="multipart/form-data" method="post" class="form-horizontal group-border">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default toggle">
+                            <!-- Start .panel -->
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Descrição</h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label" for="seo_pagina_conteudo">Titulo do Formulario:</label>
+                                    <input type="hidden" name="id" value="<?= $this->registro['id']; ?>">
+                                    <div class="col-lg-10">
+                                        <textarea id="seo_pagina_conteudo" name="seo_pagina_conteudo" class="form-control summernote" rows="5"><?php echo $this->registro['seo_pagina_conteudo'] ?></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <label class="col-lg-2 control-label" for="fileupload">Imagem:</label>
+                                <div class="col-lg-10">
+                                    <label class="fileupload" for="fileupload">
+                                        <?php if ($this->registro['imagem_dois'] == "") : ?>
+                                            <img src="http://placehold.it/<?php echo $this->width; ?>x<?php echo $this->height; ?>?text=<?php echo $this->width; ?>x<?php echo $this->height; ?>" alt="" class="image marginR10"/>
+                                        <?php else : ?>
+                                            <img src="<?php echo $this->getImageFileSized($this->registro['imagem_dois'], $this->width, $this->height); ?>" alt="" class="image marginR10"/>
+                                        <?php endif; ?>
+                                    </label>
+                                    <input type="file" name="fileupload" id="fileupload" class="files btn btn-default"/>
+                                    <span class="help-block blue">a imagem será apresentada na seguinte proporção <?php echo $this->width; ?>x<?php echo $this->height; ?> pixels.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <?php if (!$this->permissions[$this->permissao_ref]['editar']): ?>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <span class="label label-warning"><span class="icon24 icomoon-icon-warning "></span>Você não tem permissão para editar esta função.</span>
+                            </div>
+                        </div>
+                    <?php else : ?>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <button type="button" class="btn btn-info clickformsubmit">Salvar alterações</button>
+                            </div>
+                        </div>
+                    <?php endif ?>
+                </div><!-- End .row -->
+            </form>
+        </div>
+        <!-- End contentwrapper -->
+    </div>
+    <!-- End #content -->
+    <?php   require_once $this->main_layouts . "footer.phtml"; ?>
+</div>
+<?php   require_once $this->main_layouts . "plugins.phtml"; ?>
+<!-- Table plugins -->
+<script src="<?php echo $this->main_template;?>plugins/forms/tiny_mce/tinymce.min.js"></script>
+<script src="<?php echo $this->main_template;?>plugins/forms/autosize/jquery.autosize.js"></script>
+<script src="<?php echo $this->main_template;?>plugins/files/plupload/plupload.js"></script>
+<script src="<?php echo $this->main_template;?>plugins/files/plupload/plupload.html4.js"></script>
+<script src="<?php echo $this->main_template;?>plugins/files/plupload/plupload.flash.js"></script>
+<script src="<?php echo $this->main_template;?>plugins/files/plupload/jquery.plupload.queue/jquery.plupload.queue.js"></script>
+<script src="<?php echo $this->main_template;?>plugins/forms/summernote/summernote.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        saveKey(true);
+        tinymceInit({'galeria':true});
+        $('.elastic').autosize();
+        summernote();
+    });
+</script>
+</body>
+</html>

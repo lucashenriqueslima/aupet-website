@@ -1,0 +1,70 @@
+<table border="1">
+    <tr>
+        <td colspan="11" align="center"><h1><?= "Relatório consultores"; ?></h1></td>
+    </tr>
+    <tr>
+        <th align="left" ><?= "Criação"?></th>
+        <th align="left" >Nome</th>
+        <th align="left" >Email</th>
+        <th align="left" >Telefone</th>
+        <th align="left" >Equipe</th>
+        <th align="left" >Regional</th>
+        <th align="left" >Pendentes</th>
+        <th align="left" >Arquivadas</th>
+        <th align="left" >Ativadas</th>
+        <th align="left">Total</th>
+        <th align="left"><?= "Conversão (%)"; ?></th>
+    </tr>
+    <?php
+    if ($this->dados->num_rows) {
+		$qtd_comissionados = 0;
+		$pendente = 0;
+		$arquivada = 0;
+		$ativada = 0;
+		// $proprio = 0;
+		// $cartao = 0;
+		$total = 0;
+		// $sinistros = 0;
+        foreach ($this->dados->rows as $registro) {
+			$qtd_comissionados = $qtd_comissionados + (int)$registro['qtd_comissionados'];
+			$pendente = $pendente + (int)$registro['pendentes'];
+			$arquivada = $arquivada + (int)$registro['arquivadas'];
+			$ativada = $ativada + (int)$registro['ativadas'];
+			// $proprio = $proprio + (int)$registro['proprio'];
+			// $cartao = $cartao + (int)$registro['cartao'];
+			$total = $total + (int)$registro['total'];
+			// $sinistros = $sinistros + (int)$registro['sinistros'];
+            ?>
+            <tr>
+                <td align="left"><?= $registro ['criado_em_dt'].' '.$registro ['criado_em_hr']; ?></td>
+                <td align="left"><?= $registro["nome"]; ?></td>
+                <td align="left"><?= $registro["email"]; ?></td>
+                <td align="left"><?= $registro["telefone"]; ?></td>
+                <td align="left"><?= $registro["equipe"]; ?></td>
+                <td align="right"><?= $registro["regional"]; ?></td>
+                <td align="right"><?= ($registro['pendente'] ?? 0); ?></td>
+                <td align="right"><?= ($registro['arquivada'] ?? 0); ?></td>
+                <td align="right"><?= ($registro['ativada'] ?? 0); ?></td>
+                <td align="right"><?= ($registro['total'] ?? 0); ?></td>
+                <!-- <td align="right"><?= $registro['sinistros']; ?></td> -->
+                <?php 
+                    $conversao = ((($registro['ativada']?? 0) / ($registro['total']?? 0)) * 100) ?? 0 ;
+                ?>
+                <td align="right"><?= $this->formataMoedaDeBanco($conversao) ?></td>
+            </tr>
+            <?php
+		}
+    }
+    ?>
+	<tr>
+		<td colspan="6">TOTAL</td>
+		<!-- <td align="right"><?= $qtd_comissionados; ?></td> -->
+		<td align="right"><?= $pendente; ?></td>
+		<td align="right"><?= $arquivada; ?></td>
+		<td align="right"><?= $ativada; ?></td>
+		<!-- <td align="right"><?= $proprio; ?></td> -->
+		<td align="right"><?= $total; ?></td>
+		<!-- <td align="right"><?= $sinistros; ?></td> -->
+		<!-- <td align="right"><?= $this->dados->num_rows ?></td> -->
+	</tr>
+</table>

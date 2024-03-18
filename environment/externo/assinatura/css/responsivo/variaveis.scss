@@ -1,0 +1,283 @@
+//VARIAVEIS
+@keyframes circle_animate {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(3600deg);}
+}
+
+
+
+
+//MIXIN
+@mixin limitar_linhas($i) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: $i; /* number of lines to show */
+    -webkit-box-orient: vertical;
+}
+@mixin width_fitcontent {
+    width: fit-content;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: -o-fit-content;
+    // display: table;
+}
+@mixin height_fitcontent {
+    height: fit-content;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
+    height: -o-fit-content;
+    // display: table;
+}
+@mixin label_radio{
+    label.content_item{
+        width: 100%;
+        position: relative;
+        background: white;
+        padding: 14px 0;
+        box-shadow: 0px 0px 4px #00000061;
+        border-radius: 10px;
+
+        .input-radio{
+            @include width_fitcontent;
+            margin: auto 0 auto 15px;
+
+            input[type=radio], input[type=checkbox]{
+                display:none; /* Esconde os inputs */
+            }
+            
+            label {
+                cursor: pointer;
+                pointer-events: none;
+            }
+        
+            input[type="radio"] + label:before, input[type="checkbox"] + label:before{
+                border: 1px solid #313131;
+                content: "";
+                display: inline-block;
+                font: 16px/1em sans-serif;
+                height: 30px;
+                margin: 0 .25em 0 0;
+                padding: 0;
+                vertical-align: top;
+                width: 30px;
+                border-radius: 24px;
+            }
+        
+            input[type="radio"]:checked + label:before, input[type="checkbox"]:checked + label:before {
+                content: "";
+                text-align: center;
+                background: url(../img/servicos/confirm.svg);
+                background-repeat: no-repeat;
+                background-position: center;
+            }
+        
+            input[type="radio"]:checked + label:after, input[type="checkbox"]:checked + label:after {
+                font-weight: bold;
+            }
+        }
+
+        p{
+            position: absolute;
+            top: 50%;
+            left: 65px;
+            transform: translateY(-50%);
+            font-family: notosans-regular;
+            font-size: 14px;
+            color: #4F4F4F;
+            line-height: 15px;
+            padding-right: 20px;
+        }
+    }
+}
+@mixin inverter {
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+@mixin inverter_normal {
+    -moz-transform: initial;
+    -o-transform: initial;
+    -webkit-transform: initial;
+    transform: initial;
+}
+@mixin flex-wrap {
+    display: flex;
+    display: -webkit-flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+@mixin alterar_ordem_itens {
+    display: flex;
+    flex-direction: column;
+    //usar order: x; nos elementos
+}
+
+
+
+input[type="submit"],input[type="radio"],input[type="checkbox"]{
+    cursor: pointer;
+}
+
+*{
+    outline: none !important;
+}
+select,
+input,
+textarea {
+  -webkit-appearance: none;
+}
+
+
+
+
+//INPUT EFFECT
+@mixin input_content($font-size, $padding, $height, $color, $bg_input, $border-color){
+    div.input_content {
+        width: 100%;
+        position: relative;
+        font-size: $font-size;
+    
+        &[data-status="cheio"] {
+            label {
+                top: 0;
+                padding: 0 5px;
+                font-size: .8em;
+                color: rgba($color, 0.5) !important;
+    
+            }
+            input, select{
+                border-color: rgba($color, 0.2) !important;
+            }
+        }
+        &[data-status="vazio"] {
+            label {
+                color: rgba($color, 0.5) !important;;
+            }
+            input, select{
+                border-color: rgba($color, 0.2) !important;
+            }
+        }
+        &[data-status="foco"] {
+            label {
+                padding: 0 5px;
+                top: 0;
+                font-size: .8em;
+                color: $color !important;
+            }
+            input, select{
+                border-color: $color !important;
+            }
+        }
+    
+        label {
+            position: absolute;
+            color: $color;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 0.3s;
+            background: $bg_input;
+            pointer-events: none;
+            font-size: 1em;
+            left: $padding;
+            z-index: 1;
+        }
+        input,
+        select {
+            width: 100%;
+            color: $color;
+            transition: all 0.3s;
+            background-color: $bg_input;
+            border: 1px solid $border-color;
+            font-size: 1em;
+            padding: 0 $padding;
+            height: $height;
+        }
+    
+        select {
+            background-image: url("./../img/select_input_content_arrow.svg");
+            background-repeat: no-repeat;
+            cursor: pointer;
+            background-size: 10px;
+            background-position: calc(100% - 22px) center;
+        }
+    
+        [type="date"]::-webkit-inner-spin-button {
+            display: none;
+        }
+        [type="date"]::-webkit-calendar-picker-indicator {
+            background: transparent;
+            color: transparent;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+        }
+    }
+}
+
+
+// div.input_content[data-status=""]>label+input
+//BUTTON EFECT LOAD
+*[data-load="on"]{
+    color: transparent !important;
+    pointer-events: none;
+    position: sticky;
+    filter: opacity(0.9);
+    transition: all .3s;
+  
+    &:before{
+      content: "";
+      position: absolute;
+      background: url(../img/loading.svg);
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      width: 20px;
+      height: 20px;
+      top: calc(50% - 10px);
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation-name: rotate_load;
+      animation-duration: 4s;
+      animation-iteration-count: infinite;
+    }
+    &:after{
+      content: "Carregando";
+      position: absolute;
+      color: white;
+      font-family: ubuntu;
+      font-size: 10px;
+      top: calc(50% + 10px);
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation-name: text_load;
+      animation-duration: 4s;
+      animation-iteration-count: infinite;
+    }
+}
+@keyframes rotate_load {
+    100%{
+        transform: translate(-50%, -50%) rotate(1080deg);
+    }
+}
+@keyframes text_load {
+    0%{
+        content: 'Carregando';
+    }
+    25%{
+        content: 'Carregando.'
+    }
+    50%{
+        content: 'Carregando..'
+    }
+    75%{
+        content: 'Carregando...'
+    }
+    100%{
+        content: 'Carregando'
+    }
+}

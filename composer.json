@@ -1,0 +1,16 @@
+{
+    "name": "hibrida/ileva",
+    "require": {
+        "mpdf/mpdf": "^8.0",
+        "nelexa/zip": "^3.1",
+        "guzzlehttp/guzzle": "^6.3",
+        "aws/aws-sdk-php": "^3.110",
+        "phpzip/phpzip": "^2.0",
+        "phpmailer/phpmailer": "^6.1",
+        "vlucas/phpdotenv": "^5.3",
+        "ext-json": "*",
+        "spipu/html2pdf": "^5.2",
+        "mercadopago/dx-php": "2.4.4",
+        "symfony/dotenv": "^5.3"
+    }
+}

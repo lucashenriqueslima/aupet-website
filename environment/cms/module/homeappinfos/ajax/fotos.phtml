@@ -1,0 +1,92 @@
+<?php if ($this->fotos->num_rows): ?>
+    <?php foreach ($this->fotos->rows as $foto): ?>
+        <li id="<?php echo $foto['id']; ?>">
+            <a href="<?php echo $this->upload_path . $foto['url'] ?>" rel="prettyPhoto" title="<?php echo $foto['legenda'] ?>">
+                <img src="<?php echo $this->getImageFileSized($foto['url'], 75, 75) ?>" alt="<?php echo $foto['legenda'] ?>">
+            </a>
+            <div class="actionBtn">
+                <a href="#" style="position:absolute;display:block;left:-10px;bottom: -10px;" class="edit" data-id="<?php echo $foto['id'] ?>"><span class="icon16 icomoon-icon-pencil-2 color-white"></span></a>
+                <a href="#" style="position:absolute;display:block;right:0;bottom:-10px;" class="delete" data-id="<?php echo $foto['id'] ?>"><span class="icon16 icomoon-icon-cancel-circle-2 color-white"></span></a>
+                <a href="#" style="position:absolute;display:block;left:0;top:-77px;"><span class="icon16 icomoon-icon-move color-white"></span></a>
+            </div>
+        </li>
+    <?php endforeach ?>
+<?php endif ?>
+
+
+
+<script type="text/javascript">
+
+    var sortable_array = [];
+
+    $(".sortable_save .sortablesubmit").live("click", function () {
+        $("ul.sortable").fadeTo(500, 0.5, function () {
+            $.post("<?php echo $this->getPath() ?>/order", {"array": sortable_array}, function (data) {
+                $(".galleryView").load($(".galleryView").data("load_galery_url"), function () {
+                    $("ul.sortable").fadeTo(500, 1);
+                });
+            });
+        });
+    });
+
+    $("ul.sortable").sortable({opacity: 0.7, cursor: 'move', items: "li", update: function (e, ui) {
+            sortable_array = $(this).sortable("toArray");
+            $(".sortable_save").show();
+        }});
+
+    //--------------- Prettyphoto ------------------//
+    $("a[rel^='prettyPhoto']").prettyPhoto({
+        default_width: 800,
+        default_height: 600,
+        theme: 'facebook',
+        social_tools: false,
+        show_title: false
+    });
+    //--------------- Gallery & lazzy load & jpaginate ------------------//
+    $(function () {
+        //hide the action buttons
+        $('.actionBtn').hide();
+        //show action buttons on hover image
+        $('.galleryView>li').hover(
+                function () {
+                    $(this).find('.actionBtn').stop(true, true).show();
+                },
+                function () {
+                    $(this).find('.actionBtn').stop(true, true).hide();
+                }
+        );
+
+        $(".actionBtn>.edit").click(function (event) {
+            event.preventDefault();
+            $("#edita_imagem").slideUp().load("<?php echo $this->getPath() ?>/foto/id/" + $(this).attr("data-id") + "/id_pagina/<?php echo $this->id ?>", function () {
+                $(this).slideDown(function () {
+                    $("body").scrollTo(0, 800);
+                });
+            });
+        });
+
+        //remove the gallery item after press delete
+        $('.actionBtn>.delete').click(function (event) {
+            event.preventDefault();
+            $(".galleryView").css("opacity", "0.4");
+            $.post("<?php echo $this->getPath() ?>/uploadDel/id/" +  $(this).attr("data-id"), function () {
+                $(".galleryView").load("<?php echo $this->getPath() ?>/fotos/id/<?php echo $this->id; ?>").css("opacity", "1");
+            });
+            //$(this).closest('li').remove();
+            // add notificaton 
+            $.pnotify({
+                type: 'success',
+                title: 'Done',
+                text: 'You just delete this picture.',
+                icon: 'picon icon16 brocco-icon-info white',
+                opacity: 0.95,
+                history: false,
+                sticker: false
+            });
+
+        });
+
+    });
+
+</script>
+

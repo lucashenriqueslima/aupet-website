@@ -1,0 +1,125 @@
+<?php require_once $this->main_layouts . "headers.phtml"; ?>
+    <script type="text/javascript">
+        var pagina = "<?php echo $this->getPath(); ?>";
+        var permissao = "<?php echo $this->permissao_ref; ?>";
+        var controller = "<?php echo $this->getPath(); ?>";
+    </script>
+    </head>   
+    
+    <body>
+        <?php   require_once $this->main_layouts . "header.phtml"; ?>
+        <div id="wrapper">
+            <?php   require_once $this->main_layouts . "sidebar.phtml"; ?>
+            <div id="content" class="page-content clearfix">
+                <div class="contentwrapper">
+                    <div class="heading">
+                        <h3><?php echo $this->module_title; ?></h3>
+                        <ul class="breadcrumb">
+                            <li>Você está aqui:</li>
+                            <li>
+                                <a href="#" class="tip" title="Painel">
+                                    <i class="s16 icomoon-icon-screen-2"></i>
+                                </a>
+                                <span class="divider">
+                                    <i class="s16 icomoon-icon-arrow-right-3"></i>
+                                </span>
+                            </li>
+                            <li class="active"><?php echo $this->module_title;?></li>
+                        </ul>
+                    </div>
+                    <!-- Start .row -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <a href="<?php echo $this->getPath();?>/edit"><button type="button" class="btn btn-default mr5 mb10"><i class="glyphicon glyphicon-plus mr5"></i> Novo registro</button></a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default toggle panelClose">
+                                <!-- Start .panel -->
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"><i class="<?php echo $this->module_icon ?>"></i> Tabela de novidades
+                                    </h4>
+                                </div>
+                                <div class="panel-body">
+                                    <table cellpadding="0" cellspacing="0" border="0" class="tabletools table table-striped table-bordered sortable" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th width='220px' class="center">Criado em</th>
+                                                <th  class="tal">Titulo</th>
+                                                <th width='120px' class="center">Status</th>
+                                                <th width='120px' class="center">Ação</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach($this->list->rows as $registro):?>
+                                            <tr id="<?php echo $registro['id'];?>">
+                                                <td class="center"><?php echo $registro['criado_em'] ?></td>
+                                                <td class="tal"><a href="<?php echo $this->getPath()?>/edit/id/<?php echo $registro['id']; ?>"><?php echo $registro['titulo'];?></a></td>
+                                                <td class="center">
+                                                    <?php if($registro['stats']==0){ ?>
+                                                        <a href="#" class="bt_system_stats" data-permit="<?php echo $this->permissao_ref ?>" data-table="<?php echo $this->table; ?>" data-action="ativar" data-id="<?php echo $registro['id']; ?>" data-db="cms"><img src="<?php echo $this->main_template;?>images/status_vermelho.png" alt="Ativar"></a>
+                                                    <?php }else{ ?>
+                                                        <a href="#" class="bt_system_stats" data-permit="<?php echo $this->permissao_ref ?>" data-table="<?php echo $this->table; ?>" data-action="desativar" data-id="<?php echo $registro['id']; ?>" data-db="cms"><img src="<?php echo $this->main_template;?>images/status_verde.png" alt="Desativar"></a>
+                                                    <?php } ?>
+                                                </td>
+                                                <td class="center">
+                                                    <a href="<?php echo $this->getPath()?>/edit/id/<?php echo $registro['id']; ?>"><i class="s12 icomoon-icon-pencil"></i></a>
+                                                    <?php if ($this->permissions[$this->permissao_ref]['excluir']): ?>
+                                                        <a class="bt_system_delete" data-controller="<?php echo $this->getPath()?>" data-id="<?php echo $registro['id']; ?>" href="#"><i class="s12 icomoon-icon-remove"></i></a>
+                                                    <?php endif ?>
+                                                </td>
+                                            </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- End .row -->
+                    <?php  require_once $this->main_layouts . "options.phtml"; ?>
+                </div>
+            </div>
+            <?php   require_once $this->main_layouts . "footer.phtml"; ?>
+        </div>
+        <?php   require_once $this->main_layouts . "plugins.phtml"; ?>
+        <script src="<?php echo $this->main_template;?>plugins/tables/dataTables/jquery.dataTables.js"></script>
+        <script src="<?php echo $this->main_template;?>plugins/tables/dataTables/dataTables.tableTools.js"></script>
+        <script src="<?php echo $this->main_template;?>plugins/tables/dataTables/dataTables.bootstrap.js"></script>
+        <script src="<?php echo $this->main_template;?>plugins/tables/dataTables/dataTables.responsive.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                if($('table').hasClass('tabletools')){
+                    $('.tabletools').dataTable( {
+                        "oLanguage": {
+                            "sSearch": "",
+                            "sLengthMenu": "<span>_MENU_</span>",
+                            "sProcessing":   "Processando...",                    
+                            "sZeroRecords":  "Não foram encontrados resultados",
+                            "sInfo":         "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                            "sInfoEmpty":    "Mostrando de 0 até 0 de 0 registros",
+                            "sInfoFiltered": "(filtrado de _MAX_ registros no total)",
+                            "sInfoPostFix":  "",
+                            "sUrl":         "",
+
+                            "oPaginate": {
+                                "sFirst":    "Primeiro",
+                                "sPrevious": "Anterior",
+                                "sNext":     "Seguinte",
+                                "sLast":     "Último"
+                            }
+                        },
+                        "sDom": "T<'row'<'col-md-6 col-xs-12 'l><'col-md-6 col-xs-12'f>r>t<'row'<'col-md-4 col-xs-12'i><'col-md-8 col-xs-12'p>>",
+                        "aaSorting":[[0,"asc"]],
+                        tableTools: {
+                            "sSwfPath": "http://cdn.datatables.net/tabletools/2.2.2/swf/copy_csv_xls_pdf.swf",
+                            "aButtons": [
+                          ]
+                        }
+                    });
+                }
+            });
+        </script>
+    </body>
+</html>

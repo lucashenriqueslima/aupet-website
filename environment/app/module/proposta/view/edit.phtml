@@ -1,0 +1,904 @@
+<?php
+use app\classes\Util; ?>
+<?php require_once $this->main_layouts."headers.phtml"; ?>
+<script type="text/javascript">
+    var pagina = "<?= $this->getPath(); ?>";
+    var permissao = "<?= $this->permissao_ref; ?>";
+    var controller = "<?= $this->getPath(); ?>/save";
+    var retorno = "<?= $this->retorno; ?>";
+</script>
+</head>
+<body ng-app='nova' ng-controller="EditCtrl as ctrl" style='display:none' ng-init='ctrl.onInit()'>
+    <?php require_once $this->main_layouts."header.phtml"; ?>
+    <div id="wrapper">
+        <?php require_once $this->main_layouts."sidebar.phtml"; ?>
+        <div id="content" class="page-content clearfix">
+            <div class="contentwrapper">
+                <div class="heading">
+                    <h3><?= $this->module_title; ?></h3>
+                    <ul class="breadcrumb">
+                        <li>Você está aqui</li>
+                        <li><a href="#" class="tip" title="Painel"><i class="s16 icomoon-icon-screen-2"></i></a> <span class="divider"> <i class="s16 icomoon-icon-arrow-right-3"></i> </span> </li>
+                        <li><a class="tip" title="<?= $this->module_title; ?>" href="<?= $this->module_link; ?>"><i class="s16 <?= $this->module_icon; ?>"></i></a></li>
+                        <span class="divider"><i class="s16 icomoon-icon-arrow-right-3"></i></span>
+                        <li class="active">Registro</li>
+                    </ul>
+                </div>
+
+                <div class="form-horizontal group-border">
+                    <?php if ($this->registro) : ?>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="#" class="chartShortcuts no-hover">
+                                    <span class="head">Valor da proposta</span>
+                                    <span class="number">R$ <?= $this->formataMoedaDeBanco($this->registro['pet']['valor']) ?></span>
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="#" class="chartShortcuts no-hover">
+                                    <span class="head">Status</span>
+                                    <span class="number"><?= ucfirst($this->registro['pet']['classificacao']) ?></span>
+                                </a>
+                            </div>
+                            <!-- <div class="col-md-4">
+                                <a href="#" class="chartShortcuts no-hover">
+                                    <span class="head">Etapa</span>
+                                    <?php if($this->registro['pet']['classificacao'] != 'pendente') : ?>
+                                    <span class="number"><?= ucfirst($this->registro['pet']['classificacao']) ?></span>
+                                    <?php else : ?>
+                                    <span class="number"><?= $this->registro['pet']['status_etapa'] ?></span>
+                                    <?php endif ?>
+                                </a>
+                            </div> -->
+                        </div>
+
+                        <?php if ($this->registro['pet']['classificacao'] == 'arquivada') : ?>
+                            <div class='row'>
+                                <div class="col-md-12">
+                                    <a href="#" class="chartShortcuts no-hover">
+                                        <span class="head"></span>
+                                        <span class="number"><?= "Motivo: ".$this->registro['motivo'] ?></span>
+                                    </a>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <div class="row">
+                            <div class="col-md-6 col-xs-6">
+                                <?php if((bool)$this->registro['pet']['id']) :?>
+                                <a href="app/pets/edit/id/<?= $this->registro['pet']['id'] ?>"><button type="button" class="btn btn-default mr5 mb10">Ver pet</button></a>
+                                <?php endif; ?>
+                            </div>
+                            <div class="col-md-6 col-xs-6" style=" display: flex; justify-content: flex-end; text-align: right;">
+                                <?php if((bool)$this->registro['pet']['id_associado']) :?>
+                                <a href="app/associado/edit/id/<?= $this->registro['pet']['id_associado'] ?>"><button type="button" class="btn btn-default mr5 mb10">Ver associado</button></a>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <p>Compartilhe a url <a href='<?= $this->root_path ?>proposta/assinatura/<?= $this->registro['pet']['hash'] ?>' target='_blank'><?= $this->root_path ?>proposta/assinatura/<?= $this->registro['pet']['hash'] ?></a> para assinatura do plano.</p>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
+                    <form ng-submit="ctrl.submitMain()" name='formdata' novalidate> 
+                        <!-- DADOS -->
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel panel-default toggle" id="supr0">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Proposta</h4>
+                                    </div>
+                                    <div class="panel-body p0">
+                                        <div class="tabs inside-panel">
+                                            <ul id="myTab5" class="nav nav-tabs">
+                                                <li class="active">
+                                                    <a href="#tab-associado" data-toggle="tab">Associado</a>
+                                                </li>
+                                                <li class="">
+                                                    <a href="#tab-pet" data-toggle="tab">Pet</a>
+                                                </li>
+                                            </ul>
+                                            <div id="myTabContent5" class="tab-content">
+
+                                                <!-- DADOS DO ASSOCIADO -->
+
+                                                <div class="tab-pane fade active in" id="tab-associado">
+                                                    <div class='form-group'>
+                                                        <div class='col-md-6'>
+                                                            <label class="col-lg-2 control-label">Associado</label>
+                                                            <div class="col-lg-10">
+                                                                <input class="form-control" ng-model="ctrl.registro.associado.nome" />
+                                                            </div>
+                                                        </div>
+                                                        <div class='col-md-6'>
+                                                            <label class="col-lg-2 control-label">CPF
+                                                                <i class="fa fa-search"></i>
+                                                                <br><small><a class="btn btn-xs btn-default pull-right" ng-click='ctrl.buscaCPF()'>Buscar</a></small>
+                                                            </label>
+                                                            <div class="col-lg-10">
+                                                                <input class="form-control" mask-cpf ng-model="ctrl.registro.associado.cpf"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class='form-group'>
+                                                        <div class='col-md-6'>
+                                                            <label class="col-lg-2 control-label">Telefone / Whatsapp</label>
+                                                            <div class="col-lg-10">
+                                                                <input class="form-control" mask-telefone ng-model="ctrl.registro.associado.telefone"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class='col-md-6'>
+                                                            <label class="col-lg-2 control-label">Telefone Secundario</label>
+                                                            <div class="col-lg-10">
+                                                                <input class="form-control" mask-telefone ng-model="ctrl.registro.associado.telefone2"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class='form-group'>
+                                                        <div class='col-md-6'>
+                                                            <label class="col-lg-2 control-label">Email</label>
+                                                            <div class="col-lg-10">
+                                                                <input class="form-control" ng-model="ctrl.registro.associado.email" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class='form-group'>
+                                                        <div class='col-md-6'>
+                                                            <label class="col-lg-2 control-label">Data Nascimento:</label>
+                                                            <div class="col-lg-10">
+                                                                <input class="form-control" date-picker  ng-model="ctrl.registro.associado.data_nascimento"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class='col-md-6'>
+                                                            <label class="col-lg-2 control-label">CEP</label>
+                                                            <div class="col-lg-10">
+                                                                <input class="form-control" mask-cep ng-model="ctrl.registro.associado.cep" ng-change="ctrl.buscaCEP()"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class='form-group'>
+                                                        <div class='col-md-6'>
+                                                            <label class="col-lg-2 control-label" for="comissionado">logradouro</label>
+                                                            <div class="col-lg-10">
+                                                                <input class="form-control" ng-model="ctrl.registro.associado.rua"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class='col-md-6'>
+                                                            <label class="col-lg-2 control-label" for="comissionado">Bairro</label>
+                                                            <div class="col-lg-10">
+                                                                <input class="form-control" ng-model="ctrl.registro.associado.bairro"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class='form-group'>
+                                                        <div class='col-md-6'>
+                                                            <label class="col-lg-2 control-label" for="comissionado">Número</label>
+                                                            <div class="col-lg-10">
+                                                                <input class="form-control" ng-model="ctrl.registro.associado.numero"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class='col-md-6'>
+                                                            <label class="col-lg-2 control-label" for="comissionado">Complemento</label>
+                                                            <div class="col-lg-10">
+                                                                <input class="form-control" ng-model="ctrl.registro.associado.complemento"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class='form-group'>
+                                                        <div class='col-md-6'>
+                                                            <label class="col-lg-2 control-label" for="">Estado</label>
+                                                            <div class="col-lg-10">
+                                                                <select class="form-control" ng-model='ctrl.registro.associado.id_estado' ng-change='ctrl.findCity()'>
+                                                                    <option ng-value="" hidden>Selecione..</option>
+                                                                    <?php foreach ($this->estados->rows as $estado) : ?>
+                                                                    <option ng-value="<?= $estado['id']; ?>"><?= $estado['estado']; ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class='col-md-6'>
+                                                            <label class="col-lg-2 control-label" for="">Cidade</label>
+                                                            <div class="col-lg-10">
+                                                                <select class="form-control" ng-disabled="!ctrl.cidades.length" ng-model='ctrl.registro.associado.id_cidade'>
+                                                                    <option ng-value="" hidden>Selecione..</option>
+                                                                    <option ng-repeat="row in ctrl.cidades" ng-value="row.id">{{ row.cidade }}</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class='form-group'>   
+                                                        <div class='col-md-6' ng-if="ctrl.registro.proposta.indicador != 'associado'" >
+                                                            <label class="col-lg-2 control-label" for="">Indicador</label>
+                                                            <div class="col-lg-10">
+                                                                <select class="form-control" ng-model='ctrl.registro.proposta.indicador' >
+                                                                    <option value="" hidden>Selecione..</option>
+                                                                    <option value="consultor">Consultor</option>
+                                                                    <option value="clinica">Clinica</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class='col-md-6' ng-if="ctrl.registro.proposta.indicador == 'associado'">
+                                                            <label class="col-lg-2 control-label" for="">Associado</label>
+                                                            <div class="col-lg-10">
+                                                                <select class="form-control" ng-model='ctrl.registro.proposta.id_associado' disabled>
+                                                                    <option value="" hidden>Selecione..</option>
+                                                                    <?php foreach ($this->associados as $row) : ?>
+                                                                    <option ng-value="<?= $row['id']; ?>"><?= $row['nome']; ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class='col-md-6' ng-if="ctrl.registro.proposta.indicador == 'consultor'">
+                                                            <label class="col-lg-2 control-label" for="">Consultor</label>
+                                                            <div class="col-lg-10">
+                                                                <select class="form-control" ng-model='ctrl.registro.proposta.id_consultor'>
+                                                                    <option value="" hidden>Selecione..</option>
+                                                                    <?php foreach ($this->consultores as $row) : ?>
+                                                                    <option ng-value="<?= $row['id']; ?>"><?= $row['nome']; ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class='col-md-6' ng-if="ctrl.registro.proposta.indicador == 'clinica'">
+                                                            <label class="col-lg-2 control-label" for="">Clinica</label>
+                                                            <div class="col-lg-10">
+                                                                <select class="form-control" ng-model='ctrl.registro.proposta.id_clinica'>
+                                                                    <option value="" hidden>Selecione..</option>
+                                                                    <?php foreach ($this->clinicas as $row) : ?>
+                                                                    <option ng-value="<?= $row['id']; ?>"><?= $row['nome']; ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- DADOS DO PET -->
+
+                                                <div class="tab-pane fade" id="tab-pet">
+                                                    <div class="form-group">
+                                                        <div class='col-md-6'>
+                                                            <label class="col-lg-2 control-label" >Foto</label>
+                                                            <div class="col-lg-10">
+                                                                <label class="logo" >
+                                                                    <?php if (!(bool)$this->registro['pet']['foto'] ): ?>
+                                                                        <img src="/main/templates/supradmin/images/SemImagem.png" style="max-height: 100px" alt="" class="image marginR10"/>
+                                                                    <?php else: ?>
+                                                                        <img style="object-fit: cover;height: 100px;" onclick="singlePS('<?= $this->registro['pet']['foto'] ?>')" src="<?= $this->registro['pet']['foto'] ?>" alt="" class="image marginR10"/>
+                                                                    <?php endif ?>
+                                                                </label>
+                                                                <input type="file" accept='image/*'  imageread="ctrl.registro.pet.foto" class="files btn btn-default"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class='col-md-6'>
+                                                            <div class="form-group">
+                                                                <label class="col-lg-2 control-label">Nome do pet</label>
+                                                                <div class="col-lg-10">
+                                                                    <input class="form-control" ng-model="ctrl.registro.pet.nome"/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="col-lg-2 control-label">Porte</label>
+                                                                <div class="col-lg-10">
+                                                                    <select class="form-control" ng-model='ctrl.registro.pet.porte' >
+                                                                        <option value="" hidden>Selecione..</option>
+                                                                        <option value="Pequeno">Pequeno</option>
+                                                                        <option value="Médio">Médio</option>
+                                                                        <option value="Grande">Grande</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class='form-group'>
+                                                        <div class='col-md-6'>
+                                                            <label class="col-lg-2 control-label">Especie</label>
+                                                            <div class="col-lg-10">
+                                                                <select class="form-control" ng-model='ctrl.registro.pet.id_especie' ng-change='ctrl.findRacas()'>
+                                                                    <option value="" hidden>Selecione..</option>
+                                                                    <?php foreach ($this->especies as $row) : ?>
+                                                                    <option ng-value="<?= $row['id']; ?>"><?= $row['titulo']; ?></option>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class='col-md-6'>
+                                                            <label class="col-lg-2 control-label">Raça</label>
+                                                            <div class="col-lg-10">
+                                                                <select class="form-control" ng-disabled="!ctrl.racas.length" ng-model='ctrl.registro.pet.id_raca'>
+                                                                    <option value="" hidden>Selecione..</option>
+                                                                    <option ng-repeat="row in ctrl.racas" ng-value="row.id">{{row.titulo}}</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class='form-group'>
+                                                        <div class='col-md-6'>
+                                                            <label class="col-lg-2 control-label">Peso (Kg)</label>
+                                                            <div class="col-lg-10">
+                                                                <input class="form-control" mask-money ng-model="ctrl.registro.pet.peso"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class='col-md-6'>
+                                                            <label class="col-lg-2 control-label">Cor</label>
+                                                            <div class="col-lg-10">
+                                                                <input class="form-control" ng-model="ctrl.registro.pet.cor"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class='form-group'>
+                                                        <div class='col-md-6'>
+                                                            <label class="col-lg-2 control-label">Sexo</label>
+                                                            <div class="col-lg-10">
+                                                                <select class="form-control" ng-model='ctrl.registro.pet.sexo' >
+                                                                    <option value="" hidden>Selecione..</option>
+                                                                    <option value="Macho">Macho</option>
+                                                                    <option value="Fêmea">Fêmea</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class='col-md-6'>
+                                                            <div class="form-group">            
+                                                                <label class="col-lg-2 control-label">Plano</label>
+                                                                <div class="col-lg-10">
+                                                                    <select class="form-control" ng-model='ctrl.registro.pet.id_plano' >
+                                                                        <option ng-value="" hidden>Selecione..</option>
+                                                                        <?php foreach ($this->planos as $row) : ?>
+                                                                        <option ng-value="<?= $row['id']; ?>"><?= $row['titulo']; ?></option>
+                                                                        <?php endforeach; ?>
+                                                                    </select>
+                                                                </div>
+                                                            </div>        
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>                             
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BOTÃO DE SALVAR E ALTERAR -->
+                        <div class='col-md-12'>
+                            <?php if (!$this->permissions[$this->permissao_ref]['editar']) : ?>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <span class="label label-warning"><span class="icon24 icomoon-icon-warning "></span>Você não tem permissão para editar esta função.</span>
+                                </div>
+                            </div>
+                            <?php else : ?>
+                            <div class="form-group col-md-12">
+                                <div class="col-lg-offset-2 col-lg-2">
+                                    <button type="submit" class="btn btn-info btn-block"><strong>Salvar</strong></button>
+                                </div>
+                            </div>
+                            <?php endif ?>
+                        </div>
+                    </form>
+
+                    <?php if((bool)$this->id) : ?>
+                        
+                        <!-- VISTORIA -->
+                        
+                        <!-- <?php if((bool)$this->vistoria) : ?>
+                            <div class="row"> 
+                                <div class="col-md-12">
+                                    <div class="panel panel-default toggle">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">Vistoria</h4>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group ">
+                                                <div class='col-md-6' >
+                                                    <label class="col-lg-12 obs-vis">Modelo vistoria: <b><?= $this->vistoria['descricao'] ?></b></label>
+                                                    <label class="col-lg-12 obs-vis">Criação: <b><?= $this->vistoria['criacao'] ?></b></label>
+                                                    <label class="col-lg-12 obs-vis">Observações: <b><?= $this->vistoria['observacao'] ?></b></label>
+                                                    <label class="col-lg-12 obs-vis">Anexos: <?php foreach ($this->vistoria['anexos'] as $i => $item) : ?><?= $i > 0 ? '-' : '' ?>&nbsp;<a target='_blank' href='<?= $item['arquivo'] ?>'><?= $item['descricao'] ?><i aria-hidden="true" class="icomoon-icon-new-tab"></i>&nbsp;</a><?php endforeach ?></label>
+                                                </div>
+                                                <div class='col-md-6' >
+                                                    <?php if($this->vistoria['status'] == 'Pendente') : ?>
+                                                    <button type="button" ng-click="ctrl.aprovarVistoria(<?= $this->vistoria['id'] ?>)" class="btn btn-success btn-lg obs-vis">Aprovar vistoria</button>
+                                                    <?php else : ?>
+                                                    <label class="col-lg-12 obs-vis"><b>Vistoria aprovada</b></label>
+                                                    <?php endif ?>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <?php foreach ($this->vistoria['items'] as $item) : ?>
+                                                <div class="col-md-3">
+                                                    <?php if ($item['aprovado'] == '0' && $this->vistoria['status'] == 'Pendente') : ?>
+                                                    <div class="panel panel-danger vistoria-panel">
+                                                    <?php else : ?>
+                                                    <div class="panel panel-default vistoria-panel">
+                                                    <?php endif ?>
+                                                        <div class="vistoria panel-heading ">
+                                                            <h4 class="panel-title">
+                                                                <strong><?= $item['descricao'] ?></strong><?php if ($item['required'] == 0) : ?><br><small>(Não obrigatório)</small><?php endif ?>
+                                                            </h4>
+                                                        </div>
+                                                        <?php if ($item['imagem']) : ?> <?php $existeImagem = 1; ?>
+                                                        <div class="btn-group btn-group-justified">
+                                                            <?php if($this->vistoria['status'] == 'Pendente' && $item['aprovado'] === null) : ?>
+                                                            <a class="btn btn-default" ng-click="ctrl.rejectInspModal(<?= $item['id'] ?>)" role="button" style='color: #e24545;'>Recusar</a>
+                                                            <?php endif ?>
+                                                            <a target="_blank" href="https://www.google.com/maps?mrt=yp&t=m&q=<?= $item['lat'] ?>,<?= $item['lng'] ?>&z=10" class="btn btn-default" role="button" style='color: black;'>Ver local</a>
+                                                        </div>
+                                                        <?php endif ?>
+                                                        <div class="panel-body">
+                                                            <?php if ($item['imagem']) : ?>
+                                                            <a class='cursor' onclick="singlePS('<?= $item['imagem'] ?>')">
+                                                                <img class="img-responsive" src="<?= $item['imagem'] ?>" alt="image alt">
+                                                            </a>
+                                                            <p style='margin:0'><?= $item['localizacao'] ?></p>
+                                                            <p style='margin:0'>Fotografado em <?= $item['fotografado_em'] ?></p>
+                                                            <p style='margin:0'>Enviado em <?= $item['upload_at'] ?></p>
+                                                            <?php else : ?>
+                                                            <p>Envio pendente</p>
+                                                            <?php endif ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <?php endforeach ?>
+                                            </div>
+                                        </div>
+                                        <?php if (isset($existeImagem)) : ?>
+                                        <div class='panel-footer'>
+                                            <button type="button" onclick="downloadImages('<?= $this->id; ?>')" class="btn btn-info"><strong>Download fotos</strong></button>
+                                        </div>
+                                        <?php endif ?>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endif ?> -->
+
+                        <!-- TERMO -->
+
+                        <!-- <?php if($this->termo['contrato_tipo'] == 'Manuscrito' || (bool)$this->termo['id_contrato']) : ?>
+                            <div class="row"> 
+                                <div class="col-md-12" id="termo">
+                                <div class="panel panel-default toggle" id="supr0">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Termo de filiação</h4>
+                                    </div>
+                                    <div class="panel-body p0">
+                                        <?php if($this->termo['contrato_tipo'] == 'Manuscrito') : ?>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 col-md-3 control-label" for="">Termo</label>
+                                            <div class="col-lg-10 col-md-9">
+                                                <p class="form-control-static">Manuscrito</p>
+                                            </div>
+                                        </div>
+                                        <?php else : ?>
+                                        <div class="tabs inside-panel">
+                                            <ul id="myTab5" class="nav nav-tabs">
+                                                <li class="active"><a href="#resumo" data-toggle="tab" aria-expanded="true">Resumo</a></li>
+                                                <li class=""><a href="#perguntas" data-toggle="tab">Perguntas</a></li>
+                                            </ul>
+                                            <div id="myTabContent5" class="tab-content">
+                                                <div class="tab-pane fade active in" id="resumo">
+                                                    <?php if((bool)$this->termo['id_contrato']) : ?>
+                                                    <div class="form-group">
+                                                        <div class='col-md-6'>
+                                                            <label class="col-md-2 control-label">Termo</label>
+                                                            <div class="col-md-10">
+                                                                <input class="form-control" readonly value="<?= $this->termo['contrato'] ?>" />
+                                                            </div>
+                                                        </div>
+                                                        <div class='col-md-6'>
+                                                            <label class="col-md-2 control-label" for="">Link</label>
+                                                            <div class="col-md-10" style="margin-top: 5px;">
+                                                                <a target='_blank' style="word-break: break-all;" href='<?= $this->root_path ?>proposta/assinatura/<?= $this->registro['pet']['hash'] ?>'><?= $this->root_path ?>proposta/assinatura/<?= $this->registro['pet']['hash'] ?><i aria-hidden="true" class="icomoon-icon-new-tab"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <?php if((bool)$this->termo['tipo_doc']) : ?>
+                                                    <div class="form-group">
+                                                        <div class='col-md-6'>
+                                                            <label class="col-md-2 control-label">Tipo de documento</label>
+                                                            <div class="col-md-10">
+                                                                <input class="form-control" readonly value="<?= strtoupper($this->termo['tipo_doc']) ?>" />
+                                                            </div>
+                                                        </div>
+                                                        <div class='col-md-6'>
+                                                        <div class='col-md-6'>
+                                                                <label class="col-md-4 control-label" for="">Status</label>
+                                                                <div class="col-md-8" style="margin-top: 5px;">
+                                                                    <?=$this->termo['status'] ?>
+                                                                </div>
+                                                            </div>
+                                                            <div class='col-md-6'>
+                                                                <?php if($this->termo['lat'] && $this->termo['lng']) : ?>
+                                                                <label class="col-md-2 control-label" for="">Lat, Lng</label>
+                                                                <div class="col-md-10" style="margin-top: 5px;">
+                                                                    <a target="_blank" href="https://www.google.com/maps?mrt=yp&t=m&q=<?=$this->termo['lat'] ?>,<?=$this->termo['lng'] ?>&z=10" ><?= $this->termo['lat'] ?>, <?= $this->termo['lng'] ?></a>
+                                                                </div>
+                                                                <?php endif ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <?php endif ?>
+                                                    <?php endif ?>
+                                                    <div class="form-group">
+                                                        <div class="col-md-3">
+                                                            <div class="panel <?= (array_key_exists('assinatura', $this->termo['doc_recusados']) && $this->registro['pet']['classificacao'] == 'pendente') ? 'panel-danger' : '' ?>">
+                                                                <div class="vistoria panel-heading ">
+                                                                    <h4 class="panel-title"><strong>Assinatura</strong></h4>
+                                                                </div>
+                                                                <?php if($this->termo['status'] != 'aprovada' && (bool)$this->termo['assinatura'] && !array_key_exists('assinatura', $this->termo['doc_recusados']) && $this->registro['pet']['classificacao'] == 'pendente') : ?>
+                                                                <div class="btn-group btn-group-justified">
+                                                                    <a class="btn btn-default" style="color:red" ng-click="ctrl.reprovaDocumentoModal('assinatura')" >Reprovar assinatura</a>
+                                                                </div>
+                                                                <?php endif ?>
+                                                                <div class="panel-body">
+                                                                    <?php if((bool)$this->termo['assinatura']) : ?>
+                                                                    <a class="cursor" onclick="singlePSWhite('<?= $this->termo['assinatura'] ?>')">
+                                                                        <img style="max-height:260px" class="img-responsive" src="<?= $this->termo['assinatura'] ?>" alt="image alt">
+                                                                    </a>
+                                                                    <?php else : ?>
+                                                                    <p>Assinatura não enviada</p>
+                                                                    <?php endif ?>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <?php if((bool)$this->termo['selfie']) : ?>
+                                                        <div class="col-md-3">
+                                                            <div class="panel <?= (array_key_exists('selfie', $this->termo['doc_recusados']) && $this->registro['pet']['classificacao'] == 'pendente') ? 'panel-danger' : '' ?>">
+                                                                <div class="vistoria panel-heading ">
+                                                                    <h4 class="panel-title"><strong>Selfie</strong></h4>
+                                                                </div>
+                                                                <?php if($this->termo['status'] != 'aprovada' && !array_key_exists('selfie', $this->termo['doc_recusados']) && $this->registro['pet']['classificacao'] == 'pendente') : ?>
+                                                                <div class="btn-group btn-group-justified">
+                                                                    <a class="btn btn-default" style="color:red" ng-click="ctrl.reprovaDocumentoModal('selfie')" >Reprovar Selfie</a>
+                                                                </div>
+                                                                <?php endif ?>
+                                                                <div class="panel-body">
+                                                                    <a class="cursor" onclick="singlePS('<?= $this->termo['selfie'] ?>')">
+                                                                        <img style="max-height:260px" class="img-responsive" src="<?= $this->termo['selfie'] ?>" alt="image alt">
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <?php endif ?>
+                                                        <?php if((bool)$this->termo['frente_doc']) : ?>
+                                                        <div class="col-md-3">
+                                                            <div class="panel <?= (array_key_exists('frente_doc', $this->termo['doc_recusados']) && $this->registro['pet']['classificacao'] == 'pendente') ? 'panel-danger' : '' ?>">
+                                                                <div class="vistoria panel-heading ">
+                                                                    <h4 class="panel-title"><strong>Frente documento</strong></h4>
+                                                                </div>
+                                                                <?php if($this->termo['status'] != 'aprovada' && !array_key_exists('frente_doc', $this->termo['doc_recusados']) && $this->registro['pet']['classificacao'] == 'pendente') : ?>
+                                                                <div class="btn-group btn-group-justified">
+                                                                    <a class="btn btn-default" style="color:red" ng-click="ctrl.reprovaDocumentoModal('frente_doc')">Reprovar Frente documento</a>
+                                                                </div>
+                                                                <?php endif ?>
+                                                                <div class="panel-body">
+                                                                    <a class="cursor" onclick="singlePS('<?= $this->termo['frente_doc'] ?>')">
+                                                                        <img style="max-height:260px" class="img-responsive" src="<?= $this->termo['frente_doc'] ?>" alt="image alt">
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <?php endif ?>
+                                                        <?php if((bool)$this->termo['atras_doc']) : ?>
+                                                        <div class="col-md-3">
+                                                            <div class="panel <?= (array_key_exists('atras_doc', $this->termo['doc_recusados']) && $this->registro['pet']['classificacao'] == 'pendente') ? 'panel-danger' : '' ?>">
+                                                                <div class="vistoria panel-heading ">
+                                                                    <h4 class="panel-title"><strong>Verso documento</strong></h4>
+                                                                </div>
+                                                                <?php if($this->termo['status'] != 'aprovada' && !array_key_exists('atras_doc', $this->termo['doc_recusados']) && $this->registro['pet']['classificacao'] == 'pendente') : ?>
+                                                                <div class="btn-group btn-group-justified">
+                                                                    <a class="btn btn-default" style="color:red" ng-click="ctrl.reprovaDocumentoModal('atras_doc')">Reprovar Verso documento</a>
+                                                                </div>
+                                                                <?php endif ?>
+                                                                <div class="panel-body">
+                                                                    <a class="cursor" onclick="singlePS('<?= $this->termo['atras_doc'] ?>')">
+                                                                        <img style="max-height:260px" class="img-responsive" src="<?= $this->termo['atras_doc'] ?>" alt="image alt">
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <?php endif ?>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="perguntas">
+                                                <form ng-submit="ctrl.submitPerguntasContrato()" >
+                                                    <div class="form-group" ng-repeat="row in ctrl.perguntas_contrato">
+                                                        <label class="col-lg-2 col-md-3 control-label" for="">{{row.descricao}} - {{row.variavel}}</label>
+                                                        <div class="col-lg-10 col-md-9">
+                                                            <input required class='form-control' ng-model="row.resposta" required />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="col-lg-offset-2 col-lg-2">
+                                                            <button type="submit" class="btn btn-info btn-block"><strong>Alterar respostas</strong></button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php if(($this->termo['status'] == 'pendente' || $this->termo['status'] == 'reanalise') && $this->registro['pet']['classificacao'] == 'pendente') : ?>
+                                        <hr>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 col-md-3 control-label" for=""></label>
+                                            <div class="col-lg-10 col-md-9">
+                                                <button type="button" ng-click="ctrl.aprovarTermo()" class="btn btn-success btn-lg">Aprovar termo</button>
+                                            </div>
+                                        </div>
+                                        <?php endif ?>
+                                        <?php endif ?>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        <?php endif ?> -->
+
+                        <!-- ANOTAÇÕES E HISTÓRICO -->
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="tabs mb20">
+                                    <ul id="myTab" class="nav nav-tabs">
+                                        <li class="active">
+                                            <a href="#footer-anotacao" data-toggle="tab">Anotações</a>
+                                        </li>
+                                        <li class="">
+                                            <a href="#footer-historica" data-toggle="tab">Histórico</a>
+                                        </li>
+                                    </ul>
+                                    <div id="myTabContent2" class="tab-content">
+                                        <div class="tab-pane fade active in" id="footer-anotacao">
+                                            <div class="panel-body">
+                                                <form ng-submit='ctrl.submitAnotation()'>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-2 control-label" for="anotacao">Anotação</label>
+                                                        <div class="col-lg-10">
+                                                            <textarea class="form-control summernote" rows="3"></textarea>
+                                                        </div>
+                                                        <div class="col-lg-offset-2 col-lg-10" style="margin-top: 10px;">
+                                                            <button type="submit" class="btn btn-primary">Salvar Anotação</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                <div class="form-group">
+                                                    <table cellpadding="0" cellspacing="0" border="0" class="tabletools table table-striped table-bordered" width="100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th width="20%" class="center">Data</th>
+                                                                <th style="display:none"></th>
+                                                                <th class="tal" width="20%">Usuario</th>
+                                                                <th class="tal" width="70%">Anotação</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php foreach ($this->anotacaoHistorico->rows as $anotacaoH) : ?>
+                                                                <tr>
+                                                                    <td style="display:none"><?= $anotacaoH['data_usa']; ?>"></td>
+                                                                    <td class="center"><?= $anotacaoH['data']; ?></td>
+                                                                    <td class="center"><?= $anotacaoH['usuario']; ?></td>
+                                                                    <td class="tal"><?= str_replace("\n", "<br>", stripslashes($anotacaoH['anotacao'])); ?></td>
+                                                                </tr>
+                                                            <?php endforeach ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="footer-historica">
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <table cellpadding="0" cellspacing="0" border="0" class="tabletools table table-striped table-bordered" width="100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="display:none"></th>
+                                                                <th width="20%" class="center">Data</th>
+                                                                <th class="tal" width="20%">Usuario</th>
+                                                                <th class="tal" width="50%">Ação</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php foreach ($this->historico as $statusH) : ?>
+                                                                <tr>
+                                                                    <td style="display:none"><?= $statusH['data_usa']; ?>"></td>
+                                                                    <td class="center"><?= $statusH['data']; ?></td>
+                                                                    <td class="center"><?= $statusH['usuario']; ?></td>
+                                                                    <td class="tal"><?= $statusH['atividade'] ?></td>
+                                                                </tr>
+                                                            <?php endforeach ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    <?php if ($this->registro['pet']['classificacao'] == 'pendente' || $this->registro['pet']['classificacao'] == 'ativada') : ?>
+                        <div class="row">
+                        <?php if (!$this->permissions[$this->permissao_ref]['editar']) : ?>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <span class="label label-warning"><span class="icon24 icomoon-icon-warning "></span>Você não tem permissão para editar esta função.</span>
+                                </div>
+                            </div>
+                        <?php else : ?>
+                            <div class="form-group">
+                                <?php if ($this->registro['transacao']) : ?>
+                                <div>
+                                    <center><span class="label label-warning" style="font-size:14px;">Essa proposta não pode ser arquivada porque a transação já foi concretizada.</span></center>
+                                </div>
+                                <?php else : ?>
+                                <div class="col-lg-offset-2 col-lg-2">
+                                    <!-- <button type="button" class="btn btn-info btn-block" ng-click="ctrl.modalArquivar()"><strong>Excluir Proposta</strong></button> -->
+                                </div>
+                                <?php endif ?>
+                            </div>
+                        <?php endif ?>
+                    </div>
+                    <?php elseif ($this->registro['pet']['classificacao'] == 'arquivada') : ?>
+                    <div class="row">
+                        <?php if (!$this->permissions[$this->permissao_ref]['editar']) : ?>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <span class="label label-warning"><span class="icon24 icomoon-icon-warning "></span>Você não tem permissão para editar esta função.</span>
+                            </div>
+                        </div>
+                        <?php else : ?>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-2">
+                                <button type="button" ng-click="ctrl.desarquivar()" class="btn btn-info btn-block"><strong>Desarquivar</strong></button>
+                            </div>
+                        </div>
+                        <?php endif ?>
+                    </div>
+                    <?php endif ?>
+                    
+                    <?php endif ?>
+                </div>
+            </div>
+        </div>
+        <?php require_once $this->main_layouts."footer.phtml"; ?>
+    </div>
+    
+    <div id="modal_arquivar" class="modal fade modal-style2" >
+        <form ng-submit='ctrl.submitArquivar()' class="form-horizontal mt20"  >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <h4 class="modal-title" >Arquivar</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class='form-group'>
+                            <label class='col-lg-3 control-label' for='id_motivo'>Selecione o motivo</label>
+                            <div class='col-lg-7'>
+                                <select required class='form-control' ng-model='ctrl.id_motivo_arquivamento'>
+                                    <option value=''>Selecione..</option>
+                                    <?php foreach ($this->motivos as $row) : ?>
+                                    <option ng-value="<?= $row['id'] ?>"><?= $row['nome'] ?></option>
+                                    <?php endforeach; ?>                                
+                                </select>
+                            </div>
+                        </div>                    
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <?php require_once $this->main_layouts."plugins.phtml"; ?>
+    <script src="<?= $this->main_template ?>plugins/tables/dataTables/jquery.dataTables.js"></script>
+    <script src="<?= $this->main_template ?>plugins/tables/dataTables/dataTables.tableTools.js"></script>
+    <script src="<?= $this->main_template ?>plugins/tables/dataTables/dataTables.bootstrap.js"></script>
+    <script src="<?= $this->main_template ?>plugins/tables/dataTables/dataTables.responsive.js"></script>
+    <script type="text/javascript" src="<?= $this->main_template; ?>plugins/forms/select/select2.js"></script>
+    <?php require_once $this->main_layouts."photoswipe.phtml"; ?>
+    <script src="<?php echo $this->main_template;?>plugins/forms/summernote/summernote.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(document).on('pointerup', 'select[disabled]', async function (e) {
+                $("body").addClass("progresss");
+                await navigator.clipboard.writeText($(this).children("option:selected").html());
+                $("body").removeClass("progresss");
+            });
+            $(".select2").select2();
+            $('.tabletools').dataTable({
+                "oLanguage": { "sSearch": "", "sLengthMenu": "<span>_MENU_</span>", "sProcessing": "Processando...", "sZeroRecords": "Não foram encontrados resultados", "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros", "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros", "sInfoFiltered": "", "sInfoPostFix": "", "sUrl": "", "oPaginate": { "sFirst": "Primeiro", "sPrevious": "Anterior", "sNext": "Seguinte", "sLast": "Último" } },
+                "sDom": "T<'row'<'col-md-6 col-xs-12 'l><'col-md-6 col-xs-12'f>r>t<'row'<'col-md-4 col-xs-12'i><'col-md-8 col-xs-12'p>>",
+                "aaSorting": [ [0, "desc"] ],
+                tableTools: { "sSwfPath": "http://cdn.datatables.net/tabletools/2.2.2/swf/copy_csv_xls_pdf.swf", "aButtons": [] }
+            });
+            summernote();
+        });
+        angular.module('nova', ['novaServices',])
+        .controller('EditCtrl', function($scope, $http, $sce, NS, $window) {
+            this.registro = <?= json_encode($this->registro); ?>;
+            var estados = <?=json_encode(array_values($this->estados->rows));?>;
+            this.onInit = () => {
+                $('body').show();       
+                this.findCity();
+                this.findRacas();
+            }
+            this.submitMain = async () => {
+                let res = await NS.actionHandler($http.post(`<?= $this->getPath();?>/save`,this.registro));
+                if(this.registro.pet.id) location.reload();
+                else window.location = "<?= $this->getPath(); ?>/edit/id/"+res.data;
+            }
+            this.findCity = async () => {
+                if (!this.registro.associado.id_estado) return;
+                this.cidades = [];
+                this.cidades = (await $http.post(`main/general/getCidadesByEstadoId`, { id:this.registro.associado.id_estado })).data;
+                $scope.$digest();
+            }
+            this.submitAnotation = async () => {
+                this.anotation = { 'id_proposta' : '<?= $this->registro['pet']['id_proposta'] ?>'};
+                this.anotation.anotacao = $('.note-editor .note-editable').html();
+                if(this.anotation.anotacao == '<p><br></p>') return NS.notifInfo('Infome a anotação');
+                await NS.actionHandler($http.post(`<?= $this->getPath(); ?>/updateAnotation`, this.anotation));
+                location.reload();
+            }
+            this.buscaCEP = async () => {
+                if(this.registro.associado.cep.length < 9) return;
+                let cep = this.registro.associado.cep;
+                let res = await NS.actionHandlerCursor($http.post(`<?= $this->getPath();?>/buscaCep`,{'cep': cep}));
+                if(!res.data) return;
+                this.registro.associado.id_estado = res.data.id_estado;
+                this.registro.associado.id_cidade = res.data.id_cidade;
+                this.registro.associado.rua = res.data.logradouro;
+                this.registro.associado.complemento = res.data.complemento;
+                this.registro.associado.bairro = res.data.bairro;
+                this.findCity();
+            }
+            this.buscaCPF = async () => {
+                if(!this.registro.associado.cpf) return;
+                let res = await NS.actionHandlerCursor($http.post(`<?= $this->getPath();?>/buscacpf`, { "cpf" : this.registro.associado.cpf}));
+                if(!res.data) NS.notifInfo('Nenhuma pessoa foi encontrada com esse cpf');
+                else {
+                    if(confirm(`Foi encontrado os dados de ${res.data.nome}, deseja importar?`)) {
+                        this.registro.associado = res.data;
+                        $scope.$digest();
+                    }
+                }
+            }
+            this.findRacas = async () => {
+                if(!this.registro.pet.id_especie) return;
+                this.racas = [];
+                let res = await $http.get(`app/pets/racas/especie/${this.registro.pet.id_especie}`);
+                this.racas = res.data;
+                $scope.$digest();
+            }
+            this.ativarPet = async () => {
+                if(!this.registro.proposta.indicador) return NS.notifInfo('Infome um indicador para a Proposta');
+                if(!this.registro.pet.bonificacao && this.registro.proposta.indicador != 'associado') return NS.notifInfo('Infome a Bonificação do Indicador');
+                if (!confirm('Ativar proposta?')) return;
+                await NS.actionHandler($http.post("<?= $this->getPath(); ?>/ativarPet", { 'id_pet': this.registro.pet.id }));
+                location.reload();
+            }
+            this.modalArquivar = async () => {
+                $('#modal_arquivar').modal("show");
+            }
+            this.submitArquivar = async () => {
+                await NS.actionHandler($http.post("<?= $this->getPath(); ?>/arquivar", { id_pet: '<?= $this->id ?>', id_arquivamento: this.id_motivo_arquivamento }), '#modal_arquivar');
+                location.reload();
+            }
+            this.desarquivar = async () => {
+                await NS.actionHandler($http.put(`<?= $this->getPath(); ?>/desarquivar`, { 'id_pet' : '<?= $this->registro['pet']['id'] ?>' }));
+                location.reload();
+            }
+        });
+    </script>
+</body>
+</html>

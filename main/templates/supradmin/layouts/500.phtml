@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<?php require_once "headers.phtml"; ?>
+    <body class="error-page">
+        <div class="container error-container">
+            <div class="error-panel panel panel-default plain animated bounceIn">
+                <div class="panel-body">
+                    <div class="page-header">
+                        <h1 class="text-center mb25">500</h1>
+                    </div>
+                    <h2 class="text-center mt30 mb30">Houve um problema interno</h2>
+                    <h5 class="text-center mt30 mb30"><?= $showMessagem ? $e->getMessage() : 'Nossa equipe ja foi informada. Tente novamente mais tarde!' ?></h5>
+                    <div class="text-center">
+                        <a href="javascript: history.go(-1)" class="btn btn-default mr10"><span class="icomoon-icon-arrow-left-10 s16"></span>Voltar</a>
+                        <a href="/sistema/main/dashboard" class="btn btn-default"><span class="icomoon-icon-screen s16"></span>Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php  require_once "plugins.phtml"; ?>
+    </body>
+</html>

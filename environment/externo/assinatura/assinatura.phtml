@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="description" content="<?php "Olá ".$this->pet['nome'].", Esta é a sua Proposta de filiação" ?>" />
+	<meta property="og:title" content="Proposta de filiação">
+
+	<link href="/environment/externo/assinatura/css/principal.css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" href="/environment/externo/assinatura/plugins/slick/slick.css">
+	<link rel="stylesheet" type="text/css" href="/environment/externo/assinatura/plugins/slick/slick-theme.css">
+	<link rel="stylesheet" type="text/css" href="/environment/externo/assinatura/plugins/bootstrap/bootstrap.min.css">
+	<link href="/environment/externo/assinatura/css/plugins.css" rel="stylesheet" />
+	<link href="/environment/externo/assinatura/css/icons.css" rel="stylesheet" />
+	<title>Termo de filiação</title>
+	<script>
+		var hash = "<?= $hash ?>";
+		<?php if((bool)$doc_recusados) : ?>
+		<?php 
+			$fe = $doc_recusados;
+			$allowed  = ['frente_doc', 'atras_doc', 'selfie', 'assinatura'];
+			foreach ($fe as $key => $value) {
+				if(!in_array($key, $allowed)) {
+					unset($doc_recusados->$key);
+				}
+			};
+		?>
+		 var recusados = <?= json_encode($doc_recusados) ?>
+		<?php endif ?>
+	</script>
+</head>
+<body ng-app='nova' ng-controller="Ctrl as ctrl" ng-init='ctrl.ngInit()' >
+	<input id='generic-input' style='display:none' />
+	<?php if((bool)$doc_recusados) : ?>
+	<section class="passo_item passo_1" active="true"> <!-- HOME -->
+		<div class="passo_content">
+			<img class="logo" src="/environment/externo/assinatura/img/home/logo.png" alt="">
+			<img class="passo" src="/environment/externo/assinatura/img/home/passo_1.svg" alt="">
+			<h1>Termo de filiação</h1>
+			<p>Olá <b><?= $this->pet['nome'] ?></b>, aqui é o(a) <?= $this->pet['indicador_nome'] ?>, consultor do <?= $this->empresa['nome'] ?>, esse é o seu link para visualização do termo de filiação.</p>
+			<button class="next" ng-click="ctrl.changeSection(20)">Assinar</button>
+			<a href="<?= $this->root_path ?>proposta/visualizar/<?= $this->pet['hash'] ?>" class="next" >Ver termo de filiação</a>
+		</div>
+	</section>
+	<section class="passo_item passo_20 arquivos_recusados" active="false"> <!-- LISTA DE ARQUIVOS RECUSADOS -->
+		<div class="passo_header">
+			<p>Arquivos recusados</p>
+		</div>
+		<div class="passo_content">
+			<h2>Tudo pronto?</h2>
+			<p>Os arquivos abaixos foram recusados na finalização do seu termo de filiação. Por favor anexe e envie novamente para continuar.</p>
+			<div class="document_content">
+				<?php if(array_key_exists('frente_doc', $doc_recusados)) : ?>
+				<div class="item" active="{{ctrl.data.frente_doc ? 'true' : 'false'}}" ng-click="ctrl.obterFotoFrente('frente_doc', 20)">
+					<img src="/environment/externo/assinatura/img/home/documento.png">Foto da frente<img class="svg" src="/environment/externo/assinatura/img/arrow.svg">
+					<h2 class="h-motivo">Motivo:</h2>
+					<small>{{ doc_recusados.frente_doc }}</small>
+				</div>
+				<?php endif ?>
+				<?php if(array_key_exists('atras_doc', $doc_recusados)) : ?>
+				<div class="item" active="{{ctrl.data.atras_doc ? 'true' : 'false'}}" ng-click="ctrl.obterFotoFrente('atras_doc', 20)">
+					<img src="/environment/externo/assinatura/img/home/documento.png">Foto do verso<img class="svg" src="/environment/externo/assinatura/img/arrow.svg">
+					<h2 class="h-motivo">Motivo:</h2>
+					<small>{{ doc_recusados.frente_doc }}</small>
+				</div>
+				<?php endif ?>
+				<?php if(array_key_exists('selfie', $doc_recusados)) : ?>
+				<div class="item" active="{{ctrl.data.selfie ? 'true' : 'false'}}" ng-click="ctrl.obterFotoFrente('selfie', 20)">
+					<img src="/environment/externo/assinatura/img/home/selfie.png">Selfie<img class="svg" src="/environment/externo/assinatura/img/arrow.svg">
+					<h5 class="h-motivo">Motivo</h5>
+					<small>{{ doc_recusados.selfie }}</small>
+				</div>
+				<?php endif ?>
+				<?php if(array_key_exists('assinatura', $doc_recusados)) : ?>
+				<div class="item" active="{{ctrl.data.assinatura ? 'true' : 'false'}}" ng-click="ctrl.getAssinatura('assinatura', 20)">
+					<img src="/environment/externo/assinatura/img/home/assinatura.png">Assinatura<img class="svg" src="/environment/externo/assinatura/img/arrow.svg">
+					<h5 class="h-motivo">Motivo</h5>
+					<small>{{ doc_recusados.assinatura }}</small>
+				</div>
+				<?php endif ?>
+			</div>
+			<button class="next" ng-click="ctrl.salvarRec()">Enviar</button>
+		</div>
+	</section>
+	<section class="passo_item passo_8 assinatura" active="false" widescreen="false"> <!-- CANVAS ASSINATURA DIGITAL -->
+		<div class="content"></div>
+		<canvas ></canvas>
+		<button ng-click="ctrl.limparCanvas()" class="limpar">LIMPAR</button>
+		<button ng-click="ctrl.desfazerCanvas()" class="desfazer"><img class="svg" src="/environment/externo/assinatura/img/home/undo.svg"></button>
+		<button class="next salvar" ng-click="ctrl.recSetAssinatura()">SALVAR</button>
+	</section>
+	<?php elseif(!(bool)$assinatura['apenas_assinatura']) : ?>
+	<section class="passo_item passo_1" active="true"> <!-- HOME -->
+		<div class="passo_content">
+			<img class="logo" src="/environment/externo/assinatura/img/home/logo.png" alt="">
+			<img class="passo" src="/environment/externo/assinatura/img/home/passo_1.svg" alt="">
+			<h1>Termo de filiação</h1>
+			<p>Olá <b><?= $this->pet['nome'] ?></b>, aqui é o(a) <?= $this->pet['indicador_nome'] ?>, consultor do <?= $this->empresa['nome'] ?>, esse é o seu link para visualização do termo de filiação.</p>
+			<?php if(!(bool)$termo['assinatura']) : ?>
+			<button class="next" ng-click="ctrl.changeSection(2)">Assinar</button>
+			<?php endif ?>
+			<a href="<?= $this->root_path ?>proposta/visualizar/<?= $this->pet['hash'] ?>" class="next" >Ver termo de filiação</a>
+		</div>
+	</section>
+	<section class="passo_item passo_2" active="false"> <!-- ACEITAR TERMO -->
+		<div class="passo_header">
+			<button class="voltar" ng-click="ctrl.changeSection(1)"><svg id="noun_Arrow_1920904" xmlns="http://www.w3.org/2000/svg" width="10.294" height="17.004" viewBox="0 0 10.294 17.004"><path id="Caminho_33" data-name="Caminho 33" d="M29.782,2.5a1.833,1.833,0,0,1,1.271.519,1.8,1.8,0,0,1,0,2.541L25.63,11l5.44,5.44a1.8,1.8,0,1,1-2.541,2.541l-6.71-6.71A1.771,1.771,0,0,1,21.3,11a1.848,1.848,0,0,1,.519-1.271l6.693-6.71A1.865,1.865,0,0,1,29.782,2.5Z" transform="translate(-21.3 -2.5)" fill="#5d2975"/></svg></button>
+			Termo de filiação
+		</div>
+		<div class="passo_content">
+			<img src="/environment/externo/assinatura/img/home/passo_2.svg" alt="">
+			<div class="termo">
+				<input type="checkbox" id="termo">
+				<label for="termo">Li e aceito o <a href="<?= $this->root_path ?>proposta/visualizar/<?= $this->pet['hash'] ?>"  target="_blank">Termo de Filiação</a></label>
+			</div>
+			<button class="next" ng-click="ctrl.changeSection(3)">Ir para documentação</button>
+		</div>
+	</section>
+	<section class="passo_item passo_3" active="false"> <!-- SOLICITAR LOCALIZAÇÃO -->
+		<div class="passo_header">
+			<button class="voltar" ng-click="ctrl.changeSection(2)"><svg id="noun_Arrow_1920904" xmlns="http://www.w3.org/2000/svg" width="10.294" height="17.004" viewBox="0 0 10.294 17.004"><path id="Caminho_33" data-name="Caminho 33" d="M29.782,2.5a1.833,1.833,0,0,1,1.271.519,1.8,1.8,0,0,1,0,2.541L25.63,11l5.44,5.44a1.8,1.8,0,1,1-2.541,2.541l-6.71-6.71A1.771,1.771,0,0,1,21.3,11a1.848,1.848,0,0,1,.519-1.271l6.693-6.71A1.865,1.865,0,0,1,29.782,2.5Z" transform="translate(-21.3 -2.5)" fill="#5d2975"/></svg></button>
+			Permitir localização
+		</div>
+		<div class="passo_content">
+			<img src="/environment/externo/assinatura/img/home/passo_3.svg" alt="">
+			<h2>Permita localização automática</h2>
+			<p>Para facilitar o envio da documentação, nós usamos sua localização. Assim, você não precisa enviar o comprovante de endereço. É só deixar ativada a geolocalização do seu celular!</p>
+			<button class="next" ng-click="ctrl.changeSection(4)">Entendi</button>
+		</div>
+	</section>
+	<section class="passo_item passo_4" active="false"> <!-- SELECIONAR TIPO DOCUMENTO -->
+		<div class="passo_header">
+			<button class="voltar" ng-click="ctrl.changeSection(3)"><svg id="noun_Arrow_1920904" xmlns="http://www.w3.org/2000/svg" width="10.294" height="17.004" viewBox="0 0 10.294 17.004"><path id="Caminho_33" data-name="Caminho 33" d="M29.782,2.5a1.833,1.833,0,0,1,1.271.519,1.8,1.8,0,0,1,0,2.541L25.63,11l5.44,5.44a1.8,1.8,0,1,1-2.541,2.541l-6.71-6.71A1.771,1.771,0,0,1,21.3,11a1.848,1.848,0,0,1,.519-1.271l6.693-6.71A1.865,1.865,0,0,1,29.782,2.5Z" transform="translate(-21.3 -2.5)" fill="#5d2975"/></svg></button>
+			Documentação
+		</div>
+		<div class="passo_content">
+			<h2>Que tipo de documento de identificação você quer adicionar?</h2>
+			<div class="document_select">
+				<input type="radio" name="documento" id="documento-1" value="rg" ng-model="ctrl.data.tipo_doc">
+				<label for="documento-1">RG</label>
+				<input type="radio" name="documento" id="documento-2" value="cnh" ng-model="ctrl.data.tipo_doc">
+				<label for="documento-2">CNH</label>
+			</div>
+			<button class="next" ng-click="ctrl.changeSection(5)">Continuar</button>
+		</div>
+	</section>
+	<section class="passo_item passo_5" active="false"> <!-- PRE OBTER DOCUMENTOS -->
+		<div class="passo_header">
+			<button class="voltar" ng-click="ctrl.changeSection(4)"><svg id="noun_Arrow_1920904" xmlns="http://www.w3.org/2000/svg" width="10.294" height="17.004" viewBox="0 0 10.294 17.004"><path id="Caminho_33" data-name="Caminho 33" d="M29.782,2.5a1.833,1.833,0,0,1,1.271.519,1.8,1.8,0,0,1,0,2.541L25.63,11l5.44,5.44a1.8,1.8,0,1,1-2.541,2.541l-6.71-6.71A1.771,1.771,0,0,1,21.3,11a1.848,1.848,0,0,1,.519-1.271l6.693-6.71A1.865,1.865,0,0,1,29.782,2.5Z" transform="translate(-21.3 -2.5)" fill="#5d2975"/></svg></button>
+			Documentação
+		</div>
+		<div class="passo_content">
+			<h2>Confira as dicas para fotografar seus documentos</h2>
+			<div class="requisitos_content">
+				<div class="item">
+					<svg id="check" xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 37 37"><path id="Caminho_116" data-name="Caminho 116" d="M156.089,193.548a2.172,2.172,0,0,1-1.534-.642l-3.265-3.265a2.178,2.178,0,1,1,3.08-3.08l1.839,1.839,6.083-5.213a2.177,2.177,0,0,1,2.829,3.265l-7.618,6.529A2.178,2.178,0,0,1,156.089,193.548Z" transform="translate(-139.765 -169.607)" fill="#16db00"/><path id="Caminho_117" data-name="Caminho 117" d="M18.5,37A18.5,18.5,0,1,1,37,18.5,18.5,18.5,0,0,1,18.5,37Zm0-32.647A14.147,14.147,0,1,0,32.647,18.5,14.147,14.147,0,0,0,18.5,4.353Z" fill="#16db00"/></svg>
+					<p>Seu dedo não pode sair na foto</p>
+				</div>
+				<div class="item">
+					<svg id="check" xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 37 37"><path id="Caminho_116" data-name="Caminho 116" d="M156.089,193.548a2.172,2.172,0,0,1-1.534-.642l-3.265-3.265a2.178,2.178,0,1,1,3.08-3.08l1.839,1.839,6.083-5.213a2.177,2.177,0,0,1,2.829,3.265l-7.618,6.529A2.178,2.178,0,0,1,156.089,193.548Z" transform="translate(-139.765 -169.607)" fill="#16db00"/><path id="Caminho_117" data-name="Caminho 117" d="M18.5,37A18.5,18.5,0,1,1,37,18.5,18.5,18.5,0,0,1,18.5,37Zm0-32.647A14.147,14.147,0,1,0,32.647,18.5,14.147,14.147,0,0,0,18.5,4.353Z" fill="#16db00"/></svg>
+					<p>Centralize o documento</p>
+				</div>
+				<div class="item">
+					<svg id="check" xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 37 37"><path id="Caminho_116" data-name="Caminho 116" d="M156.089,193.548a2.172,2.172,0,0,1-1.534-.642l-3.265-3.265a2.178,2.178,0,1,1,3.08-3.08l1.839,1.839,6.083-5.213a2.177,2.177,0,0,1,2.829,3.265l-7.618,6.529A2.178,2.178,0,0,1,156.089,193.548Z" transform="translate(-139.765 -169.607)" fill="#16db00"/><path id="Caminho_117" data-name="Caminho 117" d="M18.5,37A18.5,18.5,0,1,1,37,18.5,18.5,18.5,0,0,1,18.5,37Zm0-32.647A14.147,14.147,0,1,0,32.647,18.5,14.147,14.147,0,0,0,18.5,4.353Z" fill="#16db00"/></svg>
+					<p>Cuidado com reflexos</p>
+				</div>
+			</div>
+			<button class="next" ng-click="ctrl.changeSection(6)">Entendi</button>
+		</div>
+	</section>
+	<section class="passo_item passo_6" active="false"> <!-- SELECIONAR FRENTE VERSO DOC -->
+		<div class="passo_header">
+			<button class="voltar" ng-click="ctrl.changeSection(5)"><svg id="noun_Arrow_1920904" xmlns="http://www.w3.org/2000/svg" width="10.294" height="17.004" viewBox="0 0 10.294 17.004"><path id="Caminho_33" data-name="Caminho 33" d="M29.782,2.5a1.833,1.833,0,0,1,1.271.519,1.8,1.8,0,0,1,0,2.541L25.63,11l5.44,5.44a1.8,1.8,0,1,1-2.541,2.541l-6.71-6.71A1.771,1.771,0,0,1,21.3,11a1.848,1.848,0,0,1,.519-1.271l6.693-6.71A1.865,1.865,0,0,1,29.782,2.5Z" transform="translate(-21.3 -2.5)" fill="#5d2975"/></svg></button>
+			Documentação
+		</div>
+		<div class="passo_content">
+			<h2>Tudo pronto?</h2>
+			<p ng-if="ctrl.data.tipo_doc == 'cnh'">Retire sua CNH do plástico de proteção e tire uma foto nítida de cada um dos lados do documento.</p>
+			<p ng-if="ctrl.data.tipo_doc == 'rg'">Tire uma foto nítida de cada um dos lados do documento.</p>
+			<div class="document_content">
+				<div class="item item_1" active="{{ctrl.data.frente_doc ? 'true' : 'false'}}" ng-click="ctrl.obterFotoFrente('frente_doc', 6)">
+					<img ng-if="ctrl.data.tipo_doc == 'cnh'" src="/environment/externo/assinatura/img/home/documento.png" alt="">
+					<img ng-if="ctrl.data.tipo_doc == 'rg'" src="/environment/externo/assinatura/img/home/rg.jpg" alt="">
+					Foto da frente
+					<svg id="icon_1" xmlns="http://www.w3.org/2000/svg" width="5.39" height="8.904" viewBox="0 0 5.39 8.904"><g id="noun_Arrow_1920904" transform="translate(5.39 8.904) rotate(180)"><path id="Caminho_33" data-name="Caminho 33" d="M25.742,2.5a.96.96,0,0,1,.665.272.945.945,0,0,1,0,1.331L23.568,6.951,26.416,9.8a.941.941,0,0,1-1.331,1.331L21.572,7.616a.927.927,0,0,1-.272-.665.968.968,0,0,1,.272-.665l3.5-3.514A.977.977,0,0,1,25.742,2.5Z" transform="translate(-21.3 -2.5)"/></g></svg>
+					<svg id="icon_2" xmlns="http://www.w3.org/2000/svg" width="23.478" height="23.478" viewBox="0 0 23.478 23.478"><path id="Caminho_54" data-name="Caminho 54" d="M154.1,189.626a1.378,1.378,0,0,1-.974-.407l-2.072-2.072a1.382,1.382,0,0,1,1.954-1.954l1.167,1.167,3.86-3.308a1.381,1.381,0,0,1,1.8,2.072L155,189.267A1.382,1.382,0,0,1,154.1,189.626Z" transform="translate(-143.744 -174.435)" fill="#00b72b"/><path id="Caminho_55" data-name="Caminho 55" d="M11.739,23.478A11.739,11.739,0,1,1,23.478,11.739,11.739,11.739,0,0,1,11.739,23.478Zm0-20.715a8.977,8.977,0,1,0,8.977,8.977A8.976,8.976,0,0,0,11.739,2.762Z" fill="#00b72b"/></svg>
+				</div>
+				<div class="item item_2" active="{{ctrl.data.atras_doc ? 'true' : 'false'}}" ng-click="ctrl.obterFotoFrente('atras_doc', 6)">
+					<img ng-if="ctrl.data.tipo_doc == 'cnh'" src="/environment/externo/assinatura/img/home/documento.png" alt="">
+					<img ng-if="ctrl.data.tipo_doc == 'rg'" src="/environment/externo/assinatura/img/home/rg.jpg" alt="">
+					Foto do verso
+					<svg id="icon_1" xmlns="http://www.w3.org/2000/svg" width="5.39" height="8.904" viewBox="0 0 5.39 8.904"><g id="noun_Arrow_1920904" transform="translate(5.39 8.904) rotate(180)"><path id="Caminho_33" data-name="Caminho 33" d="M25.742,2.5a.96.96,0,0,1,.665.272.945.945,0,0,1,0,1.331L23.568,6.951,26.416,9.8a.941.941,0,0,1-1.331,1.331L21.572,7.616a.927.927,0,0,1-.272-.665.968.968,0,0,1,.272-.665l3.5-3.514A.977.977,0,0,1,25.742,2.5Z" transform="translate(-21.3 -2.5)"/></g></svg>
+					<svg id="icon_2" xmlns="http://www.w3.org/2000/svg" width="23.478" height="23.478" viewBox="0 0 23.478 23.478"><path id="Caminho_54" data-name="Caminho 54" d="M154.1,189.626a1.378,1.378,0,0,1-.974-.407l-2.072-2.072a1.382,1.382,0,0,1,1.954-1.954l1.167,1.167,3.86-3.308a1.381,1.381,0,0,1,1.8,2.072L155,189.267A1.382,1.382,0,0,1,154.1,189.626Z" transform="translate(-143.744 -174.435)" fill="#00b72b"/><path id="Caminho_55" data-name="Caminho 55" d="M11.739,23.478A11.739,11.739,0,1,1,23.478,11.739,11.739,11.739,0,0,1,11.739,23.478Zm0-20.715a8.977,8.977,0,1,0,8.977,8.977A8.976,8.976,0,0,0,11.739,2.762Z" fill="#00b72b"/></svg>
+				</div>
+			</div>
+			<button class="next" ng-click="ctrl.changeSection(7)">Continuar</button>
+		</div>
+	</section>
+	<section class="passo_item passo_7" active="false"> <!-- PRE ASSINATURA DIGITAL -->
+		<div class="passo_header">
+			<button class="voltar" ng-click="ctrl.changeSection(6)"><svg id="noun_Arrow_1920904" xmlns="http://www.w3.org/2000/svg" width="10.294" height="17.004" viewBox="0 0 10.294 17.004"><path id="Caminho_33" data-name="Caminho 33" d="M29.782,2.5a1.833,1.833,0,0,1,1.271.519,1.8,1.8,0,0,1,0,2.541L25.63,11l5.44,5.44a1.8,1.8,0,1,1-2.541,2.541l-6.71-6.71A1.771,1.771,0,0,1,21.3,11a1.848,1.848,0,0,1,.519-1.271l6.693-6.71A1.865,1.865,0,0,1,29.782,2.5Z" transform="translate(-21.3 -2.5)" fill="#5d2975"/></svg></button>
+		</div>
+		<div class="passo_content">
+			<h2>Precisamos agora que você faça uma assinatura digital.</h2>
+			<p>É bem simples, faça sua assinatura igual a do seu documento.</p>
+			<div class="requisitos_content">
+				<div class="item">
+					<svg id="check" xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 37 37"><path id="Caminho_116" data-name="Caminho 116" d="M156.089,193.548a2.172,2.172,0,0,1-1.534-.642l-3.265-3.265a2.178,2.178,0,1,1,3.08-3.08l1.839,1.839,6.083-5.213a2.177,2.177,0,0,1,2.829,3.265l-7.618,6.529A2.178,2.178,0,0,1,156.089,193.548Z" transform="translate(-139.765 -169.607)" fill="#16db00"/><path id="Caminho_117" data-name="Caminho 117" d="M18.5,37A18.5,18.5,0,1,1,37,18.5,18.5,18.5,0,0,1,18.5,37Zm0-32.647A14.147,14.147,0,1,0,32.647,18.5,14.147,14.147,0,0,0,18.5,4.353Z" fill="#16db00"/></svg>
+					<p>Deverá usar em um dispositivo com tela touch para realizar a assinatura.</p>
+				</div>
+				<div class="item">
+					<svg id="check" xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 37 37"><path id="Caminho_116" data-name="Caminho 116" d="M156.089,193.548a2.172,2.172,0,0,1-1.534-.642l-3.265-3.265a2.178,2.178,0,1,1,3.08-3.08l1.839,1.839,6.083-5.213a2.177,2.177,0,0,1,2.829,3.265l-7.618,6.529A2.178,2.178,0,0,1,156.089,193.548Z" transform="translate(-139.765 -169.607)" fill="#16db00"/><path id="Caminho_117" data-name="Caminho 117" d="M18.5,37A18.5,18.5,0,1,1,37,18.5,18.5,18.5,0,0,1,18.5,37Zm0-32.647A14.147,14.147,0,1,0,32.647,18.5,14.147,14.147,0,0,0,18.5,4.353Z" fill="#16db00"/></svg>
+					<p>Assinatura pode ser assinado com o dedo ou caneta touch.</p>
+				</div>
+			</div>
+			<button class="next" ng-click="ctrl.changeSection(8)">Entendi</button>
+		</div>
+	</section>
+	<section class="passo_item passo_8 assinatura" active="false" widescreen="false"> <!-- CANVAS ASSINATURA DIGITAL -->
+		<button class="voltar" ng-click="ctrl.changeSection(7)"><svg id="noun_Arrow_1920904" xmlns="http://www.w3.org/2000/svg" width="10.294" height="17.004" viewBox="0 0 10.294 17.004"><path id="Caminho_33" data-name="Caminho 33" d="M29.782,2.5a1.833,1.833,0,0,1,1.271.519,1.8,1.8,0,0,1,0,2.541L25.63,11l5.44,5.44a1.8,1.8,0,1,1-2.541,2.541l-6.71-6.71A1.771,1.771,0,0,1,21.3,11a1.848,1.848,0,0,1,.519-1.271l6.693-6.71A1.865,1.865,0,0,1,29.782,2.5Z" transform="translate(-21.3 -2.5)" fill="#5d2975"/></svg></button>
+		<div class="content"></div>
+		<canvas ></canvas>
+		<button ng-click="ctrl.limparCanvas()" class="limpar">LIMPAR</button>
+		<button ng-click="ctrl.desfazerCanvas()" class="desfazer"><img class="svg" src="/environment/externo/assinatura/img/home/undo.svg"></button>
+		<button class="next salvar" ng-click="ctrl.changeSection(9)">SALVAR</button>
+	</section>
+	<section class="passo_item passo_9" active="false"> <!-- PRE SELFIE -->
+		<div class="passo_header">
+			<button class="voltar" ng-click="ctrl.changeSection(8)"><svg id="noun_Arrow_1920904" xmlns="http://www.w3.org/2000/svg" width="10.294" height="17.004" viewBox="0 0 10.294 17.004"><path id="Caminho_33" data-name="Caminho 33" d="M29.782,2.5a1.833,1.833,0,0,1,1.271.519,1.8,1.8,0,0,1,0,2.541L25.63,11l5.44,5.44a1.8,1.8,0,1,1-2.541,2.541l-6.71-6.71A1.771,1.771,0,0,1,21.3,11a1.848,1.848,0,0,1,.519-1.271l6.693-6.71A1.865,1.865,0,0,1,29.782,2.5Z" transform="translate(-21.3 -2.5)" fill="#5d2975"/></svg></button>
+		</div>
+		<div class="passo_content">
+			<h2>Hora da selfie</h2>
+			<p>Não precisa se preocupar em tirar uma foto perfeita, mas aqui vai algumas dicas pra você sair bem na foto.</p>
+			<div class="requisitos_content">
+				<div class="item">
+					<svg id="check" xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 37 37"><path id="Caminho_116" data-name="Caminho 116" d="M156.089,193.548a2.172,2.172,0,0,1-1.534-.642l-3.265-3.265a2.178,2.178,0,1,1,3.08-3.08l1.839,1.839,6.083-5.213a2.177,2.177,0,0,1,2.829,3.265l-7.618,6.529A2.178,2.178,0,0,1,156.089,193.548Z" transform="translate(-139.765 -169.607)" fill="#16db00"/><path id="Caminho_117" data-name="Caminho 117" d="M18.5,37A18.5,18.5,0,1,1,37,18.5,18.5,18.5,0,0,1,18.5,37Zm0-32.647A14.147,14.147,0,1,0,32.647,18.5,14.147,14.147,0,0,0,18.5,4.353Z" fill="#16db00"/></svg>
+					<p>Não use acessórios como: boné. óculos e afins</p>
+				</div>
+				<div class="item">
+					<svg id="check" xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 37 37"><path id="Caminho_116" data-name="Caminho 116" d="M156.089,193.548a2.172,2.172,0,0,1-1.534-.642l-3.265-3.265a2.178,2.178,0,1,1,3.08-3.08l1.839,1.839,6.083-5.213a2.177,2.177,0,0,1,2.829,3.265l-7.618,6.529A2.178,2.178,0,0,1,156.089,193.548Z" transform="translate(-139.765 -169.607)" fill="#16db00"/><path id="Caminho_117" data-name="Caminho 117" d="M18.5,37A18.5,18.5,0,1,1,37,18.5,18.5,18.5,0,0,1,18.5,37Zm0-32.647A14.147,14.147,0,1,0,32.647,18.5,14.147,14.147,0,0,0,18.5,4.353Z" fill="#16db00"/></svg>
+					<p>Centralize seu rosto na tela do seu celular</p>
+				</div>
+				<div class="item">
+					<svg id="check" xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 37 37"><path id="Caminho_116" data-name="Caminho 116" d="M156.089,193.548a2.172,2.172,0,0,1-1.534-.642l-3.265-3.265a2.178,2.178,0,1,1,3.08-3.08l1.839,1.839,6.083-5.213a2.177,2.177,0,0,1,2.829,3.265l-7.618,6.529A2.178,2.178,0,0,1,156.089,193.548Z" transform="translate(-139.765 -169.607)" fill="#16db00"/><path id="Caminho_117" data-name="Caminho 117" d="M18.5,37A18.5,18.5,0,1,1,37,18.5,18.5,18.5,0,0,1,18.5,37Zm0-32.647A14.147,14.147,0,1,0,32.647,18.5,14.147,14.147,0,0,0,18.5,4.353Z" fill="#16db00"/></svg>
+					<p>Cuidado com reflexos</p>
+				</div>
+			</div>
+			<button class="next" ng-click="ctrl.obterFotoFrente('selfie', 10)">Entendi</button>
+		</div>
+	</section>
+	<?php elseif((bool)$assinatura['apenas_assinatura']) : ?>
+	<section class="passo_item passo_1" active="true"> <!-- HOME -->
+		<div class="passo_content">
+			<img class="logo" src="/api/sistema/logo" alt="">
+			<img class="passo" src="/environment/externo/assinatura/img/home/passo_1.svg" alt="">
+			<h1>Termo de filiação</h1>
+			<p>Olá <b><?= $this->pet['nome'] ?></b>, aqui é o(a) <?= $this->pet['indicador_nome'] ?>, consultor do <?= $this->empresa['nome'] ?>, esse é o seu link para visualização do termo de filiação.</p>
+			<?php if(!(bool)$termo['assinatura']) : ?>
+			<button class="next" ng-click="ctrl.changeSectionAss(8)">Assinar</button>
+			<?php endif ?>
+			<a href="<?= $this->root_path ?>proposta/visualizar/<?= $this->pet['hash'] ?>" class="next" >Ver termo de filiação</a>
+		</div>
+	</section>
+	<section class="passo_item passo_8 assinatura" active="false" widescreen="false"> <!-- CANVAS ASSINATURA DIGITAL -->
+		<button class="voltar" ng-click="ctrl.changeSectionAss(1)"><svg id="noun_Arrow_1920904" xmlns="http://www.w3.org/2000/svg" width="10.294" height="17.004" viewBox="0 0 10.294 17.004"><path id="Caminho_33" data-name="Caminho 33" d="M29.782,2.5a1.833,1.833,0,0,1,1.271.519,1.8,1.8,0,0,1,0,2.541L25.63,11l5.44,5.44a1.8,1.8,0,1,1-2.541,2.541l-6.71-6.71A1.771,1.771,0,0,1,21.3,11a1.848,1.848,0,0,1,.519-1.271l6.693-6.71A1.865,1.865,0,0,1,29.782,2.5Z" transform="translate(-21.3 -2.5)" fill="#5d2975"/></svg></button>
+		<div class="content"></div>
+		<canvas ></canvas>
+		<button ng-click="ctrl.limparCanvas()" class="limpar">LIMPAR</button>
+		<button ng-click="ctrl.desfazerCanvas()" class="desfazer"><img class="svg" src="/environment/externo/assinatura/img/home/undo.svg"></button>
+		<button class="next salvar" ng-click="ctrl.changeSectionAss(10)">SALVAR</button>
+	</section>
+	<?php endif ?>
+	<section class="passo_item passo_10 passo_final" active="false"> <!-- TELA FINAL -->
+		<div class="passo_content">
+			<h2>Tudo certo!</h2>
+			<p>Seus documentos foram para análise.<br>Aguarde seu consultor, ele entrará em contato em breve.</p>
+			<img src="/environment/externo/assinatura/img/home/final.svg" alt="">
+			<a href="<?= $this->root_path ?>proposta/visualizar/<?= $this->pet['hash'] ?>" class="next">Visualizar proposta</a>
+		</div>
+	</section>
+	<section class="passo_item revisar_foto" active="false">
+		<div class="passo_header">
+			<button class="voltar" ng-click="ctrl.changeSection((ctrl.fotoProp == 'selfie' ? 9 : 6))"><svg id="noun_Arrow_1920904" xmlns="http://www.w3.org/2000/svg" width="10.294" height="17.004" viewBox="0 0 10.294 17.004"><path id="Caminho_33" data-name="Caminho 33" d="M29.782,2.5a1.833,1.833,0,0,1,1.271.519,1.8,1.8,0,0,1,0,2.541L25.63,11l5.44,5.44a1.8,1.8,0,1,1-2.541,2.541l-6.71-6.71A1.771,1.771,0,0,1,21.3,11a1.848,1.848,0,0,1,.519-1.271l6.693-6.71A1.865,1.865,0,0,1,29.782,2.5Z" transform="translate(-21.3 -2.5)" fill="#5d2975"/></svg></button>
+			{{ctrl.fotoProp == 'selfie' ? 'Selfie' : 'Documentação'}}
+		</div>
+		<div class="passo_content">
+			<img src="/environment/externo/assinatura/img/home/foto.png" alt="">
+			<h3>Revisar a foto</h3>
+			<p>A foto está nítida e bem iluminada?<br>Lembre-se que não pode ter reflexo</p>
+			<div class="buttons">
+				<button class="outra_foto" ng-click="ctrl.obterFotoFrente(ctrl.fotoProp, ctrl.fotoPasso)">Tirar outra</button>
+				<button class="next" ng-click="ctrl.changeSection(ctrl.fotoPasso)">Continuar</button>
+			</div>
+		</div>
+	</section>
+	<script src="/environment/externo/assinatura/js/jquery-2.2.4.min.js"></script>
+	<script src="/environment/externo/assinatura/plugins/mask/jquery.mask.min.js"></script>
+	<script src="/environment/externo/assinatura/plugins/slick/slick.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/environment/externo/assinatura/plugins/notify/jquery.gritter.js"></script>
+	<script src="//rawcdn.githack.com/CarlosBonetti/jquery-loading/v1.3.0/dist/jquery.loading.js"></script>
+	<link href="//rawcdn.githack.com/CarlosBonetti/jquery-loading/v1.3.0/dist/jquery.loading.css" type="text/css" rel="stylesheet" />
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+	<script src="/main/templates/supradmin/js/novaServices.js"></script>
+	<script src="https://cdn.ravenjs.com/3.26.4/angular/raven.min.js" crossorigin="anonymous"></script>
+	<?php if((bool)getenv('DB_PWD')) : ?>
+	<script>Raven.config('https://6a3a08e3b3714fefae36ffcfc79aee6f@o60231.ingest.sentry.io/5304641').install();</script>
+	<?php else : ?>
+	<script>Raven.config('https://1@1.ingest.sentry.io/').install();</script>
+	<?php endif ?>
+	<script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+	<script src="/environment/externo/assinatura/js/scripts.js?dt=20201104"></script>
+</body>
+</html>

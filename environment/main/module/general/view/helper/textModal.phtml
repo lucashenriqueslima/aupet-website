@@ -1,0 +1,54 @@
+<div class="text">
+    <div class="box_input">
+        <div class="col-lg-6 col-lg-offset-2">
+            <div class="input-group col-lg-12">
+                <input class="form-control inputs_add_rm" name="" type="text" value="" >
+            </div>
+        </div>
+        <div class="col-lg-1"><span class="icomoon-icon-plus-circle btn btn-md btn-default input_add"/></span></div>
+        <div class="col-lg-1"><span class="icomoon-icon-minus-circle btn btn-md btn-default input_remove"/></span></div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('body').on('click', '#texts .input_add', function (e) {
+            e.preventDefault();
+
+            var $base = $(this).parents('.box_input');
+
+            var last_idx = 0;
+
+            $("#texts .box_input").find("input").each(function () {
+                last_idx++;
+            });
+
+            var $template = $("#templates .text").clone();
+
+            var $input_text = $template.find("input[type=text]");
+            $input_text.attr("name", "text[" + last_idx + "]");
+
+            $base.after($template.html());
+
+            uniform();
+
+        });
+
+        $('body').on('click', '#texts .input_remove', function (e) {
+            e.preventDefault();
+            var $input = $(this).parents('#texts .box_input:first');
+            var $inputs = $("#texts .box_input");
+
+            if ($inputs.length > 1)
+                $input.remove();
+            else
+                $input.find('input').val('');
+
+            if ($(document).find('#texts .box_input:first').find('.col-lg-6.col-lg-offset-2').length == 1)
+                $(document).find('#texts .box_input:first').find('.col-lg-6').removeClass('col-lg-offset-2');
+
+            if ($inputs.length == 1)
+                $(document).find('#texts').find('.box_input .col-lg-6.col-lg-offset-2').removeClass('col-lg-offset-2');
+
+        });
+    });
+</script>

@@ -1,0 +1,120 @@
+<?php
+ $data = $this->DB_fetch_array("SELECT * FROM hbrd_adm_company where id = 1")->rows[0]['logo'];
+ $base64 = $data;
+?>
+<html>
+<head>
+	<style>
+		table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+		td, th {
+			border: 1px solid #dddddd;
+			text-align: center;
+			padding: 3px;
+		}
+		tr:nth-child(even) {
+			background-color: #dddddd;
+		}
+		table * {
+			vertical-align: middle;
+		}
+		.footer-table td {
+			font-weight: bold;
+		}
+		.main div img {
+			float: left;
+		}
+		.blue th,
+		.blue td {
+			background: #0f243f;
+			color: white;
+			height: 30px;
+		}
+		.main div {
+			padding: 20px;
+		}
+		.linhas td {
+			height: 20px;
+		}
+		.logo {
+			margin-right: 10px;
+		}
+		.equipe th,
+		.equipe td {
+			background: #2d5484;
+			color: white;
+			height: 30px;
+		}
+	</style>
+</head>
+<body>
+	<div class='main'>
+		<div>
+			<img class="logo" src="<?= $base64 ?>" alt="Página Inicial" />
+			<h2>Relatório de ativações por regionais com equipes <?= " de ".$_GET['datade']; ?><?= " até ".$_GET['dataate']; ?></h2>
+			<i>Emitido em <b><?= date("d/m/Y H:i:s"); ?></b> por <b><?= $_SESSION["admin_nome"]; ?></b>.</i>
+		</div>
+		<?php $meta = $ativadas = $diferenca = 0; ?>
+		<?php foreach ($this->dados as $item) : ?>
+		<table>
+			<?php
+				$meta = $meta + (int)$item['meta'];
+				$ativadas = $ativadas + (int)$item['ativadas'];
+				$diferenca = $diferenca + (int)$item['diferenca'];
+			?>
+			<tr class='blue'>
+				<th style='width: 40%;'>Regional</th>
+				<th style='width: 20%;'>Meta</th>
+				<th style='width: 20%;'>Ativadas</th>
+				<th style='width: 20%;'>Diferença</th>
+			</tr>
+			<tr class='linhas'>
+				<td><?= $item["regional"]; ?></td>
+				<td><?= $item["meta"]; ?></td>
+				<td><?= $item["ativadas"]; ?></td>
+				<td><?= $item['diferenca']; ?></td>
+			</tr>
+			<tr class='equipe'>
+				<th style='width: 40%;'>Equipe</th>
+				<th style='width: 20%;'>Meta</th>
+				<th style='width: 20%;'>Ativadas</th>
+				<th style='width: 20%;'>Diferença</th>
+			</tr>
+			<?php $eq_meta = $eq_ativadas = $eq_diferenca = 0; ?>
+			<?php foreach ($item['equipes'] as $equipe) : ?>
+			<?php
+				$eq_meta = $eq_meta + (int)$equipe['meta'];
+				$eq_ativadas = $eq_ativadas + (int)$equipe['ativadas'];
+				$eq_diferenca = $eq_diferenca + (int)($equipe['ativadas'] - $equipe['meta']);
+			?>
+			<tr class='linhas'>
+				<td><?= $equipe['equipe'] ?></td>
+				<td><?= $equipe['meta'] ?></td>
+				<td><?= $equipe['ativadas'] ?></td>
+				<td><?= $equipe['ativadas'] - $equipe['meta'] ?></td>
+			</tr>
+			<?php endforeach ?>
+			<tr class='footer-table equipe'>
+				<td></td>
+				<td><?= $eq_meta ?></td>
+				<td><?= $eq_ativadas ?></td>
+				<td><?= $eq_diferenca ?></td>
+			</tr>
+		</table>
+		<br>
+		<?php endforeach ?>
+		<br><br>
+		<table>
+			<tr class='footer-table blue'>
+				<th style='width: 40%;'></th>
+				<th style='width: 20%;'><?= $meta; ?></th>
+				<th style='width: 20%;'><?= $ativadas; ?></th>
+				<th style='width: 20%;'><?= $diferenca; ?></th>
+			</tr>
+		</table>
+	</div>
+	<i>Gerenciado por <b><?= $this->root_path ?></b></i>
+</body>
+</html>

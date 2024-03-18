@@ -1,0 +1,7 @@
+<div class="alert alert-default">Todas as unidades cadastradas serão vinculadas ao usuário master</div>
+<?php if ($this->unidades->num_rows) : ?>
+    <?php foreach ($this->unidades->rows as $unidade) : ?>
+    	<div class=" custom-info" style="text-align:left"><?php echo $unidade['nome']; ?></div>
+    	<input type="hidden" name="empresas[]" value="<?php echo $unidade['id'] ?>">
+    <?php endforeach; ?>
+<?php endif; ?>

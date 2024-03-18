@@ -1,0 +1,273 @@
+<?php
+    require_once $this->main_layouts . "headers.phtml";
+?>
+
+    <script type="text/javascript">
+        var pagina = "<?php echo $this->getPath(); ?>";
+        var permissao = "<?php echo $this->permissao_ref; ?>";
+        var controller = "<?php echo $this->getPath(); ?>/save";
+        var retorno = "<?php echo $this->retorno; ?>";
+    </script>
+    
+    </head>  
+    
+    
+    <body>
+<?php require_once $this->main_layouts . "header.phtml"; ?>
+
+        <!-- / #header -->
+        <div id="wrapper">
+        <!-- #wrapper -->
+
+<?php require_once $this->main_layouts . "sidebar.phtml"; ?>
+            
+            <!--Body content-->
+            <div id="content" class="page-content clearfix">
+                <div class="contentwrapper">
+                    <!--Content wrapper-->
+                    <div class="heading">
+                        <!--  .heading-->
+                        <h3><?php echo $this->module_title; ?></h3>
+
+                        <ul class="breadcrumb">
+                            <li>Você está aqui:</li>
+                            <li>
+                                <a href="#" class="tip" title="Painel">
+                                    <i class="s16 icomoon-icon-screen-2"></i>
+                                </a>
+                                <span class="divider">
+                                    <i class="s16 icomoon-icon-arrow-right-3"></i>
+                                </span>
+                            </li>
+                            <li>
+                                <a class="tip" title="<?php echo $this->module_title; ?>" href="<?php echo $this->getPath();?>">
+                                    <i class="s16 <?php echo $this->module_icon; ?>"></i>                                    
+                                </a>
+                            </li>
+                            <span class="divider">
+                                <i class="s16 icomoon-icon-arrow-right-3"></i>
+                            </span>
+                            <li class="active">Registro</li>
+                        </ul>
+                    </div>
+                    <!-- End  / heading-->
+                    <!-- Start .row -->
+                    
+                    <form name="main" enctype="multipart/form-data" method="post" class="form-horizontal group-border">
+                        <input type="hidden" name="id" value="<?php echo $this->id; ?>" />
+                        <input type="hidden" name="retorno" value="<?php echo $this->retorno; ?>">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <!-- Start .panel -->
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Dados do Grupo</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="nome">Nome</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="nome" id="nome" type="text" value="<?php echo $this->registro['nome'] ?>" />
+                                            </div><!-- End .form-group  -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <!-- Start .panel -->
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Permissões de Serviço</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group" id="servicos">
+                                            <label class="col-lg-2 control-label" for="">Serviços:</label>
+                                            <div class="col-lg-10">
+                                                <div class="leftBox" style="margin:0;">
+                                                    <div class="searchBox">
+                                                        <input type="text" id="box7Filter" class="searchField form-control" style="margin:0;" placeholder="filtrar ..."/>
+                                                        <button id="box7Clear" type="button" class="btn">
+                                                            <span class="s14  entypo-icon-close "></span>
+                                                        </button>
+                                                    </div>
+                                                    <select id="box7View" multiple="multiple" class="multiple nostyle form-control" style="height:300px;">
+                                                        <?php if ($this->servicos->num_rows): ?>
+                                                            <?php foreach ($this->servicos->rows as $servico): ?>
+                                                                <?php if ($servico['id_servico'] == "") : ?>
+                                                                    <option value="<?php echo $servico['id'] ?>"><?php echo $servico['nome'] ?></option>
+                                                                <?php endif ?>
+                                                            <?php endforeach ?>
+                                                        <?php endif ?>
+                                                    </select>
+                                                    <br>
+                                                    <span>Serviços <span class="label-warning" style="padding:0 2px;">não relacionados</span> a este usuário</span>
+                                                    <br>
+                                                    <span id="box7Counter" class="count"></span>
+                                                    <div class="dn"><select id="box7Storage" name="box7Storage" class="nostyle"></select></div>
+                                                </div>
+
+
+                                                <div class="dualBtn">
+
+                                                    <button id="to8" type="button" class="btn" ><span class="icon12 minia-icon-arrow-right-3"></span></button>
+                                                    <button id="allTo8" type="button" class="btn" ><span class="icon12 iconic-icon-last"></span></button>
+                                                    <button id="to7" type="button" class="btn marginT5"><span class="icon12 minia-icon-arrow-left-3"></span></button>
+                                                    <button id="allTo7" type="button" class="btn marginT5" ><span class="icon12 iconic-icon-first"></span></button>
+
+                                                </div>
+
+                                                <div class="rightBox" style="margin:0;">
+                                                    <div class="searchBox">
+                                                        <input type="text" id="box8Filter" class="searchField form-control" style="margin:0;" placeholder="filtrar ..." />
+                                                        <button id="box8Clear"  type="button" class="btn" >
+                                                            <span class="s14  entypo-icon-close "></span>
+                                                        </button>
+                                                    </div>
+                                                    <select id="box8View" multiple="multiple" name="servicos[]" class="multiple nostyle form-control" style="height:300px;">
+                                                        <?php if ($this->servicos->num_rows): ?>
+                                                            <?php foreach ($this->servicos->rows as $servico): ?>
+                                                                <?php if ($servico['id_servico'] != "") : ?>
+                                                                    <option value="<?php echo $servico['id'] ?>"><?php echo $servico['nome'] ?></option>
+                                                                <?php endif ?>
+                                                            <?php endforeach ?>
+                                                        <?php endif ?>
+                                                    </select>
+                                                    <br>
+                                                    <span>Serviços <span class="label-success white" style="padding:0 2px;">relacionados</span> a este usuário</span>
+                                                    <br>
+                                                    <span id="box8Counter" class="count"></span>
+                                                    <div class="dn"><select id="box8Storage" class="nostyle"></select></div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <!-- Start .panel -->
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Permissões do Gerenciador                                        
+                                        </h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <div class="col-lg-12">
+                                                <table class=" table table-striped table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="tal">Função</th>
+                                                            <th>                                                                
+                                                                <input type="checkbox" id="ler_todas">
+                                                                <label class="checkbox-inline" for="ler_todas"><b>Ler</b></label>
+                                                            </th>
+                                                            <th>
+                                                                <input type="checkbox" id="gravar_todas">
+                                                                <label class="checkbox-inline" for="gravar_todas"><b>Gravar</b></label>
+                                                            </th>
+                                                            <th>
+                                                                <input type="checkbox" id="editar_todas">
+                                                                <label class="checkbox-inline" for="editar_todas"><b>Editar</b></label>
+                                                            </th>
+                                                            <th>
+                                                                <input type="checkbox" id="excluir_todas">
+                                                                <label class="checkbox-inline" for="excluir_todas"><b>Excluir</b></label>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php if ($this->funcoes->num_rows): ?>
+                                                            <?php foreach ($this->funcoes->rows as $funcao): ?>
+                                                                <tr>
+                                                                    <td class="tal"><label class="pointer"><input type="checkbox" class="esta_funcao"><span class="esta_funcao_txt"><?php echo $funcao['nome'] ?></span></label></td>
+                                                                    <th>
+                                                                        <label class="checkbox-inline">
+                                                                            <input type="checkbox" name="ler[]" class="leitura" value="<?php echo $funcao['id'] ?>" <?php if($this->id!=""){ if($funcao['ler']) echo ' checked="checked"'; } ?>>
+                                                                        </label>
+                                                                    </td>
+                                                                    <th>
+                                                                        <label class="checkbox-inline">
+                                                                            <input type="checkbox" name="gravar[]" class="gravacao" value="<?php echo $funcao['id'] ?>" <?php if($this->id!=""){ if($funcao['gravar']) echo ' checked="checked"'; } ?>>
+                                                                        </label>
+                                                                    </td>
+                                                                    <th>
+                                                                        <label class="checkbox-inline">
+                                                                            <input type="checkbox" name="editar[]" class="edicao" value="<?php echo $funcao['id'] ?>" <?php if($this->id!=""){ if($funcao['editar']) echo ' checked="checked"'; } ?>>
+                                                                        </label>
+                                                                    </td>
+                                                                    <th>
+                                                                        <label class="checkbox-inline">
+                                                                            <input type="checkbox" name="excluir[]" class="exclusao" value="<?php echo $funcao['id'] ?>" <?php if($this->id!=""){ if($funcao['excluir']) echo ' checked="checked"'; } ?>>
+                                                                        </label>
+                                                                    </td>
+                                                                </tr>
+                                                            <?php endforeach ?>
+                                                        <?php endif ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <?php if ($this->id==""): ?>
+                                <?php if (!$this->permissions[$this->permissao_ref]['gravar']): ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <span class="label label-warning "><span class="icon24 typ-icon-warning"></span>Você não tem permissão para gravar esta função.</span>
+                                        </div>
+                                    </div><!-- End .form-group  -->   
+                                <?php else: ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <button type="button" class="btn btn-info clickformsubmit">Salvar novo</button>
+                                        </div>
+                                    </div><!-- End .form-group  -->
+                                <?php endif ?>
+                            <?php else: ?>
+                                <?php if (!$this->permissions[$this->permissao_ref]['editar']): ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <span class="label label-warning"><span class="icon24 icomoon-icon-warning "></span>Você não tem permissão para editar esta função.</span>
+                                        </div>
+                                    </div><!-- End .form-group  -->   
+                                <?php else: ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <button type="button" class="btn btn-info clickformsubmit">Salvar alterações</button>
+                                        </div>
+                                    </div><!-- End .form-group  -->
+                                <?php endif ?>
+                            <?php endif ?>
+                        </div><!-- End .row -->  
+                    </form>
+                </div>
+                <!-- End contentwrapper -->
+            </div>
+            <!-- End #content -->
+            
+            
+<?php require_once $this->main_layouts . "footer.phtml"; ?>
+        
+        </div>
+        
+<?php require_once $this->main_layouts . "plugins.phtml"; ?>
+        <script type="text/javascript" src="<?php echo $this->main_template;?>plugins/forms/dualselect/jquery.dualListBox-1.3.min.js"></script>
+        <!-- Init plugins only for page -->
+        <script type="text/javascript">
+            $(document).ready(function(){
+                
+                $.configureBoxes3();
+            });
+        </script>
+    </body>
+</html>

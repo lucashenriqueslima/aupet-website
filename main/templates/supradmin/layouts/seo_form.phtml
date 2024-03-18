@@ -1,0 +1,50 @@
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="panel panel-default toggle">
+                                        <!-- Start .panel -->
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">SEO da Página                                                
+                                            </h4>
+                                        </div>
+                                        <div class="panel-body">
+                                            <p class="col-lg-offset-2 col-lg-10">Opções abaixo não são obrigatórias. O preenchimento dos campos abaixo irá sobrepor os dados padrões cadastrados nas configurações gerais do site, somente para esta página. <br><br></p>
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label" for="seo_title">Título:</label>
+                                                <div class="col-lg-10">
+                                                    <input class="form-control" name="seo_title" id="seo_title" type="text" value="<?php echo $this->seo['seo_title'] ?>" />
+                                                </div>
+                                            </div><!-- End .form-group  -->
+
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label" for="seo_description">Breve Descrição:</label>
+                                                <div class="col-lg-10">
+                                                    <input class="form-control" name="seo_description" id="seo_description" maxlength="255" type="text" value="<?php echo $this->seo['seo_description'] ?>" />
+                                                </div>
+                                            </div><!-- End .form-group  -->
+
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label" for="seo_keywords">Palavras Chave:</label>
+                                                <div class="col-lg-10">
+                                                    <input class="form-control" name="seo_keywords" id="seo_keywords" type="text" value="<?php echo $this->seo['seo_keywords'] ?>" />
+                                                </div>
+                                            </div><!-- End .form-group  -->
+
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label" for="seo_url">URL Amigável:</label>
+                                                <div class="col-lg-10">
+                                                    <input class="form-control" name="seo_url" id="seo_url" type="text" value="<?php echo $this->seo['seo_url'] ?>" />
+                                                </div>
+                                            </div><!-- End .form-group  -->
+                                            
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label" for="seo_scripts">Scripts:</label>
+                                                <div class="col-lg-10">                                                
+                                                    <textarea class="form-control elastic" name="seo_scripts" id="seo_scripts" rows="5"><?php echo stripslashes($this->seo['seo_scripts']) ?></textarea>
+                                                </div>
+                                            </div><!-- End .form-group  -->
+                                            
+                                        </div>
+                                    </div><!-- End .panel -->
+                                </div><!-- End .span12 -->
+                            </div><!-- End .row -->

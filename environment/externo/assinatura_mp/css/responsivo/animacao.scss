@@ -1,0 +1,30 @@
+@keyframes horizontal_animate {
+    0%{
+        transform: translateX(-20px);
+    }
+    50%{
+        transform: translateX(20px);
+    }
+    100%{
+        transform: translateX(-20px);
+    }
+}
+@keyframes vertical_animate {
+    0%{
+        transform: translateY(-20px);
+    }
+    50%{
+        transform: translateY(20px);
+    }
+    100%{
+        transform: translateY(-20px);
+    }
+}
+// animation-name: vertical_animate;
+// animation-duration: 4s;
+// animation-iteration-count: infinite;
+
+
+
+
+

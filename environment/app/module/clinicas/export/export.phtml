@@ -1,0 +1,32 @@
+<table border="1">
+    <tr>
+        <td colspan="6" align="center"><h1><?= "Relatório Clínicas"; ?></h1></td>
+    </tr>
+    <tr>
+        <th align="left" ><?= "Criação"?></th>
+        <th align="left" >Nome</th>
+        <th align="left" >Email - Tel.</th>
+        <th align="left" >Estado</th>
+        <th align="left" >Cidade</th>
+        <th align="left" >Especialidades</th>
+    </tr>
+    <?php
+    if ($this->dados->num_rows) {
+        foreach ($this->dados->rows as $registro) { ?>
+            <tr>
+                <td align="left"><?= $registro ['criado_em_dt']?></td>
+                <td align="left"><?= $registro["nome"]; ?></td>
+                <td align="left"><?= $registro["email"].' - '. $registro["telefone"] ; ?></td>
+                <td align="left"><?= $registro["estado"] ; ?></td>
+                <td align="left"><?= $registro["cidade"] ; ?></td>
+                <td align="left"><?= $registro["especialidades"] ; ?></td>
+            </tr>
+            <?php
+		}
+    }
+    ?>
+	<tr>
+		<td colspan="5">TOTAL</td>
+		<td align="right"><?= $this->dados->num_rows ?></td>
+	</tr>
+</table>

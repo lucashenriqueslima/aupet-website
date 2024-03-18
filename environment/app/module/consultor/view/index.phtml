@@ -1,0 +1,469 @@
+<?php require_once $this->main_layouts."headers.phtml";?>
+    <link href="<?= $this->main_template ?>plugins/tables/dataTables/jquery.dataTables.css" type="text/css" rel="stylesheet" />
+    <link href="<?= $this->main_template ?>plugins/tables/dataTables/TableTools.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript">
+        var pagina = "<?= $this->getPath(); ?>";
+        var permissao = "<?= $this->permissao_ref; ?>";
+        var controller = "<?= $this->getModule(); ?>";
+    </script>
+    </head>  
+    <body ng-app='nova' ng-controller="IndexCtrl as ctrl" style='display:none' ng-init='ctrl.onInit()'>
+	    <?php require_once $this->main_layouts."header.phtml"; ?>
+        <div id="wrapper">
+	        <?php require_once $this->main_layouts."sidebar.phtml"; ?>
+            <div id="content" class="page-content clearfix">
+                <div class="contentwrapper">
+                    <div class="heading">
+                        <h3><?= $this->module_title; ?></h3>
+                        <ul class="breadcrumb">
+                            <li>Você está aqui:</li>
+                            <li> <a href="#" class="tip" title="Painel"> <i class="s16 icomoon-icon-screen-2"></i> </a> <span class="divider"> <i class="s16 icomoon-icon-arrow-right-3"></i> </span> </li>
+                            <li class="active"><?= $this->module_title;?></li>
+                        </ul>
+                    </div>
+                    <?php if((bool)$this->solicitados_consultores) : ?>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default toggle ">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"><i class="<?= $this->module_icon ?>"></i> Solicitações pendentes
+                                    </h4>
+                                </div>
+                                <div class="panel-body">
+                                    <table cellpadding="0" cellspacing="0" border="0" class="tabletools table table-striped table-bordered " width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="tal" >Criação</th>
+                                                <th class="tal" >Nome</th>
+                                                <th class="tal" >CPF</th>
+                                                <th class="tal" >Email</th>
+                                                <th class="tal" >telefone</th>
+                                                <th class="tal" >Equipe</th>
+                                                <th style="max-width: 5px" class="center">Ação</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach($this->solicitados_consultores as $registro): ?>
+                                            <tr id="<?= $registro['id'];?>">
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id']; ?>"><?= $registro['criado_em'];?></a></td>
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id']; ?>"><?= $registro['nome'];?></a></td>
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id']; ?>"><?= $registro['cpf'];?></a></td>
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id']; ?>"><?= $registro['email'];?></a></td>
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id']; ?>"><?= $registro['telefone'];?></a></td>
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id']; ?>"><?= $registro['equipe'];?></a></td>
+                                                <td class="center">
+                                                    <i ng-click="ctrl.aprovarSolicitacao(<?= $registro['id'] ?>)" data-toggle="tooltip" data-original-title="Aprovar solicitação" class="icomoon-icon-checkmark-3"></i>
+                                                    <a data-toggle="tooltip" data-original-title="Editar" href="<?= $this->getPath()?>/edit/id/<?= $registro['id']; ?>"><i class="s12 icomoon-icon-pencil"></i></a>
+                                                    <a data-toggle="tooltip" data-original-title="Excluir solicitação" class="bt_system_delete" data-controller="<?= $this->getPath()?>" data-id="<?= $registro['id']; ?>" href="#"><i class="s12 icomoon-icon-remove"></i></a>
+                                                </td>
+                                            </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endif ?>
+
+                    <?php if((bool)$this->reativar_consultores) : ?>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default toggle ">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"><i class="<?= $this->module_icon ?>"></i> Solicitações de Reativação
+                                    </h4>
+                                </div>
+                                <div class="panel-body">
+                                    <table cellpadding="0" cellspacing="0" border="0" class="tabletools table table-striped table-bordered " width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="tal" >Criação</th>
+                                                <th class="tal" >Nome</th>
+                                                <th class="tal" >CPF</th>
+                                                <th class="tal" >Email</th>
+                                                <th class="tal" >telefone</th>
+                                                <th class="tal" >Equipe</th>
+                                                <th style="max-width: 5px" class="center">Ação</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach($this->reativar_consultores as $registro): ?>
+                                            <tr id="<?= $registro['id'];?>">
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id']; ?>"><?= $registro['criado_em'];?></a></td>
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id']; ?>"><?= $registro['nome'];?></a></td>
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id']; ?>"><?= $registro['cpf'];?></a></td>
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id']; ?>"><?= $registro['email'];?></a></td>
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id']; ?>"><?= $registro['telefone'];?></a></td>
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id']; ?>"><?= $registro['equipe'];?></a></td>
+                                                <td class="center">
+                                                    <i ng-click="ctrl.ativarConsultor(<?= $registro['id'] ?>)" data-toggle="tooltip" data-original-title="Aprovar solicitação" class="icomoon-icon-checkmark-3"></i>
+                                                    <a data-toggle="tooltip" data-original-title="Editar" href="<?= $this->getPath()?>/edit/id/<?= $registro['id']; ?>"><i class="s12 icomoon-icon-pencil"></i></a>
+                                                    <a data-toggle="tooltip" data-original-title="Excluir solicitação" class="bt_system_delete" data-controller="<?= $this->getPath()?>" data-id="<?= $registro['id']; ?>" href="#"><i class="s12 icomoon-icon-remove"></i></a>
+                                                </td>
+                                            </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endif ?>
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6">
+                            <?php if($this->permissions[$this->permissao_ref]['gravar']) :?>
+                                <a href="<?= $this->getPath();?>/edit"><button type="button" class="btn btn-default mr5 mb10"><i class="glyphicon glyphicon-plus mr5"></i> Novo registro</button></a>
+                            <?php endif; ?>
+                        </div>                                                                                                   
+                        <div class="col-md-6 col-xs-6" style=" display: flex; justify-content: flex-end; text-align: right;">
+                            <div class="btn-group dropdown mb10 mr10">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    {{!ctrl.selecionados.length ? 'Relatórios' : 'Relatórios com selecionados'}}
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu right animated fadeIn" role="menu">
+                                    <li class='cursor'><a onclick="openRel('<?= $this->getPath(); ?>/exporttab')"><span class="s14 icomoon-icon-file-excel color-black"></span>Relatório na tela</a></li>
+                                    <!-- <li class='cursor'><a type="button" data-toggle="modal" data-target="#modalRelatorios" ><span class="s14 icomoon-icon-file-pdf color-black" ></span>Relatório de ativação por consultores</a></li> -->
+                                    <li class='cursor'><a onclick="openRel('<?= $this->getPath(); ?>/export')"><span class="s14 icomoon-icon-file-excel color-black"></span>Baixar Relatório em Excel</a></li>
+                                </ul>
+                            </div>
+                            <button type="button" data-toggle="modal" data-target="#modalEquipe" class="btn btn-primary mr5 mb10" ng-if="ctrl.selecionados.length" > Equipe </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default toggle">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"><i class="<?= $this->module_icon ?>"></i> Tabela de Consultores
+                                    </h4>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-md-12 filters" >
+                                        <i class="fa fa-filter"></i>
+                                        <button class='btn-filter'> Criação
+                                            <div class="panel groupfilter" style='display:none'>
+                                                <div class="panel-body" >
+                                                    <form class="form-horizontal" >
+                                                        <div class="form-group">
+                                                            <label class="col-lg-12 control-label" for="">De</label>
+                                                            <div class="col-lg-12">
+                                                                <input class="form-control date datepicker de"  ng-model='ctrl.datade'>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-12 control-label" for="">Até</label>
+                                                            <div class="col-lg-12">
+                                                                <input class="form-control date datepicker ate" ng-model='ctrl.dataate'>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-lg-12">
+                                                                <a ng-click='ctrl.filter()' class="btn btn-default btn-filtrar">Filtrar</a>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </button>
+                                        <button class='btn-filter'> Equipe
+                                            <div class="panel groupfilter" style='display:none'>
+                                                <div class="panel-body" >
+                                                    <form class="form-horizontal" >
+                                                        <div class="col-md-12 form-group box-filter">
+                                                            <?php foreach($this->equipes->rows as $key => $item) : ?>
+                                                                <div class="checkbox-custom" style='text-align: left;'>
+                                                                    <input type="checkbox" id="equipes<?= $key ?>" ng-true-value='"<?= $item['id'] ?>"' ng-false-value="''" ng-model='ctrl.equipes[<?= $item['id'] ?>]'>
+                                                                    <label for="equipes<?= $key ?>" ><?= $item['titulo'] ?></label>
+                                                                </div>
+                                                            <?php endforeach; ?>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-lg-12">
+                                                                <a ng-click='ctrl.filter()' class="btn btn-default btn-filtrar">Filtrar</a>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </button>
+                                        <button class='btn-filter'> Regional
+                                            <div class="panel groupfilter" style='display:none'>
+                                                <div class="panel-body" >
+                                                    <form class="form-horizontal" >
+                                                        <div class="col-md-12 form-group box-filter">
+                                                            <?php foreach($this->regionais as $key => $item) : ?>
+                                                                <div class="checkbox-custom" style='text-align: left;'>
+                                                                    <input type="checkbox" id="regionais<?= $key ?>" ng-true-value='"<?= $item['id'] ?>"' ng-false-value="''" ng-model='ctrl.regionais[<?= $item['id'] ?>]'>
+                                                                    <label for="regionais<?= $key ?>" ><?= $item['titulo'] ?></label>
+                                                                </div>
+                                                            <?php endforeach; ?>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-lg-12">
+                                                                <a ng-click='ctrl.filter()' class="btn btn-default btn-filtrar">Filtrar</a>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </button>
+                                        <i ng-click='ctrl.clearFilter()' class="icomoon-icon-remove-3 btn-filter cursor tip" data-original-title="Limpar Filtros"></i>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <span ng-repeat="row in ctrl.selecionados" class="badge badge-warning mr10 mb10"><span class='badge-label'>{{row.nome}}</span><span ng-click="ctrl.removeSelecionado(row)" class="badge-tag-close cursor">X</span></span>
+                                        <i ng-if="ctrl.selecionados.length" ng-click='ctrl.limparSelecionados()' class="icomoon-icon-remove-3 btn-filter cursor tip" data-original-title="Limpar selecionados"></i>
+                                    </div>
+                                    <table cellpadding="0" cellspacing="0" border="0" class="tabletools-async table table-striped table-bordered" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th width="20px"><input type="checkbox" ng-model="ctrl.selecionar_todos" ng-change="ctrl.changeSelecionartodos()"></th>
+                                                <th class="tal" >Criação</th>
+                                                <th class="tal" >Nome</th>
+                                                <th class="tal" title="Email = Telefone">Email - Tel.</th>
+                                                <th class="tal" >Equipe</th>
+                                                <th class="tal" >Regional</th>
+                                                <th class="tal" title="Pendentes">Pend.</th>
+                                                <th class="tal" title="Arquivadas">Arquiv.</th>
+                                                <th class="tal" title="Ativadas">Ativ.</th>
+                                                <th class="tal" >Total</th>
+                                                <th class="tal" title="Conversão (%)">Conver.<br>(%)</th>
+                                                <th width='5%' class="center">Ação</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tabela_cons">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php require_once $this->main_layouts."options.phtml"; ?>
+                </div>
+            </div>
+            <?php require_once $this->main_layouts."footer.phtml"; ?>
+        </div>
+        <?php require_once $this->main_layouts."plugins.phtml"; ?>
+        <script src="<?= $this->main_template ?>plugins/tables/dataTables/jquery.dataTables.js"></script>
+        <script src="<?= $this->main_template ?>plugins/tables/dataTables/dataTables.tableTools.js"></script>
+        <script src="<?= $this->main_template ?>plugins/tables/dataTables/dataTables.bootstrap.js"></script>
+        <script src="<?= $this->main_template ?>plugins/tables/dataTables/dataTables.responsive.js"></script>
+        <script type="text/javascript">
+            var oTable;
+            $(document).ready(function() {
+
+                oTable = $('.tabletools-async').dataTable({
+                    "bProcessing": true,
+                    "bServerSide": true,
+                    "sAjaxSource": "<?= $this->system_path.$this->getPath();?>/datatable",
+                    "fnServerParams": function ( aoData ) {
+                        getParameter(aoData);
+                    },
+                    "fnServerData": function ( sSource, aoData, fnCallback, oSettings ) {
+                        aoData = queryFilter(aoData);
+                        oSettings.jqXHR = $.ajax({ "dataType": 'json', "type": "POST", "url": sSource, "data": aoData, "success": fnCallback })
+                        .done(function(){
+                            marcarSelecionados();
+                            resetSelecionar();
+                        });
+                    },
+                    "sDom": "<'row'<'col-lg-1'l><'col-lg-11'f>r>t<'row'<'col-lg-6'i><'col-lg-6'p>>",
+                    "sPaginationType": "bootstrap",
+                    "bJQueryUI": false,
+                    "bAutoWidth": false,
+                    "oLanguage": { "sProcessing": "<img src='<?= $this->main_template; ?>images/loaders/horizontal/006.gif'><br>Processando...", "sLengthMenu": "_MENU_", "sZeroRecords": "Não foram encontrados resultados", "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros", "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros", "sInfoFiltered": "", "sInfoPostFix": "", "sSearch": "", "sUrl": "", "oPaginate": { "sFirst": "Primeiro", "sPrevious": "Anterior", "sNext": "Seguinte", "sLast": "Último" } },
+                    "columnDefs": [ 
+                        { "targets": 0, "orderable": false },
+                    ],
+                    "aaSorting": [[<?= $_GET['iSortCol_0'] ?: 1 ?>,"<?= $_GET['sSortDir_0'] ?: 'desc' ?>"]],
+                    "iDisplayLength": <?= $_GET["iDisplayLength"] ?: 10 ?>,
+                    "iDisplayStart": <?= $_GET["iDisplayStart"] ?: 0 ?>
+                });
+                $(".dataTables_filter input").attr('title', "Tecle ENTER Para Pesquisar");
+                $(".dataTables_filter input").unbind();
+                $(".dataTables_filter input").removeClass('input-sm');
+                $(".dataTables_filter input").keyup( function (e) { if (e.keyCode == 13) oTable.fnFilter( this.value); });
+            });
+            var queryStr = '';
+            var querystring = '<?= $_SERVER["QUERY_STRING"]?>';
+            function queryFilter(aoData) {
+                if(querystring === null) {
+                    queryStr = $.param(aoData);
+                    window.history.replaceState(null, '','<?= $this->system_path.$this->getPath();?>/?'+queryStr);
+                } else if(querystring !== '') {
+                    queryStr = querystring;
+                    aoData = decodeURIComponent(queryStr); 
+                } else {
+                    queryStr = $.param(aoData);
+                }
+                querystring = null;
+                return aoData;
+            }
+            function clearQuery(){
+                window.history.replaceState(null, '','<?= $this->system_path.$this->getPath();?>');
+                querystring = '';
+            }
+            angular.module('nova', ['novaServices'])
+            .controller('IndexCtrl',function($scope, $http, $sce, NS, $window) {
+                this.equipes = [];
+                this.regionais = [];
+                this.selecionados = [];
+                $window.updateStatusItem = async (id) => {
+                    await NS.actionHandler($http.put("<?= $this->system_path.$this->getPath();?>/updateStatus", { id: id }));
+                    oTable.fnFilter();
+                }
+                $window.deleteItem = async (id) => {
+                    if(!confirm('Apagar consultor?')) return;
+                    await NS.actionHandler($http.delete("<?= $this->system_path.$this->getPath();?>/del/id/"+id));
+                    oTable.fnFilter();
+                }
+                this.onInit = () => {
+                    $('body').show();
+                    let params = new URLSearchParams(querystring);
+                    this.datade = getParam('datade');
+                    this.dataate = getParam('dataate');
+                    this.equipes = getParam('equipes', true);
+                    this.regionais = getParam('regionais', true);
+                }
+                getParam = (prop, mult = false) => {
+                    let params = new URLSearchParams(querystring);
+                    if(mult) {
+                        let a = [];
+                        (params.get(prop) || '').split(",").forEach(x => { a[x] = x; });
+                        return a;
+                    } else return params.get(prop);
+                }
+                $window.getParameter = (aoData) => {
+                    aoData.push({"name": 'datade', "value": this.datade});
+                    aoData.push({"name": 'dataate', "value": this.dataate});
+                    aoData.push({"name": 'equipes', "value": this.equipes.filter(x => x)});
+                    aoData.push({"name": 'regionais', "value": this.regionais.filter(x => x)});
+                }
+                this.clearFilter = () => {
+                    clearQuery();
+                    this.datade = '';
+                    this.dataate = '';
+                    this.equipes = [];
+                    this.regionais = []; 
+                    oTable.fnFilter('');
+                }
+                this.filter = () => {
+                    $('.groupfilter').hide();
+                    oTable.fnFilter();
+                }
+                $window.openRel = (url) => {
+                    if(this.selecionados.length > 0) {
+                        window.open(url + '?id=' + this.selecionados.map(x => x.id).join())
+                    } else {
+                        window.open(`${url}?query=${queryStr}`);
+                    } 
+                }
+                var lastChecked = null;
+                $window.selectListItem = (e, ev) => {
+                    var $chkboxes = $('.selecionados');
+                    if(e.checked) {
+                        if (ev.shiftKey && lastChecked) {
+                            var start = $chkboxes.index(e);
+                            var end = $chkboxes.index(lastChecked);
+                            var selecionados = $.map($chkboxes.slice(Math.min(start,end), Math.max(start,end)+ 1), (e) => { return {id: $(e).attr('id'), nome: $(e).attr('nome')}});
+                            this.managerSelecionados(selecionados);
+                        } else {
+                            this.managerSelecionados([{id: $(e).attr('id'), nome: $(e).attr('nome')}]);
+                        }
+                    } else {
+                        if (ev.shiftKey && lastChecked) {
+                            var start = $chkboxes.index(e);
+                            var end = $chkboxes.index(lastChecked);
+                            var selecionados = $.map($chkboxes.slice(Math.min(start,end), Math.max(start,end)+ 1), (e) => { return {id: $(e).attr('id'), nome: $(e).attr('nome')}});
+                            this.managerSelecionados(selecionados, false);
+                        } else {
+                            this.managerSelecionados([{id: $(e).attr('id'), nome: $(e).attr('nome')}], false)
+                        }
+                    }
+                    $scope.$digest();
+                    lastChecked = e;
+                }
+                uniqueArrayOfObject = (array, keyToBeUnique) => array.filter((x, xi) => !array.slice(xi + 1).some(y => y[keyToBeUnique] === x[keyToBeUnique]));
+                this.managerSelecionados = (selecionados, add = true) => {
+                    if(add) {
+                        this.selecionados = this.selecionados.concat(selecionados);
+                        this.selecionados = uniqueArrayOfObject(this.selecionados,'id');
+                    } else {
+                        selecionados.forEach((x) =>  {
+                            let e = this.selecionados.map(x => x.id).indexOf(x.id); 
+					        this.selecionados.splice(e,1); 
+                        });
+                    }
+                    marcarSelecionados();
+                }
+                $window.marcarSelecionados = () => {
+                    $('.selecionados[type=checkbox]').attr('checked', false);
+                    this.selecionados.forEach(x => $(`.checkbox[id=${x.id}]`).attr('checked', true));
+                }
+                this.changeSelecionartodos = () => {
+                    var selecionados = $.map($('.selecionados[type=checkbox]'), (e) => { return {id: $(e).attr('id'), nome: $(e).attr('nome')}});
+                    if (this.selecionar_todos) {
+                        this.managerSelecionados(selecionados);
+                    } else {
+                        this.managerSelecionados(selecionados, false);
+                    }
+                }
+                $window.resetSelecionar = () => {
+                    this.selecionar_todos = false;
+                    $scope.$digest();
+                }
+                this.limparSelecionados = () => {
+                    this.selecionados = [];
+                    this.selecionar_todos = false;
+                    $('.checkbox').attr('checked', false);
+                    $('.tooltip.in').remove();
+                }
+                this.openModalRel = () => {
+                    $('#modalRelatorios').modal({'show': true});
+                }
+                this.submitRelPdf = async () => {
+                    var data = $.param(this.relPdf);
+                    if(this.selecionados.length) data += '&id=' + this.selecionados.map(x => x.id).join();
+                    window.open("<?= $this->getPath();?>/exportPdf?"+data, "_blank");
+                    $('#modalRelatorios').modal("toggle");
+                }
+                this.submitModalEquipe = async () => {
+                    const params = { equipe: this.novaEquipe, consultores: this.selecionados.map( x => x.id )}; 
+                    await NS.actionHandler( $http.post("<?= $this->system_path . $this->getPath(); ?>/trocarConsultorDeEquipe", params ),'#modalEquipe');
+                    $('#modalEquipe').modal('toggle');
+                    oTable.fnFilter();
+                    this.limparSelecionados();
+                    $scope.$digest();
+                }
+                this.aprovarSolicitacao =  async (id) => {
+                    if(!confirm("Aprovar solicitação ?")) return;
+                    await NS.actionHandler($http.post("<?= $this->system_path . $this->getPath(); ?>/aprovarSolicitacao", {id: id} ));
+                    location.reload();
+                }
+                this.ativarConsultor =  async (id) => {
+                    if(!confirm("Aprovar solicitação ?")) return;
+                    await NS.actionHandler($http.post("<?= $this->system_path . $this->getPath(); ?>/updateStatus", {id: id} ));
+                    location.reload();
+                }
+            });
+        </script>
+        <style>
+            .badge-tag-close {
+                color: #efe3d2;
+                margin-left: 5px;
+            }
+            .badge-label {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 100px;
+            }
+            .badge.badge-warning {
+                display: inline-flex;
+            }
+            .badge {
+                padding: 3px 7px;
+            }
+        </style>
+    </body>
+</html>

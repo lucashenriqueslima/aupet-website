@@ -1,0 +1,229 @@
+<?php require_once $this->main_layouts . "headers.phtml"; ?>
+    <link href="<?php echo $this->main_template; ?>plugins/gallery/jpages/jPages.css" rel="stylesheet" type="text/css" />        
+    <link href="<?php echo $this->main_template; ?>plugins/forms/select/select2.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript">
+        var pagina = "<?php echo $this->getPath(); ?>";
+        var permissao = "<?php echo $this->permissao_ref; ?>";
+        var controller = "<?php echo $this->getPath(); ?>/save";
+        var retorno = "<?php echo $this->retorno; ?>";
+    </script>
+    </head>  
+    <body>
+        <?php require_once $this->main_layouts . "header.phtml"; ?>
+        <div id="wrapper">
+        <?php require_once $this->main_layouts."sidebar.phtml"; ?>
+            <div id="content" class="page-content clearfix">
+                <div class="contentwrapper">
+                    <div class="heading">
+                        <h3><?php echo $this->module_title; ?></h3>
+                        <ul class="breadcrumb">
+                            <li>Você está aqui:</li>
+                            <li><a href="#" class="tip" title="Painel"><i class="s16 icomoon-icon-screen-2"></i></a>
+                                <span class="divider"><i class="s16 icomoon-icon-arrow-right-3"></i></span>
+                            </li>
+                            <li><a class="tip" title="<?php echo $this->module_title; ?>" href="<?php echo $this->module_link;?>"><i class="s16 <?php echo $this->module_icon; ?>"></i></a></li>
+                            <span class="divider">
+                                <i class="s16 icomoon-icon-arrow-right-3"></i>
+                            </span>
+                            <li class="active">Registro</li>
+                        </ul>
+                    </div>
+                    <form name="main" enctype="multipart/form-data" method="post" class="form-horizontal group-border">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Dados básicos</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" >Nome</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="nome" type="text" value="<?php echo $this->registro['nome']; ?>" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="nome_fantasia">Razão social</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="nome_fantasia" id="nome_fantasia" type="text" value="<?php echo $this->registro['nome_fantasia']; ?>" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="logo">Logo</label>
+                                            <div class="col-lg-10">
+                                                <label class="logo" for="logo">
+                                                    <?php if ($this->registro['logo'] == null) : ?>
+                                                        <img src="https://placehold.it/180x100" alt="" class="image marginR10"/>
+                                                    <?php else : ?>
+                                                        <img style="width: 180px;height: 100px;" src="<?= $this->registro['logo']; ?>" width="180" heigth="100" alt="" class="image marginR10"/>
+                                                    <?php endif; ?>
+                                                </label>
+                                                <input type="file" accept='image/*' name="logo" id="logo" class="files btn btn-default"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="telefone">Telefone</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control telefone" name="telefone" id="telefone" type="text" value="<?php echo $this->registro['telefone']; ?>" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="cnpj">CNPJ</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="cnpj" id="cnpj" type="text" value="<?php echo $this->registro['cnpj']; ?>" />
+                                            </div>
+                                        </div>
+                                        <!-- <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="endereco">Endereço completo</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="endereco" id="endereco" type="text" value="<?php echo $this->registro['endereco']; ?>" />
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <!-- Start .panel -->
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Links externos</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="link_playstore">Aplicativo PlayStore:</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="link_playstore" id="link_playstore" type="text" value="<?php echo $this->registro['link_playstore']; ?>" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="link_applestore">Aplicativo AppleStore:</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="link_applestore" id="link_applestore" type="text" value="<?php echo $this->registro['link_applestore']; ?>" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="link_app">Aplicativo Aupet:</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="link_app" id="link_app" type="text" value="<?php echo $this->registro['link_app']; ?>" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <!-- Start .panel -->
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Redes Sociais</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="link_facebook">Facebook:</label>
+                                            <div class="col-lg-10">
+                                                    <input class="form-control" name="link_facebook" id="link_facebook" type="text" value="<?php echo $this->registro['link_facebook']; ?>" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="link_instagram">Instagram:</label>
+                                            <div class="col-lg-10">
+                                                    <input class="form-control" name="link_instagram" id="link_instagram" type="text" value="<?php echo $this->registro['link_instagram']; ?>" />
+                                            </div>
+                                        </div>
+                                        <!-- <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="link_youtube">Youtube:</label>
+                                            <div class="col-lg-10">
+                                                    <input class="form-control" name="link_youtube" id="link_youtube" type="text" value="<?php echo $this->registro['link_youtube']; ?>" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="link_twitter">Twitter:</label>
+                                            <div class="col-lg-10">
+                                                    <input class="form-control" name="link_twitter" id="link_twitter" type="text" value="<?php echo $this->registro['link_twitter']; ?>" />
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <?php if ($this->permissions['communicated']['gravar']) : ?>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Sinistro</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="email">E-mail padrão</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="email" id="email" type="text" value="<?php echo $this->registro['email']; ?>" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class='col-lg-2 control-label'>Desconto carro reserva</label>
+                                            <div class='col-lg-10'>
+                                                <div class='input-group'>
+                                                    <span class='input-group-addon'>R$</span>
+                                                    <input type='text' class='form-control monetario' name='carro_reserva' value="<?php echo $this->registro['carro_reserva']; ?>"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php endif; ?>
+                        <div class="row">
+                            <?php if (!$this->id == "") : ?>
+                                <?php if (!$this->permissions[$this->permissao_ref]['gravar']) : ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <span class="label label-warning "><span class="icon24 typ-icon-warning"></span>Você não tem permissão para gravar esta função.</span>
+                                        </div>
+                                    </div>   
+                                <?php else : ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <button type="button" class="btn btn-info clickformsubmit">Salvar novo</button>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+                            <?php else : ?>
+                                <?php if (!$this->permissions[$this->permissao_ref]['editar']) : ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <span class="label label-warning"><span class="icon24 icomoon-icon-warning "></span>Você não tem permissão para editar esta função.</span>
+                                        </div>
+                                    </div>   
+                                <?php else : ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <button type="button" class="btn btn-info clickformsubmit">Salvar alterações</button>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        <?php require_once $this->main_layouts . "footer.phtml"; ?>
+        </div>
+        <?php require_once $this->main_layouts . "plugins.phtml"; ?>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('#cnpj').mask('##.###.###/####-##');
+                $('#cep').mask('##.###-###');
+                $('#telefone').mask('(##) #####-####');
+            });
+        </script>
+    </body>
+</html>

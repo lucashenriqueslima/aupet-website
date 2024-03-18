@@ -1,0 +1,329 @@
+<?php
+    $origem = "";
+    $localizacao = "";
+    $session = "";
+    $dispositivo = "";
+    $utm= "";
+    if ($this->historicos->num_rows) {
+        foreach ($this->historicos->rows as $row) {
+            if ($row['pais'] != "" && $row['estado'] != "" && $row['cidade'] != "" && $localizacao == "") {
+                $localizacao = $row['localizacao'];
+            }
+            if ($row['origem'] != "" && $origem == "") {
+                $origem = $row['origem'];
+            }
+            if ($row['session'] != "" && $session == "") {
+                $session = $row['session'];
+            }
+            if ($row['dispositivo'] == 1 && $dispositivo == "") {
+                $dispositivo = "Desktop";
+            } else if ($row['dispositivo'] == 2 && $dispositivo == "") {
+                $dispositivo = "Tablet";
+            } else if ($row['dispositivo'] == 3 && $dispositivo == "") {
+                $dispositivo = "Mobile"; 
+            } else if ($dispositivo == "") {
+                $dispositivo = "Indefinido"; 
+            }
+            if ($row['utm_source'] != "") {
+                $utm = "utm_source={$row['utm_source']}";
+            }
+            if ($row['utm_medium'] != "") {
+                $utm .= "&utm_medium={$row['utm_medium']}";
+            }
+            if ($row['utm_term'] != "") {
+                $utm .= "&utm_term={$row['utm_term']}";
+            }
+            if ($row['utm_content'] != "") {
+                $utm .= "&utm_content={$row['utm_content']}";
+            }
+            if ($row['utm_campaign'] != "") {
+                $utm .= "&utm_campaign={$row['utm_campaign']}";
+            }
+        }
+    }
+    require_once $this->main_layouts."headers.phtml";
+?>
+    <script type="text/javascript">
+        var pagina = "<?= $this->getPath(); ?>";
+        var permissao = "<?= $this->permissao_ref; ?>";
+        var controller = "<?= $this->getPath(); ?>/save";
+        var retorno = "<?= $this->retorno; ?>";
+    </script>
+    </head>  
+    <body>
+        <?php require_once $this->main_layouts."header.phtml"; ?>
+        <div id="wrapper">
+            <?php require_once $this->main_layouts."sidebar.phtml"; ?>
+            <div id="content" class="page-content clearfix">
+                <div class="contentwrapper">
+                    <div class="heading">
+                        <h3><?= $this->module_title; ?></h3>
+                        <ul class="breadcrumb">
+                            <li>Você está aqui:</li>
+                            <li> <a href="#" class="tip" title="Painel"> <i class="s16 icomoon-icon-screen-2"></i> </a> <span class="divider"> <i class="s16 icomoon-icon-arrow-right-3"></i> </span> </li>
+                            <li> <a class="tip" title="<?= $this->module_title; ?>" href="<?= $this->module_link;?>"> <i class="s16 <?= $this->module_icon; ?>"></i> </a> </li>
+                            <span class="divider">
+                                <i class="s16 icomoon-icon-arrow-right-3"></i>
+                            </span>
+                            <li class="active">Registro</li>
+                        </ul>
+                    </div>
+                    <form name="main" enctype="multipart/form-data" method="post" class="form-horizontal group-border">
+                        <input type="hidden" name="id" value="<?= $this->id; ?>" />
+                        <input type="hidden" name="retorno" value="<?= $this->retorno; ?>">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Dados do Cadastro</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="data">Data:</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="" id="data"  type="text" value="<?= $this->registro['data'] ?>" readonly />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="nome">Nome:</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="" id="nome"  type="text" value="<?= $this->registro['nome'] ?>" readonly />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="email">Email:</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="" id="email"  type="text" value="<?= $this->registro['email'] ?>" readonly />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="telefone">Telefone:</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="" id="telefone"  type="text" value="<?= $this->registro['telefone'] ?>" readonly />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="">Solução de interesse:</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="" id=""  type="text" value="<?= $this->registro['solucao'] ?>" readonly />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="">Empresa:</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="" id=""  type="text" value="<?= $this->registro['empresa'] ?>" readonly />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="">Segmento:</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="" id=""  type="text" value="<?= $this->registro['segmento'] ?>" readonly />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="">Estado:</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="" id=""  type="text" value="<?= $this->registro['estado'] ?>" readonly />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="">Cidade:</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="" id=""  type="text" value="<?= $this->registro['cidade'] ?>" readonly />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="mensagem">Mensagem:</label>
+                                            <div class="col-lg-10">
+                                                <textarea name="mensagem" id="mensagem" class="form-control" rows="5" readonly><?= $this->registro['mensagem'] ?></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Atendimento</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group form-group-vertical">
+                                            <label class="col-lg-2 col-md-3 control-label" for="id_situacao">Situação:</label>
+                                            <div class="col-lg-10 col-md-9">
+                                                <select class="form-control input-sm" id="id_situacao" name="id_situacao">
+                                                    <option value="">Informe a situação..</option>
+                                                    <?php if ($this->situacoes->num_rows) :?>
+                                                    <?php foreach($this->situacoes->rows as $situacao):?>
+                                                    <option <?php if($this->registro['id_situacao']==$situacao['id']) { echo "selected"; } ?> value="<?= $situacao['id'];?>"><?= $situacao['nome'];?></option>
+                                                    <?php endforeach;?>
+                                                    <?php endif; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="comentario">Comentário:</label>
+                                            <div class="col-lg-10">
+                                                <textarea id="comentario" name="comentario" class="form-control elastic" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="panel panel-default toggle  panelClose">
+                                                    <div class="panel-heading">
+                                                        <h4 class="panel-title">
+                                                            <i class="<?= $this->module_icon ?>"></i> Histórico de Alteração de Situação
+                                                        </h4>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <table cellpadding="0" cellspacing="0" border="0" class="tabletools table table-striped table-bordered" width="100%">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th style="display:none"></th>
+                                                                    <th width="200px" class="tal">Data</th>
+                                                                    <th class="tal">Usuário</th>
+                                                                    <th class="tal">Situação</th>
+                                                                    <th class="tal">Comentário</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <?php foreach($this->statusHistorico->rows as $statusH) : ?>
+                                                                <tr>
+                                                                    <td class="tal"><?= $statusH['data']; ?></td>
+                                                                    <td style="display:none"><?= $statusH['registro']; ?>"></td>
+                                                                    <td class="tal"><?= $statusH['usuario']; ?></td>
+                                                                    <td class="tal"><?= $statusH['situacao']; ?></td>
+                                                                    <td class="tal"><?= str_replace("\n","<br>",stripslashes($statusH['comentario'])); ?></td>
+                                                                </tr>
+                                                                <?php endforeach ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Dados da Navegação</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="ip">IP:</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="ip" id="ip"  type="text" value="<?= $this->registro['ip'] ?>" readonly />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="">Sessão:</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="" id=""  type="text" value="<?= $session ?>" readonly />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="">Origem:</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="" id=""  type="text" value="<?= $origem ?>" readonly />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="">Localização:</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="" id=""  type="text" value="<?= $localizacao ?>" readonly />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="">Dispositivo:</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="" id=""  type="text" value="<?= $dispositivo ?>" readonly />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="">UTM:</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="" id=""  type="text" value="<?= $utm ?>" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <?php if (!$this->permissions[$this->permissao_ref]['editar']): ?>
+                                <div class="form-group">
+                                    <div class="col-lg-offset-2 col-lg-10">
+                                        <span class="label label-warning"><span class="icon24 icomoon-icon-warning "></span>Você não tem permissão para editar esta função.</span>
+                                    </div>
+                                </div>   
+                            <?php else: ?>
+                                <div class="form-group">
+                                    <div class="col-lg-offset-2 col-lg-10">
+                                        <button type="button" class="btn btn-info clickformsubmit">Salvar alterações</button>
+                                    </div>
+                                </div>
+                            <?php endif ?>
+                        </div>
+                    </form>
+                    <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Histórico da Navegação</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                    <table cellpadding="0" cellspacing="0" border="0" class="tabletools table table-striped table-bordered" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th style="display:none"></th>
+                                                <th width="10%" class="tal">Data</th>
+                                                <th class="tal" width="20%">Página</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php if($this->historicos->num_rows){ ?>
+                                                <?php foreach($this->historicos->rows as $row){ ?>
+                                                    <tr>
+                                                        <td style="display:none"><?= $row['date']; ?>"></td>
+                                                        <td class="tal"><?= $row['registro']; ?></td>
+                                                        <td class="tal"><?= $row['titulo']; ?></td>
+                                                    </tr>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php require_once $this->main_layouts."footer.phtml"; ?>
+        </div>
+        <?php require_once $this->main_layouts."plugins.phtml"; ?>
+        <script src="<?= $this->main_template;?>plugins/tables/dataTables/jquery.dataTables.js"></script>
+        <script src="<?= $this->main_template;?>plugins/tables/dataTables/dataTables.tableTools.js"></script>
+        <script src="<?= $this->main_template;?>plugins/tables/dataTables/dataTables.bootstrap.js"></script>
+        <script src="<?= $this->main_template;?>plugins/tables/dataTables/dataTables.responsive.js"></script>
+        <script src="<?= $this->main_template;?>plugins/forms/autosize/jquery.autosize.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('.elastic').autosize();
+                if($('table').hasClass('tabletools')){
+                    $('.tabletools').dataTable( {
+                        "oLanguage": { "sSearch": "", "sLengthMenu": "<span>_MENU_</span>", "sProcessing": "Processando...", "sZeroRecords": "Não foram encontrados resultados", "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros", "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros", "sInfoFiltered": "(filtrado de _MAX_ registros no total)", "sInfoPostFix": "", "sUrl": "", "oPaginate": { "sFirst": "Primeiro", "sPrevious": "Anterior", "sNext": "Seguinte", "sLast": "Último" } },
+                        "sDom": "T<'row'<'col-md-6 col-xs-12 'l><'col-md-6 col-xs-12'f>r>t<'row'<'col-md-4 col-xs-12'i><'col-md-8 col-xs-12'p>>",
+                        "aaSorting":[[0,"desc"]],
+                        "iDisplayLength": 50,
+                        tableTools: { "sSwfPath": "http://cdn.datatables.net/tabletools/2.2.2/swf/copy_csv_xls_pdf.swf", "aButtons": [ ] }
+                    });
+                }
+            });
+        </script>
+    </body>
+</html>

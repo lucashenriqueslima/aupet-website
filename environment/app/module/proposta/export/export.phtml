@@ -1,0 +1,51 @@
+<table border="1">
+	<tr><td colspan="9" align="center"><h1><?php echo ("Relatório de indicações"); ?></h1></td></tr>
+    <tr>
+        <th>Dt. <?php echo ("criação"); ?></th>
+        <th>Dt. <?php echo ("ativação"); ?></th>
+        <th>Nome</th>
+        <th>Telefone</th>
+        <th>Pets</th>
+        <th>Situação</th>
+        <th>Classificação</th>
+        <th>Valor da Proposta</th>
+    </tr>
+    <?php foreach ($this->dados->rows as $registro) :?>
+        <tr>
+            <td><?php echo ($registro["prop_criacao"]); ?></td>
+            <td><?php echo ($registro["pet_ativado_em"]); ?></td>
+            <td><?php echo ($registro["assoc_nome"]); ?></td>
+            <td><?php echo ($registro["assoc_telefone"]); ?></td>
+            <td><?php echo ($registro["pet_nome"]); ?></td>
+            <td><?php echo ($registro['pet_status_titulo']); ?></td>
+            <td><?php echo (ucfirst($registro['pet_classificacao'])); ?></td>
+            <td style="text-align:right"><?php echo ($this->formataMoedaDeBanco($registro['pet_valor'])); ?></td>
+        </tr>
+        <?php endforeach ?>
+        <tr class='soma'>
+            <td colspan="7" > TOTAL R$</td>
+            <td style="text-align:right"><?= $this->formataMoedaDeBanco(array_sum(array_column($this->dados->rows,'pet_valor')))?></td>
+            <!-- <td colspan="4"></td> -->
+        </tr>
+</table>
+<style>
+    .soma * {
+        font-size: 1.3rem;
+        color:black;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+</style>
+</style>

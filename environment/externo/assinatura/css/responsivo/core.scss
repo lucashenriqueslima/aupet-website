@@ -1,0 +1,757 @@
+@charset "utf-8";
+@import "variaveis.scss";
+section.passo_item {
+    font-family: montserrat;
+    max-width: 500px;
+    margin: 0 auto;
+    &[active="false"] {
+        display: none !important;
+    }
+    .passo_header {
+        border-bottom: 1px solid #dbdbdb;
+        height: 75px;
+        @include flex-wrap;
+        align-items: center;
+        font-family: ubuntu;
+        font-size: 20px;
+        color: #010101;
+        button.voltar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            width: 50px;
+            height: 50px;
+            border: none;
+            background: transparent;
+            margin: 0 10px;
+            svg {
+                width: 10px;
+                height: auto;
+            }
+        }
+    }
+    .passo_content {
+        padding: 0 30px 45px;
+        h2 {
+            font-weight: bold;
+            font-size: 14px;
+            line-height: 18px;
+            text-align: center;
+            color: #772E8A;
+            width: 100%;
+        }
+        p {
+            font-size: 14px;
+            line-height: 20px;
+            text-align: center;
+            color: #5e5e5e;
+            margin: 0 auto 35px;
+            width: 100%;
+        }
+        .next {
+            width: 100%;
+            max-width: 350px;
+            height: 52px;
+            background: #772E8A;
+            color: white;
+            font-weight: bold;
+            font-size: 15px;
+            letter-spacing: 1px;
+            border: none;
+            border-radius: 10px;
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 10px;
+        }
+        a {
+            text-align: center;
+            line-height: 52px;
+        }
+    }
+    &.passo_1 {
+        display: block;
+        .passo_content {
+            img.logo {
+                display: block;
+                margin: 45px auto;
+                max-width: 100%;
+            }
+            img.passo {
+                display: block;
+                margin: 0 auto 55px;
+            }
+            h1 {
+                font-size: 20px;
+                font-weight: bold;
+                color: #000000;
+                text-align: center;
+                margin: 0 0 15px;
+            }
+        }
+    }
+    &.passo_2 {
+        .passo_content {
+            img {
+                margin: 25px auto;
+                display: block;
+            }
+            .termo {
+                input {
+                    display: none;
+                    &:checked + label {
+                        &:before {
+                            background: url('/environment/externo/assinatura/img/checked.svg');
+                            background-position: center;
+                            background-repeat: no-repeat;
+                            background-size: 15px;
+                        }
+                    }
+                }
+                label {
+                    @include width_fitcontent;
+                    margin: 0 auto 175px;
+                    display: block;
+                    font-size: 14px;
+                    font-weight: 600;
+                    color: #000000;
+                    padding-left: 35px;
+                    position: relative;
+                    &:before {
+                        content: "";
+                        position: absolute;
+                        width: 23px;
+                        height: 23px;
+                        border: 1px solid #707070;
+                        left: 0;
+                        top: 50%;
+                        transform: translateY(-50%);
+                    }
+                    a {
+                        color: #772E8A;
+                        font-weight: bold;
+                        text-decoration: revert;
+                    }
+                }
+            }
+        }
+    }
+    &.passo_3 {
+        .passo_content {
+            img {
+                width: 100px;
+                height: auto;
+                display: block;
+                margin: 95px auto 25px;
+            }
+            h2 {
+                margin: 0 auto 15px;
+            }
+            p {
+                margin: 0 auto 55px;
+            }
+        }
+    }
+    &.passo_4 {
+        .passo_content {
+            padding: 42px 30px 45px;
+            .document_select {
+                margin: 40px 0 210px;
+                input {
+                    display: none;
+                    &:checked + label {
+                        &:before {
+                            border-color: #772E8A;
+                        }
+                        &:after {
+                            content: "";
+                            position: absolute;
+                            width: 12px;
+                            height: 12px;
+                            border-radius: 50%;
+                            background: #772E8A;
+                            left: 6px;
+                            top: 50%;
+                            transform: translateY(-50%);
+                        }
+                    }
+                }
+                label {
+                    width: 100%;
+                    font-size: 16px;
+                    color: #5e5e5e;
+                    margin: 0;
+                    font-weight: 600;
+                    padding: 20px 0 20px 40px;
+                    position: relative;
+                    border-bottom: 1px solid #dbdbdb;
+                    &:before {
+                        content: "";
+                        position: absolute;
+                        left: 0;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        width: 24px;
+                        height: 24px;
+                        border: 1px solid #707070;
+                        border-radius: 50%;
+                    }
+                }
+            }
+        }
+    }
+    &.passo_5 {
+        &:before {
+            content: "";
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: #772E8A;
+            left: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+        .passo_header {
+            color: white;
+            border-bottom: 1px solid rgba(219, 219, 219, 0.3);
+            button.voltar {
+                svg {
+                    * {
+                        fill: white;
+                    }
+                }
+            }
+        }
+        .passo_content {
+            margin-top: 40px;
+            background: #772E8A;
+            h2 {
+                color: white;
+                font-size: 16px;
+            }
+            .requisitos_content {
+                padding: 40px 0 10px;
+                .item {
+                    margin: 0 0 50px;
+                    svg {
+                        display: block;
+                        margin: 0 auto 10px;
+                    }
+                    p {
+                        width: 100%;
+                        margin: 0;
+                        font-size: 14px;
+                        font-weight: 600;
+                        color: white;
+                    }
+                }
+            }
+            .next {
+                color: #772E8A;
+                background: white;
+            }
+        }
+    }
+    &.passo_6 {
+        .passo_content {
+            padding-top: 40px;
+            p {
+                margin: 0 auto 55px;
+            }
+            .document_content {
+                border-top: 1px solid #dbdbdb;
+                margin: 0 0 85px;
+                .item {
+                    border-bottom: 1px solid #dbdbdb;
+                    padding: 25px 0;
+                    position: relative;
+                    font-size: 14px;
+                    font-weight: bold;
+                    color: #5e5e5e;
+                    &[active="true"] {
+                        svg {
+                            &#icon_1 {
+                                display: none;
+                            }
+                            &#icon_2 {
+                                display: block;
+                            }
+                        }
+                    }
+                    img {
+                        margin-right: 20px;
+                    }
+                    svg {
+                        position: absolute;
+                        right: 0;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        &#icon_2 {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    &.passo_7 {
+        &:before {
+            content: "";
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: #772E8A;
+            left: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+        .passo_header {
+            color: white;
+            border-bottom: 1px solid rgba(219, 219, 219, 0.3);
+            button.voltar {
+                svg {
+                    * {
+                        fill: white;
+                    }
+                }
+            }
+        }
+        .passo_content {
+            margin-top: 35px;
+            background: #772E8A;
+            h2 {
+                color: white;
+                font-size: 16px;
+                margin-bottom: 20px;
+            }
+            p {
+                color: white;
+                margin: 0 auto 20px;
+            }
+            .requisitos_content {
+                padding: 40px 0 0;
+                .item {
+                    margin: 0 0 60px;
+                    svg {
+                        display: block;
+                        margin: 0 auto 10px;
+                    }
+                    p {
+                        width: 100%;
+                        margin: 0;
+                        font-size: 14px;
+                        font-weight: 600;
+                        color: white;
+                    }
+                }
+            }
+            .next {
+                color: #772E8A;
+                background: white;
+            }
+        }
+    }
+    &.passo_9 {
+        &:before {
+            content: "";
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: #772E8A;
+            left: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+        .passo_header {
+            color: white;
+            border-bottom: 1px solid rgba(219, 219, 219, 0.3);
+            button.voltar {
+                svg {
+                    * {
+                        fill: white;
+                    }
+                }
+            }
+        }
+        .passo_content {
+            margin-top: 20px;
+            background: #772E8A;
+            h2 {
+                color: white;
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+            p {
+                color: white;
+                margin: 0 auto 10px;
+            }
+            .requisitos_content {
+                padding: 40px 0 0;
+                .item {
+                    margin: 0 0 45px;
+                    svg {
+                        display: block;
+                        margin: 0 auto 10px;
+                    }
+                    p {
+                        width: 100%;
+                        margin: 0;
+                        font-size: 14px;
+                        font-weight: 600;
+                        color: white;
+                    }
+                }
+            }
+            .next {
+                color: #772E8A;
+                background: white;
+            }
+        }
+    }
+    &.tirar_foto {
+        .passo_content {
+            padding: 35px 30px;
+            .foto_content {
+                width: 300px;
+                height: 500px;
+                display: block;
+                margin: 0 auto;
+                position: relative;
+                .camera {
+                    width: 100%;
+                    height: 100%;
+                }
+                .mask {
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    left: 0;
+                    top: 0;
+                    background: rgba(0, 0, 0, 0.25);
+                    .mask1 {
+                        &:before {
+                            content: "";
+                            position: absolute;
+                            width: 32px;
+                            height: 32px;
+                            border-left: 4px solid white;
+                            border-top: 4px solid white;
+                            top: 20px;
+                            left: 15px;
+                        }
+                        &:after {
+                            content: "";
+                            position: absolute;
+                            width: 32px;
+                            height: 32px;
+                            border-left: 4px solid white;
+                            border-bottom: 4px solid white;
+                            bottom: 20px;
+                            left: 15px;
+                        }
+                    }
+                    .mask2 {
+                        &:before {
+                            content: "";
+                            position: absolute;
+                            width: 32px;
+                            height: 32px;
+                            border-right: 4px solid white;
+                            border-top: 4px solid white;
+                            top: 20px;
+                            right: 15px;
+                        }
+                        &:after {
+                            content: "";
+                            position: absolute;
+                            width: 32px;
+                            height: 32px;
+                            border-right: 4px solid white;
+                            border-bottom: 4px solid white;
+                            bottom: 20px;
+                            right: 15px;
+                        }
+                    }
+                }
+                .circle {
+                    width: 270px;
+                    height: 330px;
+                    position: absolute;
+                    border-radius: 50%;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    border: 2px dashed white;
+                }
+            }
+            button.tirar_foto {
+                background: transparent;
+                border: 1px solid #707070;
+                width: 67px;
+                height: 67px;
+                border-radius: 50%;
+                display: block;
+                margin: 23px auto 0;
+                position: relative;
+                &:before {
+                    content: "";
+                    position: absolute;
+                    width: 55px;
+                    height: 55px;
+                    background: #000000;
+                    border-radius: 50%;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                }
+            }
+        }
+    }
+    &.revisar_foto {
+        .passo_content {
+            padding-top: 18px;
+            img {
+                display: block;
+                width: 300px;
+                margin: 0 auto 20px;
+            }
+            h3 {
+                display: block;
+                width: 300px;
+                margin: 0 auto 10px;
+                font-size: 14px;
+                line-height: 18px;
+                font-weight: bold;
+                color: #000000;
+            }
+            p {
+                display: block;
+                width: 300px;
+                margin: 0 auto 38px;
+                font-size: 14px;
+                line-height: 18px;
+                color: #5e5e5e;
+                text-align: left;
+            }
+            .buttons {
+                width: 300px;
+                margin: 0 auto;
+                @include flex-wrap;
+                justify-content: space-between;
+                align-items: center;
+                .outra_foto {
+                    width: 120px;
+                    text-align: left;
+                    font-size: 14px;
+                    font-weight: bold;
+                    color: #772E8A;
+                    border: none;
+                    background: transparent;
+                }
+                .next {
+                    width: 170px;
+                }
+            }
+        }
+    }
+    &.assinatura {
+        max-width: none;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        bottom: 0;
+        left: 0;
+        @include flex-wrap;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        button.voltar {
+            position: absolute;
+            right: 10px;
+            top: 5px;
+            border: none;
+            width: 50px;
+            height: 50px;
+            padding: 0;
+            @include flex-wrap;
+            justify-content: center;
+            align-items: center;
+            background: transparent;
+            svg {
+                transform: rotate(90deg);
+            }
+        }
+        button.limpar {
+            position: absolute;
+            left: -20px;
+            top: 25px;
+            width: 100px;
+            height: 45px;
+            border: none;
+            background: transparent;
+            font-size: 15px;
+            font-weight: bold;
+            color: #772E8A;
+            transform: rotate(90deg);
+        }
+        button.desfazer {
+            position: absolute;
+            left: -20px;
+            top: 100px;
+            width: 100px;
+            height: 45px;
+            border: none;
+            background: transparent;
+            font-size: 15px;
+            font-weight: bold;
+            color: #772E8A;
+            transform: rotate(90deg);
+            img {
+                transform: rotate(90deg);
+                height: 25px;
+            }
+        }
+        button.salvar {
+            position: absolute;
+            left: -25px;
+            bottom: 45px;
+            width: 110px;
+            height: 45px;
+            border: none;
+            font-size: 15px;
+            font-weight: bold;
+            color: white;
+            background: #772E8A;
+            border-radius: 8px;
+            transform: rotate(90deg);
+        }
+        canvas {
+            // background: #0014ff30;
+            // touch-action: none;
+            height: 80vh;
+            width: 60vw;
+            max-width: 400px;
+            max-height: 800px;
+            position: absolute;
+            border: 1px solid grey;
+        }
+        .content {
+            min-width: 535px;
+            height: 260px;
+            display: block;
+            // border: 1px solid grey;
+            position: relative;
+            transform: rotate(90deg);
+            &:before {
+                content: "Assine aqui";
+                position: absolute;
+                bottom: 35px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 70vh;
+                border-top: 1px solid grey;
+                text-align: center;
+                font-family: montserrat;
+                font-size: 16px;
+                color: grey;
+                font-weight: 300;
+                padding: 5px 0 0;
+                z-index: -1;
+            }
+            canvas {
+            }
+        }
+        &[widescreen="true"] {
+            button.voltar {
+                right: initial;
+                left: 10px;
+                svg {
+                    transform: initial;
+                }
+            }
+            button.limpar {
+                transform: initial;
+                top: initial;
+                bottom: 10px;
+                left: 0px;
+            }
+            button.salvar {
+                transform: initial;
+                left: initial;
+                bottom: 5px;
+                right: 15px;
+            }
+            .content {
+                transform: initial;
+                &:before {
+                }
+                canvas {
+                }
+            }
+        }
+    }
+    &.passo_final {
+        .passo_content {
+            padding: 65px 30px 45px;
+            h2 {
+                font-size: 24px;
+                line-height: 29px;
+                margin: 0 0 15px;
+            }
+            p {
+                margin: 0 auto 55px;
+            }
+            img {
+                display: block;
+                margin: 0 auto 95px;
+            }
+        }
+    }
+    &.arquivos_recusados {
+        .passo_header p {
+            font-family: ubuntu;
+            line-height: 75px;
+            margin-left: 15px;
+        }
+        .passo_content {
+            padding-top: 40px;
+            p {
+                margin: 0 auto 55px;
+            }
+            .document_content {
+                border-top: 1px solid #dbdbdb;
+                margin: 0 0 85px;
+                .item {
+                    border-bottom: 1px solid #dbdbdb;
+                    padding: 25px 0;
+                    position: relative;
+                    font-size: 14px;
+                    font-weight: bold;
+                    color: #5e5e5e;
+                    &[active="true"] {
+                        .svg {
+                            content: url("/environment/externo/assinatura/img/checked2.svg");
+                        }
+                    }
+                    img {
+                        &:first-child {
+                            height: 54px;
+                            width: 80px;
+                            object-fit: none;
+                        }
+                        margin-right: 20px;
+                    }
+                    .svg {
+                        position: absolute;
+                        right: 0;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        &#icon_2 {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

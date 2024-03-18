@@ -1,0 +1,201 @@
+<?php require_once $this->main_layouts . "headers.phtml"; ?>
+<link href="<?php echo $this->main_template ?>plugins/tables/dataTables/jquery.dataTables.css" type="text/css" rel="stylesheet" />
+<link href="<?php echo $this->main_template ?>plugins/tables/dataTables/TableTools.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript">
+    var pagina = "<?php echo $this->getPath(); ?>";
+    var permissao = "<?php echo $this->permissao_ref; ?>";
+    var controller = "<?php echo $this->getPath(); ?>/save";
+    var retorno = "<?php echo $this->retorno; ?>";
+</script>
+</head>
+<body>
+<?php require_once $this->main_layouts . "header.phtml"; ?>
+<!-- / #header -->
+<div id="wrapper">
+<!-- #wrapper -->
+<?php require_once $this->main_layouts . "sidebar.phtml"; ?>
+    <!--Body content-->
+    <div id="content" class="page-content clearfix">
+        <div class="contentwrapper">
+            <!--Content wrapper-->
+            <div class="heading">
+                <!--  .heading-->
+                <h3><?php echo $this->module_title; ?></h3>
+
+                <ul class="breadcrumb">
+                    <li>Você está aqui:</li>
+                    <li>
+                        <a href="#" class="tip" title="Painel">
+                            <i class="s16 icomoon-icon-screen-2"></i>
+                        </a>
+                        <span class="divider">
+                            <i class="s16 icomoon-icon-arrow-right-3"></i>
+                        </span>
+                    </li>
+                    <li>
+                        <a class="tip" title="<?php echo $this->module_title; ?>" href="<?php echo $this->module_link;?>">
+                            <i class="s16 <?php echo $this->module_icon; ?>"></i>
+                        </a>
+                    </li>
+                    <span class="divider">
+                        <i class="s16 icomoon-icon-arrow-right-3"></i>
+                    </span>
+                    <li class="active">Registro</li>
+                </ul>
+            </div>
+            <!-- End  / heading-->
+            <form name="main" enctype="multipart/form-data" method="post" class="form-horizontal group-border">
+                <input type="hidden" name="id" value="<?php echo $this->id; ?>" />
+                <input type="hidden" name="retorno" value="<?php echo $this->retorno; ?>">
+                <!-- Start .row -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default toggle">
+                            <!-- Start .panel -->
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Dados do E-mail</h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label" for="nome">Nome:</label>
+                                    <div class="col-lg-10">
+                                        <input class="form-control" name="nome" id="nome" type="text" value="<?php echo $this->registro['nome'] ?>" />
+                                    </div><!-- End .form-group  -->
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label" for="email">E-mail:</label>
+                                    <div class="col-lg-10">
+                                        <input class="form-control" name="email" id="nome_email" type="text" value="<?php echo $this->registro['email'] ?>" />
+                                    </div><!-- End .form-group  -->
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label" for="email">Data de Nascimento:</label>
+                                    <div class="col-lg-10">
+                                        <input class="form-control datepicker" name="nascimento" id="nascimento" type="text" value="<?php echo $this->registro['nascimento'] ?>" />
+                                    </div><!-- End .form-group  -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default toggle">
+                            <!-- Start .panel -->
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Listas</h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label" for="">Listas:</label>
+                                    <div class="col-lg-10">
+                                        <div class="leftBox" style="margin:0;">
+                                            <div class="searchBox">
+                                                <input type="text" id="box1Filter" class="searchField form-control" style="margin:0;" placeholder="filtrar ..."/>
+                                                <button id="box1Clear" type="button" class="btn">
+                                                    <span class="s14  entypo-icon-close "></span>
+                                                </button>
+                                            </div>
+                                            <select id="box1View" multiple="multiple" class="multiple nostyle form-control" style="height:300px;">
+                                                <?php if ($this->listas->num_rows): ?>
+                                                    <?php foreach ($this->listas->rows as $lista): ?>
+                                                        <?php if ($lista['id_lista'] == "") : ?>
+                                                            <option value="<?php echo $lista['id'] ?>"><?php echo $lista['nome'] ?></option>
+                                                        <?php endif ?>
+                                                    <?php endforeach ?>
+                                                <?php endif ?>
+                                            </select>
+                                            <br>
+                                            <span>Listas <span class="label-warning" style="padding:0 2px;">não relacionadas</span> a este e-mail</span>
+                                            <br>
+                                            <span id="box1Counter" class="count"></span>
+                                            <div class="dn"><select id="box1Storage" name="box1Storage" class="nostyle"></select></div>
+                                        </div>
+                                        <div class="dualBtn">
+                                            <button id="to2" type="button" class="btn" ><span class="icon12 minia-icon-arrow-right-3"></span></button>
+                                            <button id="allTo2" type="button" class="btn" ><span class="icon12 iconic-icon-last"></span></button>
+                                            <button id="to1" type="button" class="btn marginT5"><span class="icon12 minia-icon-arrow-left-3"></span></button>
+                                            <button id="allTo1" type="button" class="btn marginT5" ><span class="icon12 iconic-icon-first"></span></button>
+                                        </div>
+                                        <div class="rightBox" style="margin:0;">
+                                            <div class="searchBox">
+                                                <input type="text" id="box2Filter" class="searchField form-control" style="margin:0;" placeholder="filtrar ..." />
+                                                <button id="box2Clear"  type="button" class="btn" >
+                                                    <span class="s14  entypo-icon-close "></span>
+                                                </button>
+                                            </div>
+                                            <select id="box2View" multiple="multiple" name="listas[]" class="multiple nostyle form-control" style="height:300px;">
+                                                <?php if ($this->listas->num_rows): ?>
+                                                    <?php foreach ($this->listas->rows as $lista): ?>
+                                                        <?php if ($lista['id_lista'] != "") : ?>
+                                                            <option value="<?php echo $lista['id'] ?>"><?php echo $lista['nome'] ?></option>
+                                                        <?php endif ?>
+                                                    <?php endforeach ?>
+                                                <?php endif ?>
+                                            </select>
+                                            <br>
+                                            <span>Listas <span class="label-success white" style="padding:0 2px;">relacionadas</span> a este e-mail</span>
+                                            <br>
+                                            <span id="box2Counter" class="count"></span>
+                                            <div class="dn"><select id="box2Storage" class="nostyle"></select></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="row">
+                    <?php if ($this->id==""): ?>
+                        <?php if (!$this->permissions[$this->permissao_ref]['gravar']): ?>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <span class="label label-warning "><span class="icon24 typ-icon-warning"></span>Você não tem permissão para gravar esta função.</span>
+                                </div>
+                            </div><!-- End .form-group  -->
+                        <?php else: ?>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <button type="button" class="btn btn-info clickformsubmit">Salvar novo</button>
+                                </div>
+                            </div><!-- End .form-group  -->
+                        <?php endif ?>
+                    <?php else : ?>
+                        <?php if (!$this->permissions[$this->permissao_ref]['editar']): ?>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <span class="label label-warning"><span class="icon24 icomoon-icon-warning "></span>Você não tem permissão para editar esta função.</span>
+                                </div>
+                            </div><!-- End .form-group  -->
+                        <?php else : ?>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <button type="button" class="btn btn-info clickformsubmit">Salvar alterações</button>
+                                </div>
+                            </div><!-- End .form-group  -->
+                        <?php endif ?>
+                    <?php endif ?>
+                </div><!-- End .row -->
+            </form>
+        </div>
+    </div>
+        <!-- End contentwrapper -->
+</div>
+<!-- End #content -->
+<?php   require_once $this->main_layouts . "footer.phtml"; ?>
+</div>
+<?php   require_once $this->main_layouts . "plugins.phtml"; ?>
+<!-- Init plugins only for page -->
+<script type="text/javascript" src="<?php echo $this->main_template ?>plugins/forms/dualselect/jquery.dualListBox-1.3.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        saveKey(true);
+        $("#nascimento").mask("##/##/####");
+        $.configureBoxes();
+        $(".datepicker").datepicker({});
+    });
+</script>
+</body>
+</html>

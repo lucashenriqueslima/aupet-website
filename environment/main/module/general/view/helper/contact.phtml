@@ -1,0 +1,87 @@
+<div class='contact'>
+    <div class="field_input box_input">
+        <div class="col-lg-8 col-lg-offset-2"  style="margin-top:-15px">
+            <div class="input-group inline-block">
+                <input class="form-control inputs_add_rm contato" data-key="nome" name="" type="text" value="" placeholder="Nome:" />
+            </div>
+            <div class="input-group inline-block">
+                <input class="form-control inputs_add_rm contato" data-key="email" name="" type="text" value="" placeholder="E-mail:" />
+            </div>
+            <div class="input-group inline-block">
+                <input class="form-control inputs_add_rm contato telefone" data-key="telefone" name="" type="text" value="" placeholder="Telefone:" />
+            </div>
+            <div class="input-group inline-block">
+                <input class="form-control inputs_add_rm contato data" data-key="nascimento" name="" type="text" value="" placeholder="Data de Nascimento:" />
+            </div>
+            <div class="input-group inline-block">
+                <textarea class="form-control inputs_add_rm contato elastic" data-key="anotacao" name="" rows='1'  value="" placeholder="Anotações:" ></textarea>
+            </div>
+        </div>
+        <div class="col-lg-1">
+            <span class="icomoon-icon-plus-circle btn btn-md btn-default input_add"/></span>
+        </div>
+        <div class="col-lg-1">
+            <span class="icomoon-icon-minus-circle btn btn-md btn-default input_remove"/></span>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $('body').on('click', '#contatos .input_add', function (e) {
+            e.preventDefault();
+
+            var $base = $(this).parents('.box_input');
+
+            var last_idx = 0;
+
+            $("#contatos .box_input").each(function () {
+                last_idx++;
+            });
+
+            var $template = $("#templates .contact").clone();
+
+            var $input_text = $template.find("input[type=text], textarea");
+            $input_text.each(function () {
+                $(this).attr("name", "contatos[" + last_idx + "][" + $(this).attr("data-key") + "]");
+            });
+
+            $base.after($template.html());
+
+            uniform();
+
+            $('.elastic').autosize();
+
+            $('.data').datepicker({
+                dateFormat: 'dd/mm/yy',
+                dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+                dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S', 'D'],
+                dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+                monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                nextText: 'Próximo',
+                prevText: 'Anterior'
+            }).mask('##/##/####');
+        });
+
+        $('body').on('click', '#contatos .input_remove', function (e) {
+            e.preventDefault();
+            var $input = $(this).parents('#contatos .box_input:first');
+            var $inputs = $("#contatos .box_input");
+
+            if ($inputs.length > 1)
+                $input.remove();
+            else
+                $input.find('input').val('');
+
+            if ($(document).find('#contatos .box_input:first').find('.col-lg-8.col-lg-offset-2').length == 1)
+                $(document).find('#contatos .box_input:first').find('.col-lg-8').removeClass('col-lg-offset-2');
+
+            if ($inputs.length == 1)
+                $(document).find('#contatos').find('.box_input .col-lg-8.col-lg-offset-2').removeClass('col-lg-offset-2');
+
+        });
+
+    });
+</script>

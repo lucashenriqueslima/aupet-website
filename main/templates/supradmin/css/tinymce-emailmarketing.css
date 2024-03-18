@@ -1,0 +1,93 @@
+
+@charset "utf-8";
+/* CSS Document */
+
+* {
+	line-height:14px;
+	margin:0;
+	padding:0;
+	list-style:none;
+	text-decoration:none;
+	border:none;
+	line-height:inherit;
+	outline:none;
+}
+
+/*
+* { background-color: rgba(255,0,0,.20); }
+* * { background-color: rgba(0,255,0,.2); }
+* * * { background-color: rgba(0,0,255,.2); }
+* * * * { background-color: rgba(255,0,255,.2); }
+* * * * * { background-color: rgba(0,255,255,.2); }
+* * * * * * { background-color: rgba(255,255,0,.2); }
+*/
+
+img { vertical-align: middle; }
+
+
+
+@import url('http://fonts.googleapis.com/css?family=Ubuntu:400,700');
+
+
+/* ============= HEADERS ============= */
+
+body {
+	padding: 10px 15px;
+	background:#020202;
+	background-position: center 147px;
+	background-repeat: repeat-x;
+	font-family: 'Ubuntu', Arial, Helvetica, sans-serif !important;
+	font-size:13px !important;
+	color:#000;
+}
+
+h1, h2, h3, h4, h5 {
+	margin:5px 0;
+	font-size:24px;
+}
+
+strong { font-weight: bold; }
+
+p { margin: 0 0 20px 0; }
+a { text-decoration: underline; }
+
+ul li {
+	list-style-position:inside;
+	list-style:disc;
+	list-style-image: url("../images/dot.png");
+	margin: 10px 0 10px 30px;
+}
+ul li ul li { list-style-type: circle; }
+ul li ul li ul li { list-style-type: square; }
+
+
+.ec_topico {
+    height: 16px;
+    line-height: 16px;
+    margin: 20px 0;
+    padding-left: 15px;
+    border-left: 5px solid #f76f02;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+a.big_button {
+    display: block;
+    width: 530px;
+    height: 55px;
+    line-height: 55px;
+    margin: 20px auto;
+    background: #2f043f;
+    border-radius: 10px;
+    font-family: bebas, Verdana, Geneva, sans-serif;
+    font-size: 31px;
+    text-align: center;
+    color: #fff;
+    -webkit-transition: .4s;
+    -o-transition: .4s;
+    transition: .4s;
+}
+
+a.big_button:hover {
+    background: #4b0585;
+}

@@ -1,0 +1,204 @@
+<?php require_once $this->main_layouts . "headers.phtml"; ?>
+
+    <script type="text/javascript">
+        var pagina = "<?php echo $this->getPath(); ?>";
+        var permissao = "<?php echo $this->permissao_ref; ?>";
+        var controller = "<?php echo $this->getPath(); ?>/save";
+        var retorno = "<?php echo $this->retorno; ?>";
+    </script>
+    
+    </head>      
+    
+    <body>
+        <?php   require_once $this->main_layouts . "header.phtml"; ?>
+        <div id="wrapper">
+            <?php   require_once $this->main_layouts . "sidebar.phtml"; ?>
+            <div id="content" class="page-content clearfix">
+                <div class="contentwrapper">
+                    <!--Content wrapper-->
+                    <div class="heading">
+                        <!--  .heading-->
+                        <h3><?php echo $this->module_title; ?></h3>
+
+                        <ul class="breadcrumb">
+                            <li>Você está aqui:</li>
+                            <li>
+                                <a href="#" class="tip" title="Painel">
+                                    <i class="s16 icomoon-icon-screen-2"></i>
+                                </a>
+                                <span class="divider">
+                                    <i class="s16 icomoon-icon-arrow-right-3"></i>
+                                </span>
+                            </li>
+                            <li>
+                                <a class="tip" title="<?php echo $this->module_title; ?>" href="<?php echo $this->module_link;?>">
+                                    <i class="s16 <?php echo $this->module_icon; ?>"></i>                                    
+                                </a>
+                            </li>
+                            <span class="divider">
+                                <i class="s16 icomoon-icon-arrow-right-3"></i>
+                            </span>
+                            <li class="active">Registro</li>
+                        </ul>
+                    </div>
+                  
+                    <form name="main" enctype="multipart/form-data" method="post" class="form-horizontal group-border">
+                        <input type="hidden" name="id" value="<?php echo $this->id; ?>" />
+                        <input type="hidden" name="retorno" value="<?php echo $this->retorno; ?>">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <!-- Start .panel -->
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Dados do Contato</h4>
+                                    </div>
+                                    <div class="panel-body">                                                                               
+                                        <div class="form-group target_toggle">
+                                            <label class="col-lg-2 control-label" for="nome">Nome</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="nome" id="nome" type="text" value="<?php echo $this->registro['nome'] ?>"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group target_toggle">
+                                            <label class="col-lg-2 control-label" for="email">E-Mail</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="email" id="email" type="text" value="<?php echo $this->registro['email'] ?>"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group target_toggle">
+                                            <label class="col-lg-2 control-label" for="telefone">Telefone</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="telefone" id="telefone" type="text" value="<?php echo $this->registro['telefone'] ?>"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group target_toggle">
+                                            <label class="col-lg-2 control-label" for="celular">Celular</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="celular" id="celular" type="text" value="<?php echo $this->registro['celular'] ?>"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group target_toggle">
+                                            <label class="col-lg-2 control-label" for="empresa">Empresa</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="empresa" id="empresa" type="text" value="<?php echo $this->registro['empresa'] ?>"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group target_toggle">
+                                            <label class="col-lg-2 control-label" for="cargo">Cargo</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="cargo" id="cargo" type="text" value="<?php echo $this->registro['cargo'] ?>"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group target_toggle">
+                                            <label class="col-lg-2 control-label" for="estado">Estado</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="estado" id="estado" type="text" value="<?php echo $this->registro['estado'] ?>"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group target_toggle">
+                                            <label class="col-lg-2 control-label" for="cidade">Cidade</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="cidade" id="cidade" type="text" value="<?php echo $this->registro['cidade'] ?>"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group target_toggle">
+                                            <label class="col-lg-2 control-label" for="registrado_em">Data</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" value="<?php echo $this->registro['registrado_em'] ?>" disabled/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group target_toggle">
+                                            <label class="col-lg-2 control-label" for="assunto">Assunto</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="assunto" id="assunto" type="text" value="<?php echo $this->registro['assunto'] ?>"/>
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="comentario">Comentário</label>
+                                            <div class="col-lg-10">
+                                                <textarea class="form-control elastic" name="comentario" id="comentario"><?php echo $this->registro['comentario'] ?></textarea>
+                                            </div>
+                                        </div>                                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <?php if ($this->id==""): ?>
+                                <?php if (!$this->permissions[$this->permissao_ref]['gravar']): ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <span class="label label-warning "><span class="icon24 typ-icon-warning"></span>Você não tem permissão para gravar esta função.</span>
+                                        </div>
+                                    </div>
+                                <?php else: ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <button type="button" class="btn btn-info clickformsubmit">Salvar novo</button>
+                                        </div>
+                                    </div>
+                                <?php endif ?>
+                            <?php else: ?>
+                                <?php if (!$this->permissions[$this->permissao_ref]['editar']): ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <span class="label label-warning"><span class="icon24 icomoon-icon-warning "></span>Você não tem permissão para editar esta função.</span>
+                                        </div>
+                                    </div>  
+                                <?php else: ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <button type="button" class="btn btn-info clickformsubmit">Salvar alterações</button>
+                                        </div>
+                                    </div>
+                                <?php endif ?>
+                            <?php endif ?>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <?php   require_once $this->main_layouts . "footer.phtml"; ?>
+        </div>
+        
+        <?php   require_once $this->main_layouts . "plugins.phtml"; ?>
+        <script src="<?php echo $this->main_template;?>plugins/forms/autosize/jquery.autosize.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('.elastic').autosize();
+
+                $(".data").datepicker({
+                    dateFormat: 'dd/mm/yy',
+                    dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
+                    dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
+                    dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
+                    monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+                    monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
+                    nextText: 'Próximo',
+                    prevText: 'Anterior'
+                });
+
+                $('.hora').mask('00:00');
+                $('.data').mask('00/00/0000');
+
+                $("#id_produto").on("change", function(){
+                    if(this.value == "NULL")
+                        $(".form-group.target_toggle").show()
+                    else
+                        $(".form-group.target_toggle").hide()
+                });
+                $("#id_produto").trigger("change");
+            });
+        </script>
+    </body>
+</html>

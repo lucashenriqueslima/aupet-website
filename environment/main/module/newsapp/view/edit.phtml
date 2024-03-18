@@ -1,0 +1,117 @@
+<?php require_once $this->main_layouts."headers.phtml"; ?>
+    <script type="text/javascript">
+        var pagina = "<?php echo $this->getPath(); ?>";
+        var permissao = "<?php echo $this->permissao_ref; ?>";
+        var controller = "<?php echo $this->getPath(); ?>/save";
+        var retorno = "<?php echo $this->retorno; ?>";
+    </script>
+    </head>      
+    <body ng-app='nova' ng-controller="Ctrl as ctrl" style='display:none' ng-init='ctrl.onInit()'>
+        <?php require_once $this->main_layouts."header.phtml"; ?>
+        <div id="wrapper">
+            <?php require_once $this->main_layouts."sidebar.phtml"; ?>
+            <div id="content" class="page-content clearfix">
+                <div class="contentwrapper">
+                    <div class="heading">
+                        <h3><?php echo $this->module_title; ?></h3>
+                        <ul class="breadcrumb">
+                            <li>Você está aqui:</li>
+                            <li> <a href="#" class="tip" title="Painel"> <i class="s16 icomoon-icon-screen-2"></i> </a> <span class="divider"> <i class="s16 icomoon-icon-arrow-right-3"></i> </span> </li>
+                            <li> <a class="tip" title="<?php echo $this->module_title; ?>" href="<?php echo $this->module_link;?>"> <i class="s16 <?php echo $this->module_icon; ?>"></i> </a> </li>
+                            <span class="divider">
+                                <i class="s16 icomoon-icon-arrow-right-3"></i>
+                            </span>
+                            <li class="active">Registro</li>
+                        </ul>
+                    </div>
+                    <form ng-submit='ctrl.save()' class="form-horizontal group-border">
+                        <input type="hidden" name="id" value="<?php echo $this->id; ?>" />
+                        <input type="hidden" name="retorno" value="<?php echo $this->retorno; ?>">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Dados do Banner</h4>
+                                    </div>
+                                    <div class="panel-body">                                                                               
+                                        <div class="form-group target_toggle">
+                                            <label class="col-lg-2 control-label" for="nome">Versão</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" ng-model='ctrl.data.versao' />
+                                            </div>
+                                        </div>
+                                        <div class="form-group target_toggle">
+                                            <label class="col-lg-2 control-label" for="nome">Titulo</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" ng-model='ctrl.data.titulo' />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="descricao">Subtitulo</label>
+                                            <div class="col-lg-10">
+                                                <textarea class="form-control elastic" ng-model='ctrl.data.subtitulo'></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group target_toggle">
+                                            <label class="col-lg-2 control-label" for="fileupload">Imagem</label>
+                                            <div class="col-lg-10">
+                                                <label class="fileupload" for="fileupload_desktop">
+                                                    <?php if (!(bool)$this->registro['imagem']): ?>
+                                                        <img width='200px' src="https://cdn.pixabay.com/photo/2017/11/10/05/24/select-2935439_960_720.png" alt="" class="image marginR10"/>
+                                                    <?php else: ?>
+                                                        <img width='200px' src="<?= $this->getPath().'/getfile/'.$this->registro['imagem'] ?>" alt="" class="image marginR10"/>
+                                                    <?php endif ?>
+                                                </label>
+                                                <input type="file" imageread='ctrl.data.imagem_post' id="fileupload_desktop" accept="image/*" class="files btn btn-default"/>
+                                                <span class="help-block blue">a imagem será apresentada na proporção máxima de 1300 pixels.</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group target_toggle">
+                                            <label class="col-lg-2 control-label" for="conteudo">Conteúdo</label>
+                                            <div class="col-lg-10">
+                                                <textarea class="form-control" tinymce name="conteudo" id="conteudo"><?php echo $this->registro['conteudo'] ?></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <button type="submit" class="btn btn-info">Salvar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <?php require_once $this->main_layouts."footer.phtml"; ?>
+        </div>
+        <script src="<?php echo $this->main_template;?>plugins/forms/tiny_mce/tinymce.min.js"></script>
+        <?php require_once $this->main_layouts."plugins.phtml"; ?>
+        <script src="<?php echo $this->main_template;?>plugins/forms/autosize/jquery.autosize.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('.elastic').autosize();
+                tinymceInit();
+            });
+            angular.module('nova', ['novaServices'])
+            .controller('Ctrl',function($scope, $http, $sce, NS, $window) {
+                this.data = <?php echo json_encode($this->registro) ?>;
+
+                this.onInit = () => {
+                    $('body').show();
+                }
+
+                this.save = async () => {
+                    tinymce.triggerSave();
+                    this.data.conteudo = $('[tinymce]').val();
+                    await NS.actionHandler($http.post(`<?php echo $this->getPath();?>/save`, this.data));
+                    window.location.href = retorno;
+                }
+            })
+        </script>
+    </body>
+</html>

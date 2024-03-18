@@ -1,0 +1,607 @@
+@font-face {
+  font-family: opensans;
+  src: url("../fonts/opensans/OpenSans-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: opensans;
+  src: url("../fonts/opensans/OpenSans-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: opensans;
+  src: url("../fonts/opensans/OpenSans-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: opensans;
+  src: url("../fonts/opensans/OpenSans-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: opensans;
+  src: url("../fonts/opensans/OpenSans-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+}
+@keyframes circle_animate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(3600deg);
+  }
+}
+input[type=submit], input[type=radio], input[type=checkbox] {
+  cursor: pointer;
+}
+
+* {
+  outline: none !important;
+}
+
+select,
+input,
+textarea {
+  -webkit-appearance: none;
+}
+
+*[data-load=on] {
+  color: transparent !important;
+  pointer-events: none;
+  position: sticky;
+  filter: opacity(0.9);
+  transition: all 0.3s;
+}
+*[data-load=on]:before {
+  content: "";
+  position: absolute;
+  background: url(../img/loading.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 20px;
+  height: 20px;
+  top: calc(50% - 10px);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-name: rotate_load;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
+*[data-load=on]:after {
+  content: "Carregando";
+  position: absolute;
+  color: white;
+  font-family: ubuntu;
+  font-size: 10px;
+  top: calc(50% + 10px);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-name: text_load;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes rotate_load {
+  100% {
+    transform: translate(-50%, -50%) rotate(1080deg);
+  }
+}
+@keyframes text_load {
+  0% {
+    content: "Carregando";
+  }
+  25% {
+    content: "Carregando.";
+  }
+  50% {
+    content: "Carregando..";
+  }
+  75% {
+    content: "Carregando...";
+  }
+  100% {
+    content: "Carregando";
+  }
+}
+* {
+  font-family: opensans;
+}
+
+body {
+  background-image: url(./../img/bg_content_patern.png);
+}
+
+section.pagamento_content {
+  max-width: 500px;
+  margin: 0 auto;
+}
+section.pagamento_content[etapa="1"] .content.content_1 {
+  display: block;
+}
+section.pagamento_content[etapa="2"] .content.content_2 {
+  display: block;
+}
+section.pagamento_content[etapa="3"] .content.content_3 {
+  display: block;
+}
+section.pagamento_content[etapa="4"] .content.content_4 {
+  display: block;
+}
+section.pagamento_content .header {
+  background-image: url(./../img/bg_header.png);
+  background-repeat: no-repeat;
+  background-position: right top;
+  height: 90px;
+  display: flex;
+  display: -webkit-flex;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 10px 0 0;
+}
+@media (min-width: 500px) {
+  section.pagamento_content .header {
+    background: none;
+  }
+}
+section.pagamento_content .header h1 {
+  font-size: 18px;
+  line-height: 20px;
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  color: white;
+}
+section.pagamento_content .content {
+  padding: 45px 25px 55px;
+  background: white;
+  border-radius: 30px 30px 0 0;
+  min-height: calc(100vh - 90px);
+  transition: all 0.3s;
+  display: none;
+}
+section.pagamento_content .content.content_1 p.desc {
+  font-size: 14px;
+  line-height: 22px;
+  color: #4D4D4D;
+  text-align: center;
+  margin: 0 0 40px;
+}
+section.pagamento_content .content.content_1 .nome {
+  position: relative;
+  padding: 13px 0 0 72px;
+  height: 60px;
+  margin: 0 0 35px;
+}
+section.pagamento_content .content.content_1 .nome svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+section.pagamento_content .content.content_1 .nome h2 {
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 18px;
+  color: #772E8A;
+  margin: 0;
+}
+section.pagamento_content .content.content_1 .nome p {
+  font-size: 14px;
+  line-height: 18px;
+  color: #4A4A4A;
+  margin: 0;
+}
+section.pagamento_content .content.content_1 .dados {
+  display: flex;
+  display: -webkit-flex;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 0 0 25px;
+}
+section.pagamento_content .content.content_1 .dados > div {
+  width: 40%;
+  margin: 0 0 25px;
+}
+section.pagamento_content .content.content_1 .dados > div h3 {
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 18px;
+  color: #4A4A4A;
+  margin: 0;
+}
+section.pagamento_content .content.content_1 .dados > div p {
+  font-size: 14px;
+  line-height: 18px;
+  color: #4A4A4A;
+  margin: 0;
+}
+section.pagamento_content .content.content_1 .dados_plano {
+  margin: 0 0 25px;
+}
+section.pagamento_content .content.content_1 .dados_plano .title {
+  position: relative;
+  padding: 0 0 0 33px;
+  height: 20px;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 1px;
+  color: #772E8A;
+}
+section.pagamento_content .content.content_1 .dados_plano .title svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+section.pagamento_content .content.content_1 .dados_plano .plano_preco {
+  padding: 25px 0 18px;
+  margin: 0 0 20px;
+  display: flex;
+  display: -webkit-flex;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  align-items: center;
+  position: relative;
+}
+section.pagamento_content .content.content_1 .dados_plano .plano_preco::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% + 50px);
+  height: 1px;
+  background: #D8D8D8;
+}
+section.pagamento_content .content.content_1 .dados_plano .plano_preco h4 {
+  width: 60%;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 20px;
+  color: #4D4D4D;
+  margin: 0;
+  padding: 0 20px 0 0;
+}
+section.pagamento_content .content.content_1 .dados_plano .plano_preco p {
+  width: 40%;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 30px;
+  color: #DC8400;
+  margin: 0;
+  text-align: right;
+}
+section.pagamento_content .content.content_1 .dados_plano .lista > div {
+  position: relative;
+  font-size: 14px;
+  line-height: 18px;
+  color: #4D4D4D;
+  padding: 10px 50px 10px 0;
+}
+section.pagamento_content .content.content_1 .dados_plano .lista > div::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% + 50px);
+  height: 1px;
+  background: #D8D8D8;
+}
+section.pagamento_content .content.content_1 .dados_plano .lista > div[active=true] svg.check {
+  display: block;
+}
+section.pagamento_content .content.content_1 .dados_plano .lista > div[active=true] svg.nocheck {
+  display: none;
+}
+section.pagamento_content .content.content_1 .dados_plano .lista > div svg {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+section.pagamento_content .content.content_1 .dados_plano .lista > div svg.nocheck {
+  display: block;
+}
+section.pagamento_content .content.content_1 .termo {
+  margin: 0 0 30px;
+}
+section.pagamento_content .content.content_1 .termo input {
+  display: none;
+}
+section.pagamento_content .content.content_1 .termo input:checked + label::before {
+  background: url(./../img/checked.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 12px;
+}
+section.pagamento_content .content.content_1 .termo label {
+  position: relative;
+  padding: 1px 0 5px 35px;
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: #000000;
+}
+section.pagamento_content .content.content_1 .termo label::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 23px;
+  height: 23px;
+  border: 1px solid #707070;
+  border-radius: 5px;
+}
+section.pagamento_content .content.content_1 .termo label a {
+  text-decoration: underline;
+  font-weight: bold;
+  color: #000000;
+}
+section.pagamento_content .content.content_1 button.continuar {
+  border: none;
+  border-radius: 15px;
+  width: 100%;
+  height: 50px;
+  background: #772E8A;
+  color: white;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 1px;
+  box-shadow: 0 10px 15px rgba(142, 46, 167, 0.4);
+}
+section.pagamento_content .content.content_2 h2 {
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 19px;
+  color: #4D4D4D;
+  margin: 0 0 20px;
+}
+section.pagamento_content .content.content_2 > div {
+  display: flex;
+  display: -webkit-flex;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 0 0 25px;
+}
+section.pagamento_content .content.content_2 > div > div {
+  width: 100%;
+  position: relative;
+  font-size: 13px;
+  margin: 0 0 17px;
+}
+section.pagamento_content .content.content_2 > div > div input {
+  border: none;
+  border-radius: 6px;
+  background: #FEF2E0;
+  outline: none;
+  height: 50px;
+  transition: all 0.3s ease-out;
+  -webkit-transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -webkit-appearance: none;
+  padding: 0 21px;
+  border-radius: 5px;
+  width: 100%;
+}
+section.pagamento_content .content.content_2 > div > div input::placeholder {
+  color: transparent;
+}
+section.pagamento_content .content.content_2 > div > div input:required:invalid + label:before {
+  content: "*";
+}
+section.pagamento_content .content.content_2 > div > div input:focus + label, section.pagamento_content .content.content_2 > div > div input:not(:placeholder-shown) + label {
+  font-size: 0.8em;
+  top: 0;
+  background: #FEF2E0;
+  padding: 0 5px;
+}
+section.pagamento_content .content.content_2 > div > div label {
+  pointer-events: none;
+  position: absolute;
+  left: 21px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.3s ease-out;
+  -webkit-transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  margin: 0;
+}
+section.pagamento_content .content.content_2 > div > div select {
+  border: none;
+  border-radius: 6px;
+  background: #FEF2E0;
+  outline: none;
+  height: 50px;
+  transition: all 0.3s ease-out;
+  -webkit-transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -webkit-appearance: none;
+  padding: 0 21px;
+  border-radius: 5px;
+  width: 100%;
+  background-image: url(./../img/select.svg);
+  background-repeat: no-repeat;
+  background-position: calc(100% - 9px) center;
+}
+section.pagamento_content .content.content_2 > div > div.half {
+  width: calc((100% - 16px)/2);
+}
+section.pagamento_content .content.content_2 button.continuar {
+  border: none;
+  border-radius: 15px;
+  width: 100%;
+  height: 50px;
+  background: #772E8A;
+  color: white;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 1px;
+  box-shadow: 0 10px 15px rgba(142, 46, 167, 0.4);
+}
+section.pagamento_content .content.content_3 > img {
+  display: block;
+  margin: 0 auto 35px;
+}
+section.pagamento_content .content.content_3 > form {
+  display: flex;
+  display: -webkit-flex;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 0 0 90px;
+}
+section.pagamento_content .content.content_3 > form > div {
+  width: 100%;
+  position: relative;
+  margin: 0 0 22px;
+}
+section.pagamento_content .content.content_3 > form > div.half {
+  width: calc((100% - 30px) / 2);
+  z-index: 1;
+}
+section.pagamento_content .content.content_3 > form > div input {
+  height: 42px;
+  border: none;
+  border-bottom: 1px solid #BBBBBB;
+  font-size: 13px;
+  color: #6A6A6A;
+  width: 100%;
+}
+section.pagamento_content .content.content_3 > form > div input::placeholder {
+  color: #6A6A6A;
+}
+section.pagamento_content .content.content_3 > form > div > div {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 19px;
+}
+section.pagamento_content .content.content_3 > form > div > div:hover > div {
+  opacity: 1;
+}
+section.pagamento_content .content.content_3 > form > div > div > div {
+  position: absolute;
+  right: 0;
+  transform: translateY(100%);
+  background: #FEF2E0;
+  border-radius: 6px;
+  width: 110px;
+  font-size: 10px;
+  padding: 10px;
+  bottom: -5px;
+  transition: all 0.3s;
+  pointer-events: none;
+  opacity: 0;
+}
+section.pagamento_content .content.content_3 button.continuar {
+  border: none;
+  border-radius: 15px;
+  width: 100%;
+  height: 50px;
+  background: #772E8A;
+  color: white;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 1px;
+  box-shadow: 0 10px 15px rgba(142, 46, 167, 0.4);
+}
+section.pagamento_content .content.content_4 svg {
+  display: block;
+  margin: 0 auto 30px;
+}
+section.pagamento_content .content.content_4 h2 {
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 22px;
+  color: #4D4D4D;
+  margin: 0 0 10px;
+  text-align: center;
+}
+section.pagamento_content .content.content_4 p {
+  font-size: 14px;
+  line-height: 22px;
+  color: #4D4D4D;
+  margin: 0;
+  text-align: center;
+}
+section.pagamento_content .content.content_4 button.continuar {
+  border: none;
+  border-radius: 15px;
+  width: 100%;
+  height: 50px;
+  background: #772E8A;
+  color: white;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 1px;
+  box-shadow: 0 10px 15px rgba(142, 46, 167, 0.4);
+  margin-top: 20vh !important;
+}
+
+@keyframes horizontal_animate {
+  0% {
+    transform: translateX(-20px);
+  }
+  50% {
+    transform: translateX(20px);
+  }
+  100% {
+    transform: translateX(-20px);
+  }
+}
+@keyframes vertical_animate {
+  0% {
+    transform: translateY(-20px);
+  }
+  50% {
+    transform: translateY(20px);
+  }
+  100% {
+    transform: translateY(-20px);
+  }
+}
+section.content_404 {
+  padding: 100px 0 70px;
+}
+section.content_404 svg {
+  width: 160px;
+  height: auto;
+  display: block;
+  margin: 0 auto 5px;
+}
+section.content_404 svg * {
+  fill: #000000;
+}
+section.content_404 p {
+  font-size: 25px;
+  font-weight: 300;
+  color: #000000;
+  text-align: center;
+  margin: 0;
+}
+@media (max-width: 600px) {
+  section.content_404 {
+    padding: 50px 0;
+  }
+  section.content_404 svg {
+    width: 120px;
+  }
+  section.content_404 p {
+    font-size: 20px;
+  }
+}
+
+/*# sourceMappingURL=principal.css.map */

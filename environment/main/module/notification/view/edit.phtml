@@ -1,0 +1,249 @@
+<?php
+     require_once $this->main_layouts . "headers.phtml";
+?>
+    <script type="text/javascript">
+        var pagina = "<?php echo $this->getPath(); ?>";
+        var permissao = "<?php echo $this->permissao_ref; ?>";
+        var controller = "<?php echo $this->getPath(); ?>/save";
+        var retorno = "<?php echo $this->retorno; ?>";
+    </script>
+    </head>  
+    <body>
+<?php   require_once $this->main_layouts . "header.phtml"; ?>
+        <!-- / #header -->
+        <div id="wrapper">
+        <!-- #wrapper -->
+<?php   require_once $this->main_layouts . "sidebar.phtml"; ?>
+            <!--Body content-->
+            <div id="content" class="page-content clearfix">
+                <div class="contentwrapper">
+                    <!--Content wrapper-->
+                    <div class="heading">
+                        <!--  .heading-->
+                        <h3><?php echo $this->module_title; ?></h3>
+                        <ul class="breadcrumb">
+                            <li>Você está aqui:</li>
+                            <li>
+                                <a href="#" class="tip" title="Painel">
+                                    <i class="s16 icomoon-icon-screen-2"></i>
+                                </a>
+                                <span class="divider">
+                                    <i class="s16 icomoon-icon-arrow-right-3"></i>
+                                </span>
+                            </li>
+                            <li>
+                                <a class="tip" title="<?php echo $this->module_title; ?>" href="<?php echo $this->module_link;?>">
+                                    <i class="s16 <?php echo $this->module_icon; ?>"></i>                                    
+                                </a>
+                            </li>
+                            <span class="divider">
+                                <i class="s16 icomoon-icon-arrow-right-3"></i>
+                            </span>
+                            <li class="active">Registro</li>
+                        </ul>
+                    </div>
+                    <!-- End  / heading-->
+                    <!-- Start .row -->
+                    <form name="main" enctype="multipart/form-data" method="post" class="form-horizontal group-border">
+                        <input type="hidden" name="id" value="<?php echo $this->id; ?>" />
+                        <input type="hidden" name="retorno" value="<?php echo $this->retorno; ?>">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <!-- Start .panel -->
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Dados da notificação</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group target_toggle">
+                                            <label class="col-lg-2 control-label" for="titulo">Título</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="titulo" id="titulo" type="text" value="<?php echo $this->registro['titulo'] ?>" />
+                                            </div><!-- End .form-group  -->
+                                        </div>
+                                        <div class="form-group target_toggle">
+                                            <label class="col-lg-2 control-label" for="publicado_em">Publicado em</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control date" name="publicado_em" id="publicado_em" type="text" value="<?php echo $this->formataDataDeBanco($this->registro['publicado_em']) ?>" />
+                                            </div><!-- End .form-group  -->
+                                        </div>
+                                        <div class="form-group form-group-vertical">
+                                            <label class="col-lg-2 col-md-3 control-label" for="id_categoria">Categoria</label>
+                                            <div class="col-lg-10 col-md-9">
+                                                <select class="form-control input-sm select2" id="id_categoria" name="id_categoria">
+                                                    <option value="">Selecione..</option>
+                                                    <?php if ($this->categorias->num_rows) : ?>
+                                                        <?php foreach ($this->categorias->rows as $categoria) : ?>
+                                                            <option <?php if ($categoria['id'] === $this->registro['id_categoria']) echo "selected"; ?> value="<?php echo $categoria['id']; ?>"><?php echo $categoria['nome']; ?></option>
+                                                        <?php endforeach; ?>
+                                                    <?php endif; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 col-md-3 control-label" for="pop_up">Pop-up</label>
+                                            <div class="col-lg-10 col-md-9">
+                                                <div class="toggle-custom toggle-inline">
+                                                    <label class="toggle" data-on="ON" data-off="OFF">
+                                                        <input type="checkbox" value='1' id="pop_up" name="pop_up" <?= $this->registro['pop_up'] ? 'checked' : '' ?>>
+                                                        <span class="button-checkbox"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group target_toggle">
+                                            <label class="col-lg-2 control-label" for="conteudo">Conteúdo</label>
+                                            <div class="col-lg-10">
+                                                <textarea class="form-control tinymce" tinymce name="conteudo" id="conteudo"><?php echo $this->registro['conteudo'] ?></textarea>
+                                            </div><!-- End .form-group  -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Clientes</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <div class="col-lg-12">
+                                                <div class="leftBox">
+                                                    <h4>Não recebe</h4>
+                                                    <select id="box1View" multiple="multiple" class="multiple nostyle form-control" style="height:300px;">
+                                                        <?php if ($this->clientes->num_rows): ?>
+                                                            <?php foreach ($this->clientes->rows as $cliente): ?>
+                                                                <?php if ($cliente['id_notificacao'] != $this->id || $this->id == ''): ?>
+                                                                    <option value="<?php echo $cliente['id'] ?>"><?php echo $cliente['nome_fantasia'] ?: $cliente['empresa'] ?: $cliente['nickname'] ?></option>
+                                                                <?php endif ?>
+                                                            <?php endforeach ?>
+                                                        <?php endif ?>
+                                                    </select>
+                                                </div>
+                                                <div class="dualBtn">
+                                                    <button id="to2" type="button" class="btn" ><span class="icon12 minia-icon-arrow-right-3"></span></button>
+                                                    <button id="allTo2" type="button" class="btn" ><span class="icon12 iconic-icon-last"></span></button>
+                                                    <button id="to1" type="button" class="btn marginT5"><span class="icon12 minia-icon-arrow-left-3"></span></button>
+                                                    <button id="allTo1" type="button"class="btn marginT5" ><span class="icon12 iconic-icon-first"></span></button>
+                                                </div>
+                                                <div class="rightBox">
+                                                    <h4>Recebe</h4>
+                                                    <select id="box2View" multiple="multiple" name="clientes[]" class="multiple nostyle form-control" style="height:300px;">
+                                                        <?php if ($this->clientes->num_rows): ?>
+                                                            <?php foreach ($this->clientes->rows as $cliente): ?>
+                                                                <?php if ($this->id != '' && $cliente['id_notificacao'] == $this->id): ?>
+                                                                    <option value="<?php echo $cliente['id'] ?>"><?php echo $cliente['nome_fantasia'] ?: $cliente['empresa'] ?: $cliente['nickname'] ?></option>
+                                                                <?php endif ?>
+                                                            <?php endforeach ?>
+                                                        <?php endif ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                                
+                        </div>
+                        <?php require_once("{$this->main_layouts}permissoes.phtml") ?>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <!-- Start .panel -->
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Agendamento</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group" style="margin-top: 10px;">
+                                            <label class="col-lg-2 control-label" for="agendar_entrada_data">Data de entrada:</label>
+                                            <div class="col-lg-4">
+                                                <input autocomplete="off" class="form-control data" name="agendar_entrada_data" id="agendar_entrada_data" type="text" value="<?php echo $this->formataDataDeBanco($this->registro['agendar_entrada_data']) ?>" />
+                                            </div>
+                                            <label class="col-lg-2 control-label" for="agendar_entrada_hora">Hora de entrada:</label>
+                                            <div class="col-lg-4">
+                                                <input autocomplete="off" class="form-control hora" name="agendar_entrada_hora" id="agendar_entrada_hora" type="text" value="<?php echo $this->formataDataDeBanco($this->registro['agendar_entrada_hora']) ?>" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group" style="margin-top: 10px;">
+                                            <label class="col-lg-2 control-label" for="agendar_saida_data">Data de saída:</label>
+                                            <div class="col-lg-4">
+                                                <input autocomplete="off" class="form-control data" name="agendar_saida_data" id="agendar_saida_data" type="text" value="<?php echo $this->registro['agendar_saida_data']; ?>" />
+                                            </div>
+                                            <label class="col-lg-2 control-label" for="agendar_saida_hora">Hora de saída:</label>
+                                            <div class="col-lg-4">
+                                                <input autocomplete="off" class="form-control hora" name="agendar_saida_hora" id="agendar_saida_hora" type="text" value="<?php echo $this->registro['agendar_saida_hora']; ?>" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <?php if ($this->id==""): ?>
+                                <?php if (!$this->permissions[$this->permissao_ref]['gravar']): ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <span class="label label-warning "><span class="icon24 typ-icon-warning"></span>Você não tem permissão para gravar esta função.</span>
+                                        </div>
+                                    </div><!-- End .form-group  -->   
+                                <?php else: ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <button type="button" class="btn btn-info clickformsubmit">Salvar novo</button>
+                                        </div>
+                                    </div><!-- End .form-group  -->
+                                <?php endif ?>
+                            <?php else: ?>
+                                <?php if (!$this->permissions[$this->permissao_ref]['editar']): ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <span class="label label-warning"><span class="icon24 icomoon-icon-warning "></span>Você não tem permissão para editar esta função.</span>
+                                        </div>
+                                    </div><!-- End .form-group  -->   
+                                <?php else: ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <button type="button" class="btn btn-info clickformsubmit">Salvar alterações</button>
+                                        </div>
+                                    </div><!-- End .form-group  -->
+                                <?php endif ?>
+                            <?php endif ?>
+                        </div><!-- End .row -->  
+                    </form>
+                </div>
+                <!-- End contentwrapper -->
+            </div>
+            <!-- End #content -->
+<?php   require_once $this->main_layouts . "footer.phtml"; ?>
+        </div>
+<?php   require_once $this->main_layouts . "plugins.phtml"; ?>
+        <!-- Init plugins only for page -->
+        <script src="<?php echo $this->main_template;?>plugins/forms/autosize/jquery.autosize.js"></script>
+        <script src="<?php echo $this->main_template;?>plugins/forms/tiny_mce/tinymce.min.js"></script>
+        <script type="text/javascript" src="<?php echo $this->main_template;?>plugins/forms/dualselect/jquery.dualListBox-1.3.min.js"></script>
+        <script src="<?php echo $this->main_template; ?>plugins/forms/select2/select2.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $.configureBoxes();
+                $.configureBoxes1();
+                saveKey(true);
+                tinymceInit(); 
+                $('.elastic').autosize();
+                $(".data").datepicker({
+                    dateFormat: 'dd/mm/yy',
+                    dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
+                    dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
+                    dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
+                    monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+                    monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
+                    nextText: 'Próximo',
+                    prevText: 'Anterior'
+                });
+                $('.hora').mask('00:00');
+                $('.data').mask('00/00/0000');
+                $('.select2').select2();
+            });
+        </script>
+    </body>
+</html>

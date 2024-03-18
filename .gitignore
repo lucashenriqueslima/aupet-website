@@ -1,0 +1,11 @@
+/.vscode/
+/main/uploads*
+/main/files*
+/vendor
+**/adminer*
+/main/System/log
+aupet.sql.gz
+**/.sass-cache
+.env
+/.idea
+.idea

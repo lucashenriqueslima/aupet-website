@@ -1,0 +1,81 @@
+<div class="phone">
+    <div class="field_input box_input">
+        <div class="col-lg-8 col-lg-offset-2">
+            <div class="input-group">
+                <input class="form-control inputs_add_rm no-border-right telefone" name="" type="text" value="" />
+                <span class="input-group-addon">
+                    <label>Tipo:&nbsp;</label>
+                    <select style="border:1px solid #ccc" name="">
+                        <option value="">Selecione..</option>
+                    </select>
+                </span>
+                <span class="input-group-addon"><div style="margin-top: 0" class="radio-custom"><input type="radio" id="" class="radio_main" name=""><label for="">Principal</label></div></span>
+            </div>
+        </div>
+        <div class="col-lg-1">
+            <span class="icomoon-icon-plus-circle btn btn-md btn-default input_add"/></span>
+        </div>
+        <div class="col-lg-1">
+            <span class="icomoon-icon-minus-circle btn btn-md btn-default input_remove"/></span>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $('body').on('click', '#telefones .input_add', function (e) {
+            e.preventDefault();
+
+            var $base = $(this).parents('.box_input');
+
+            var last_idx = 0;
+
+            $("#telefones .box_input").find("input[type=radio]").each(function () {
+                last_idx++;
+            });
+
+            var $template = $("#templates .phone").clone();
+
+            var $input_text = $template.find("input[type=text]");
+            $input_text.attr("name", "telefones[" + last_idx + "][data]");
+
+            var $input_radio = $template.find("input[type=radio]");
+            $input_radio.attr("name", "telefones[" + last_idx + "][principal]");
+            $input_radio.attr("id", "tel_" + last_idx);
+            $input_radio.next().attr("for", "tel_" + last_idx);
+
+            var $combo_box = $template.find("select");
+            $combo_box.attr("name", "telefones[" + last_idx + "][tipo]");
+            <?php foreach ($this->telefone_tipos as $indice): ?>
+                $combo_box.append('<option value="<?php echo $indice['code']; ?>"><?php echo $indice['nome']; ?></option>');
+            <?php endforeach; ?>
+
+            $base.after($template.html());
+
+            uniform();
+        });
+
+        $('body').on('click', '#telefones .input_remove', function (e) {
+            e.preventDefault();
+            var $input = $(this).parents('#telefones .box_input:first');
+            var $inputs = $("#telefones .box_input");
+
+            if ($inputs.length > 1)
+                $input.remove();
+            else
+                $input.find('input').val('');
+
+            if ($(document).find('#telefones .box_input:first').find('.col-lg-8.col-lg-offset-2').length == 1)
+                $(document).find('#telefones .box_input:first').find('.col-lg-8').removeClass('col-lg-offset-2');
+
+            if ($inputs.length == 1)
+                $(document).find('#telefones').find('.box_input .col-lg-8.col-lg-offset-2').removeClass('col-lg-offset-2');
+
+            if ($(document).find("#telefones").find('input[type=radio]:checked').length == 0)
+                $(document).find('#telefones .box_input:first').find('input[type=radio]').prop('checked', true).val("0");
+
+
+        });
+
+    });
+</script>

@@ -1,0 +1,139 @@
+<?php require_once $this->main_layouts . "headers.phtml";?>
+    <script type="text/javascript">
+        var pagina = "<?= $this->getPath(); ?>";
+        var permissao = "<?= $this->permissao_ref; ?>";
+        var controller = "<?= $this->getPath(); ?>";
+    </script>
+    </head>
+    <body ng-app='nova' ng-controller="IndexCtrl as ctrl" style='display:none' ng-init='ctrl.onInit()'>
+		<?php require_once $this->main_layouts . "header.phtml"; ?>
+        <div id="wrapper">
+			<?php require_once $this->main_layouts . "sidebar.phtml"; ?>
+            <div id="content" class="page-content clearfix">
+                <div class="contentwrapper">
+                    <div class="heading">
+                        <h3><?= $this->module_title; ?></h3>
+                        <ul class="breadcrumb">
+                            <li>Você está aqui:</li>
+                            <li>
+                                <a href="#" class="tip" title="Painel">
+                                    <i class="s16 icomoon-icon-screen-2"></i>
+                                </a>
+                                <span class="divider">
+                                    <i class="s16 icomoon-icon-arrow-right-3"></i>
+                                </span>
+                            </li>
+                            <li class="active"><?= $this->module_title;?></li>
+                        </ul>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <a href="<?= $this->getPath();?>/edit"><button type="button" class="btn btn-default mr5 mb10"><i class="glyphicon glyphicon-plus mr5"></i> Novo registro</button></a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default toggle ">
+                                <div class="panel-body">
+                                    <table cellpadding="0" cellspacing="0" border="0" class="tabletools table table-striped table-bordered sortable " width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th width="50px" class="tal">Ordem</th>
+                                                <th class="tal">Modelo</th>
+                                                <th width="150px" class="center">Ação</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat='row in ctrl.list' id='{{row.id}}'>
+                                                <td class="center"><a href="<?= $this->getPath() ?>/edit/id/{{row.id}}">{{$index+1}}</a></td>
+                                                <td class="tal"><a href="<?= $this->getPath() ?>/edit/id/{{row.id}}">{{row.descricao}}</a></td>
+                                                <td class="center" >
+                                                    <a class='cursor' ng-if='row.stats == "0"' ng-click='ctrl.stats(row)' title="Ativar"><img src="<?= $this->main_template; ?>images/status_vermelho.png"></a>
+                                                    <a class='cursor' ng-if='row.stats == "1"' ng-click='ctrl.stats(row)' title="Desativar"><img src="<?= $this->main_template; ?>images/status_verde.png"></a>
+                                                    <a class="cursor" ng-click='ctrl.clone(row.id)' title="Clonar"><i class="s12 icomoon-icon-copy"></i></a>
+                                                    <a href="<?= $this->getPath() ?>/edit/id/{{row.id}}"><i class="s12 icomoon-icon-pencil"></i></a>
+                                                    <a class="cursor" ng-click='ctrl.delete(row)'><i class="s12 icomoon-icon-remove"></i></a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php require_once $this->main_layouts . "options.phtml"; ?>
+                </div>
+            </div>
+		    <?php require_once $this->main_layouts . "footer.phtml"; ?>
+        </div>
+		<?php require_once $this->main_layouts . "plugins.phtml"; ?>
+        
+        <script src="<?= $this->main_template;?>plugins/tables/dataTables/jquery.dataTables.js"></script>
+        <script src="<?= $this->main_template;?>plugins/tables/dataTables/dataTables.tableTools.js"></script>
+        <script src="<?= $this->main_template;?>plugins/tables/dataTables/dataTables.bootstrap.js"></script>
+        <script src="<?= $this->main_template;?>plugins/tables/dataTables/dataTables.responsive.js"></script>
+        
+        <script type="text/javascript">
+            $(document).ready(function(){
+                //--------------- Data tables ------------------//
+                if($('table').hasClass('tabletools')){
+                    $('.tabletools').dataTable( {
+                        "pageLength": 50,
+                        "oLanguage": {
+                            "sSearch": "",
+                            "sLengthMenu": "<span>_MENU_</span>",
+                            "sProcessing":   "Processando...",                    
+                            "sZeroRecords":  "Não foram encontrados resultados",
+                            "sInfo":         "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                            "sInfoEmpty":    "Mostrando de 0 até 0 de 0 registros",
+                            "sInfoFiltered": "",
+                            "sInfoPostFix":  "",
+                            "sUrl":         "",
+
+                            "oPaginate": {
+                                "sFirst":    "Primeiro",
+                                "sPrevious": "Anterior",
+                                "sNext":     "Seguinte",
+                                "sLast":     "Último"
+                            }
+                        },
+                        "sDom": "T<'row'<'col-md-6 col-xs-12 'l><'col-md-6 col-xs-12'f>r>t<'row'<'col-md-4 col-xs-12'i><'col-md-8 col-xs-12'p>>",
+                        "aaSorting":[[0,"asc"]],
+                        tableTools: {
+                            "sSwfPath": "http://cdn.datatables.net/tabletools/2.2.2/swf/copy_csv_xls_pdf.swf",
+                            "aButtons": [
+                          ]
+                        }
+                    });
+                }
+            });
+
+            angular.module('nova', ['novaServices'])
+            .controller('IndexCtrl', function($scope, $http, $sce, NS, $window) {
+                this.list = <?= json_encode($this->list->rows) ?>;
+
+                this.stats = async (row) => {
+                    await NS.actionHandler($http.put("<?= $this->system_path . $this->getPath(); ?>/changestatus", row));
+                    row.stats = row.stats == '1' ? '0' : '1';
+                    $scope.$digest();
+                }
+
+                this.delete = async (row) => {
+                    if (!confirm('Deletar Modelo de Vistoria?')) return;
+                    await NS.actionHandler($http.delete("<?= $this->system_path . $this->getPath(); ?>/deleteModel/" + row.id));
+                    location.reload()
+                }
+
+                this.onInit = () => {
+                    $('body').show();
+                }
+
+                this.clone = async (id) => {
+                    if (!confirm('Clonar Modelo de Vistoria?')) return;
+                    await NS.actionHandler($http.post("<?= $this->system_path . $this->getPath() ?>/clone", {id}));
+                    location.reload();
+                }
+            });
+        </script>
+    </body>
+</html>

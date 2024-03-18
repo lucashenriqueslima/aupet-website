@@ -1,0 +1,91 @@
+<?php
+ $data = $this->DB_fetch_array("SELECT * FROM hbrd_adm_company where id = 1", 'string')->rows[0]['logo'];
+ $base64 = 'data:image/jpeg;base64,' . base64_encode($data);
+?>
+<html>
+<head>
+	<style>
+	table {
+		border-collapse: collapse;
+		width: 100%;
+	}
+	td, th {
+		border: 1px solid #dddddd;
+		text-align: center;
+		padding: 3px;
+	}
+	tr:nth-child(even) {
+		background-color: #dddddd;
+	}
+	table *{
+		vertical-align: middle;
+	}
+	.footer-table td {
+		font-weight: bold;
+	}
+	.main div img {
+		float: left;
+	}
+	.blue th, .blue td {
+		background : #0f243f;
+		color: white;
+		height: 30px;
+	}
+	.main div {
+		padding : 20px;
+	}
+	.linhas td {
+		height: 20px;
+	}
+	.logo{
+		margin-right: 10px;
+	}
+	</style>
+</head>
+<body >
+	<div class='main'>
+		<div>
+			<img class="logo" width='150' src="<?= $base64; ?>" alt="Página Inicial" />
+			<h2>Relatório consultores <?= " de ".$_GET['de']; ?><?= " até ".$_GET['ate']; ?></h2>
+			<i>Emitido em <b><?= date("d/m/Y").' às '.date("H:i"); ?></b> por <b><?= $_SESSION["admin_nome"]; ?></b>.</i>
+		</div>
+		<table>
+			<tr class='blue' style="">
+				<th >Ranking</th>
+				<th>Consultor</th>
+				<th>Equipe</th>
+				<th>Conversão</th>
+				<th>Ativadas</th>
+			</tr>
+			<?php 
+			$ativadas = 0;
+			$anterior;
+			$ranking = 0;
+			foreach ($this->dados as $i => $item) : ?>
+			<?php $ativadas = $ativadas + (int)$item['ativada'] ?? 0 ?>
+			<tr class='linhas'>
+				<?php 
+					if($anterior != $item["ativada"]) $ranking++;
+					$anterior = $item["ativada"];
+				?>
+				<td style="width: 10%;"><?= $ranking ?></td>
+				<td style="width: 35%;"><?= ($item["nome"] ?? ''); ?></td>
+				<td style="width: 35%;" ><?= ($item["equipe"] ?? ''); ?></td>
+				<td style="width: 10%;" ><?= $this->formataMoedaDeBanco(((($item['ativada']?? 0) / ($item['total']?? 0)) * 100) ?? 0); ?></td>
+				<td style="width: 10%;" ><?= $item["ativada"] ?? ''; ?></td>
+			</tr>
+			<?php endforeach ?>
+			<tr class='footer-table blue'>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td><?= $ativadas ?? 0; ?></td>
+			</tr>
+		</table>
+	</div>
+	<br>
+	<br>
+	<i>Gerenciado por <b><?= $this->root_path; ?></b></i>
+</body>
+</html>

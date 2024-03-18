@@ -1,0 +1,141 @@
+<?php
+    $file = $this->DB_fetch_array("SELECT logo FROM hbrd_adm_company where id = 1")->rows[0];
+?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <base href="<?php echo $this->system_path; ?>" />
+    <meta charset="utf-8">
+    <meta name="revisit-after" content="5" />
+    <meta name="url" content="<?php echo $this->system_path ?>" />
+    <meta name="description" content="Sistema v3" />
+    <meta name="keywords" content="sistema sistemav3 sys system sysv3 sistema-v3" />
+    <title>LOGIN ADMINISTRAÇÃO</title>
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <link href="<?php echo $this->main_template; ?>css/bootstrap.css" rel="stylesheet" />
+    <link href="<?php echo $this->main_template; ?>css/login.css" rel="stylesheet" />
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?php echo $this->main_template; ?>images/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?php echo $this->main_template; ?>images/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?php echo $this->main_template; ?>images/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="<?php echo $this->main_template; ?>images/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="icon" href="<?php echo $this->main_template; ?>images/ico/favicon.ico" type="image/png">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+</head>
+<body>
+    <div class="background"></div>
+    <div class="mainbox">
+        <div class="logomarca" style="align-items: center">
+            <!-- <img src="/website/img/temporario/logo[212x93].png"> -->
+            <?php if ($file['logo'] == null) : ?>
+                <img style="padding: 10px; margin-left: 20px" src="<?php echo $this->main_template;?>images/logo_aupet.png" alt="" class="image marginR10"/>
+            <?php else: ?>
+                <img style="padding: 10px; margin-left: 20px" src="<?php echo $file['logo'] ?>"/>
+            <?php endif ?>
+        </div>
+        <div class="form_title">ADMINISTRAÇÃO</div>
+        <form action="javascript:;" class="form_login form_clickform" method="post">
+            <?php if (isset($_GET['code']) && $_GET['code'] != "") : ?>
+                <input id="recuperar-senha" value="2" name="recuperar_senha" type="hidden" />
+                <input id="code" value="<?php echo $_GET['code']; ?>" name="code" type="hidden" />
+                <div class="form__field"><input type="password" name="password" id="password" class="form-control" value="" placeholder="Nova senha"></div>
+                <div class="form__actions">
+                    <div class="form__field"><button class="bt_submit full clickformsubmit">Salvar</button></div>
+                </div>
+            <?php else : ?>
+                <input id="recuperar-senha" value="" name="recuperar_senha" type="hidden" />
+                <div class="form_label">Faça login para acessar o painel.</div>
+                <div class="form__field"><input type="text" name="username" id="username" placeholder="Login"></div>
+                <div class="form__field"><input type="password" name="password" id="password" placeholder="Senha"></div>
+                <div class="forn__field">
+                    <div class="keep_connected"><label class="radio_button"><input type="checkbox" name="conectado" value="1"><span></span> mantenha-me conectado</label></div>
+                    <div class="forgot_key"><button>esqueci minha senha</button></div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form__actions">
+                    <div class="form__field"><button class="bt_submit full clickformsubmit">Conectar</button></div>
+                </div>
+            <?php endif; ?>
+        </form>
+        <form action="javascript:;" class="form_forgot_key form_clickform" method="post">
+            <input id="recuperar-senha" value="1" name="recuperar_senha" type="hidden" />
+            <div class="form_label">Informe seu login ou e-mail para receber sua senha em seu e-mail.</div>
+            <div class="form__field"><input type="text" name="username" id="username" placeholder="Login"></div>
+            <div class="forn__field">
+                <button class="login_form">voltar</button>
+            </div>
+            <div class="form__actions">
+                <div class="form__field"><button class="bt_submit full clickformsubmit">Enviar</button></div>
+            </div>
+        </form>
+        <div class="loggedin">
+            <div class="form_label">Escolha o serviço e clique para acessar.</div>
+            <ul class="dados">
+                <li><strong>Usuário:</strong> <span class="nome"></span></li>
+                <li><strong>Horário de login:</strong> <span class="horario"></span></li>
+                <li><strong>IP:</strong> <span class="ip"></span></li>
+            </ul>
+        </div>
+    </div>
+    <div class="ambientes">
+    </div>
+    <script type="text/javascript">
+        var root_path = "<?php echo $this->root_path ?>";
+        var system_path = "<?php echo $this->system_path ?>";
+        var main_template = "<?php echo $this->main_template ?>";
+        var main_scripts = "<?php echo $this->main_scripts ?>";
+    </script>
+    <script type="text/javascript" src="<?php echo $this->main_template; ?>js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="<?php echo $this->main_template; ?>plugins/forms/clickform/jquery.clickform.js"></script>
+    <script id="mainscript">
+        //BOTÃO ESQUECI MINHA SENHA
+        $('.forgot_key button').click(function() {
+            $('.form_login').fadeOut();
+            $('.form_forgot_key').fadeIn();
+        });
+        //BOTÃO VOLTAR PARA LOGIN
+        $('.login_form').click(function() {
+            $('.form_login').fadeIn();
+            $('.form_forgot_key').fadeOut();
+        });
+        //SUBMIT DO FORMULÁRIO ESQUECI MINHA SENHA
+        $('.form_forgot_key .bt_submit').click(function() {
+            $('.form_login').fadeIn();
+            $('.form_forgot_key').fadeOut();
+        });
+        $(".form_clickform").clickform({
+            "validateUrl": "main/login/entrar",
+            "activateEnterKey": true
+        }, function(data) {
+            if (data.type == "success") {
+                if (data.action == "environment") {
+                    $(".dados .nome").html(data.username);
+                    $(".dados .horario").html(data.logintime);
+                    $(".dados .ip").html(data.loginip);
+                    $('.mainbox').addClass('logado');
+                    $('.loggedin').fadeIn();
+                    $('.background').fadeOut();
+                    $('.form_login').fadeOut();
+                    $('.form_forgot_key').fadeOut();
+                    $('.ambientes').load('main/login/environment', function() {
+                        console.log(data.action);
+                        $(this).fadeIn(function() {
+                            //$(this).css('position','relative');
+                        });
+                    });
+                } else if (data.action != "") {
+                    window.location.href = data.action;
+                }
+            }
+        });
+        $("body").on("click", "a.environment", function(e) {
+            e.preventDefault();
+            $.post("main/login/entrarambiente", {
+                ambiente: $(this).attr("data-environment")
+            }, function(data) {
+                window.location.href = data.action;
+            }, 'json')
+        });
+    </script>
+</body>
+</html>

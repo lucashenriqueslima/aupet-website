@@ -1,0 +1,26 @@
+<table border="1">
+    <tr>
+        <td colspan="5" align="center"><h1><?= "Relatório Ongs"; ?></h1></td>
+    </tr>
+    <tr>
+        <th align="left" >Nome</th>
+        <th align="left" >Telefone</th>
+        <th align="left" >Estado</th>
+        <th align="left" >Cidade</th>
+        <th align="left" >Bairro</th>
+    </tr>
+    <?php
+    if ($this->dados->num_rows) {
+        foreach ($this->dados->rows as $registro) { ?>
+            <tr>
+                <td align="left"><?= $registro["nome"]; ?></td>
+                <td align="left"><?= $registro["telefone1"]; ?></td>
+                <td align="left"><?= $registro["estado"]; ?></td>
+                <td align="left"><?= $registro["cidade"]; ?></td>
+                <td align="left"><?= $registro["bairro"]; ?></td>
+            </tr>
+            <?php
+		}
+    }
+    ?>
+</table>

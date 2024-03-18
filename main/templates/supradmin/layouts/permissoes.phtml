@@ -1,0 +1,522 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default toggle">
+            <!-- Start .panel -->
+            <div class="panel-heading">
+                <h4 class="panel-title">Módulos</h4>
+            </div>
+            <div class="panel-body">
+                <div class="col-lg-12">
+                    <div class="panel panel-default toggle">
+                        
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Administração</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label" >Marcar todos <input mrkall type="checkbox"></label>
+                                <div class="col-lg-10 col-md-9">
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="user" name="perm[user]" <?= $this->permission['user'] ? 'checked' : '' ?> >
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="user">Usuários</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="group" name="perm[group]" <?= $this->permission['group'] ? 'checked' : '' ?> >
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="group">Grupos</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="log" name="perm[log]" <?= $this->permission['log'] ? 'checked' : '' ?> >
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="log">Logs</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="dashboard" name="perm[dashboard]" <?= $this->permission['dashboard'] ? 'checked' : '' ?> >
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="dashboard">Dashboard</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="smtp" name="perm[smtp]" <?= $this->permission['smtp'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="smtp">SMTP</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="company" name="perm[company]" <?= $this->permission['company'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="company">Associação</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="integration" name="perm[integration]" <?= $this->permission['integration'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="integration">Integrações</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="panel panel-default toggle">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Comercial</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label" >Marcar todos <input mrkall type="checkbox"></label>
+                                <div class="col-lg-10 col-md-9">
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="indicationsource" name="perm[indicationsource]" <?= $this->permission['indicationsource'] ? 'checked' : '' ?> >
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="indicationsource">Origens das Indicações</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="indication" name="perm[indication]" <?= $this->permission['indication'] ? 'checked' : '' ?> >
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="indication">Indicações</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="consultant" name="perm[consultant]" <?= $this->permission['consultant'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="consultant">Consultores</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="comissioned" name="perm[comissioned]" <?= $this->permission['comissioned'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="comissioned">Indicadores</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="team" name="perm[team]" <?= $this->permission['team'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="team">Equipes</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="communication" name="perm[communication]" <?= $this->permission['communication'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="communication">Comunicados</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="inspections" name="perm[inspections]" <?= $this->permission['inspections'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="inspections">Vistorias</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="plan" name="perm[plan]" <?= $this->permission['plan'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="plan">Planos</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="category" name="perm[category]" <?= $this->permission['category'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="category">Categorias</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="fipe" name="perm[fipe]" <?= $this->permission['fipe'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="fipe">Veiculos FIPE</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="depreciation" name="perm[depreciation]" <?= $this->permission['depreciation'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="depreciation">Depreciação</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="benefit" name="perm[benefit]" <?= $this->permission['benefit'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="benefit">Benefícios</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="sectional" name="perm[sectional]" <?= $this->permission['sectional'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="sectional">Regionais</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="plantemplates" name="perm[plantemplates]" <?= $this->permission['plantemplates'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="plantemplates">Templates de termos de filiação</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="indicationterm" name="perm[indicationterm]" <?= $this->permission['indicationterm'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="indicationterm">Termos</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="panel panel-default toggle">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Aplicativo</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label" >Marcar todos <input mrkall type="checkbox"></label>
+                                <div class="col-lg-10 col-md-9">
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="status" name="perm[status]" <?= $this->permission['status'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="status">Situações</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="motive" name="perm[motive]" <?= $this->permission['motive'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="motive">Motivos</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="solicitation" name="perm[solicitation]" <?= $this->permission['solicitation'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="solicitation">Solicitações app</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="paymentrequest" name="perm[paymentrequest]" <?= $this->permission['paymentrequest'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="paymentrequest">Solicitações de saque</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="payment" name="perm[payment]" <?= $this->permission['payment'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="payment">Pagamentos realizados</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="apptemplates" name="perm[apptemplates]" <?= $this->permission['apptemplates'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="apptemplates">Templates LEADSZAPP</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="masscomunication" name="perm[masscomunication]" <?= $this->permission['masscomunication'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="masscomunication">Comunicados em massa</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="appfaq" name="perm[appfaq]" <?= $this->permission['appfaq'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="appfaq">Perguntas frequentes</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="panel panel-default toggle">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Configurações e Cadastros</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label" >Marcar todos <input mrkall type="checkbox"></label>
+                                <div class="col-lg-10 col-md-9">
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="inspectionconfigs" name="perm[inspectionconfigs]" <?= $this->permission['inspectionconfigs'] ? 'checked' : '' ?> >
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="inspectionconfigs">Vistoria configurações</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="inspectionmodel" name="perm[inspectionmodel]" <?= $this->permission['inspectionmodel'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="inspectionmodel">Vistoria modelos</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="inspector" name="perm[inspector]" <?= $this->permission['inspector'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="inspector">Vistoria vistoriadores</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="store" name="perm[store]" <?= $this->permission['store'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="store">Fornecedores e Oficinas</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="storetype" name="perm[storetype]" <?= $this->permission['storetype'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="storetype">Tipos de Fornecedores e Oficinas</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="associate" name="perm[associate]" <?= $this->permission['associate'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="associate">Associados</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="panel panel-default toggle">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Eventos</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label" >Marcar todos <input mrkall type="checkbox"></label>
+                                <div class="col-lg-10 col-md-9">
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="communicated" name="perm[communicated]" <?= $this->permission['communicated'] ? 'checked' : '' ?> >
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="communicated">Eventos</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="communicatedcomplement" name="perm[communicatedcomplement]" <?= $this->permission['communicatedcomplement'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="communicatedcomplement">Complementos</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="communicatedbuy" name="perm[communicatedbuy]" <?= $this->permission['communicatedbuy'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="communicatedbuy">Compras</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="surveyors" name="perm[surveyors]" <?= $this->permission['surveyors'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="surveyors">Vistoriadoras</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="communicatedtype" name="perm[communicatedtype]" <?= $this->permission['communicatedtype'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="communicatedtype">Tipos de eventos</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="communicatedstatus" name="perm[communicatedstatus]" <?= $this->permission['communicatedstatus'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="communicatedstatus">Etapas</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="communicatedtemplates" name="perm[communicatedtemplates]" <?= $this->permission['communicatedtemplates'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="communicatedtemplates">Templates</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="estimate" name="perm[estimate]" <?= $this->permission['estimate'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="estimate">Orçamentos</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="regulation" name="perm[regulation]" <?= $this->permission['regulation'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="regulation">Regulagem</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="communicatedanalytics" name="perm[communicatedanalytics]" <?= $this->permission['communicatedanalytics'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="regulation">Análise de Custos</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="panel panel-default toggle">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Financeiro</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label" >Marcar todos <input mrkall type="checkbox"></label>
+                                <div class="col-lg-10 col-md-9">
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="release" name="perm[release]" <?= $this->permission['release'] ? 'checked' : '' ?> >
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="release">Lançamentos</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="order" name="perm[order]" <?= $this->permission['order'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="order">Ordem de compra</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="fincategoria" name="perm[fincategoria]" <?= $this->permission['fincategoria'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="fincategoria">Categoria</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="fincentrocusto" name="perm[fincentrocusto]" <?= $this->permission['fincentrocusto'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="fincentrocusto">Centro de custo</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="ordertemplates" name="perm[ordertemplates]" <?= $this->permission['ordertemplates'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="ordertemplates">Templates financeiro</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="panel panel-default toggle">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Carro reserva</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label" >Marcar todos <input mrkall type="checkbox"></label>
+                                <div class="col-lg-10 col-md-9">
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="backuplocation" name="perm[backuplocation]" <?= $this->permission['backuplocation'] ? 'checked' : '' ?> >
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="backuplocation">Locações</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="backupcar" name="perm[backupcar]" <?= $this->permission['backupcar'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="backupcar">Veiculos</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="backuprevision" name="perm[backuprevision]" <?= $this->permission['backuprevision'] ? 'checked' : '' ?> >
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="backuprevision">Revisões</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="backupcondition" name="perm[backupcondition]" <?= $this->permission['backupcondition'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="backupcondition">Condições</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline">
+                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                            <input type="checkbox" value='1' id="backupchecklist" name="perm[backupchecklist]" <?= $this->permission['backupchecklist'] ? 'checked' : '' ?>>
+                                            <span class="button-checkbox"></span>
+                                        </label>
+                                        <label for="backupchecklist">Checklist</label>
+                                    </div>
+                                    <div class="toggle-custom toggle-inline"> 
+                                        <label class="toggle" data-on="ON" data-off="OFF"> 
+                                            <input type="checkbox" value='1' id="backupcartemplates" name="perm[backupcartemplates]" <?= $this->permission['backupcartemplates'] ? 'checked' : '' ?>> 
+                                            <span class="button-checkbox"></span> 
+                                        </label> 
+                                        <label for="backupcartemplates">Templates DOC</label> 
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('input[mrkall]').forEach((i) => { i.onchange = marcarTodos }); 
+    
+    function marcarTodos({ target }) {
+        console.log(target); 
+        const checkAll = target.checked; 
+        target.closest(".form-group")
+            .querySelectorAll('.toggle input[type="checkbox"]')
+            .forEach((i) => { i.checked = checkAll });
+    }
+</script>

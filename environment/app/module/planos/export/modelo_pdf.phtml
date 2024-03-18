@@ -1,0 +1,149 @@
+<?php 
+$this->company =$this->DB_fetch_array("SELECT * FROM hbrd_adm_company",'string')->rows[0];
+?>
+<style>
+	* { font-size: 12px; } .big { font-size: 18px; } .med-big { font-size: 15px; } table, body, html { width: 100%; overflow: wrap; } td, th { /* border: 1px solid black; */ line-height: 18px; } .my-table { padding: 5px 0 15px 0; border-bottom: 1px solid gray; margin-top: 10px; margin-bottom: 10px; } .gray { color: gray; } .items table { border-collapse: collapse; width: 100%; } .items td, th { border-bottom: 1px solid #dddddd; padding: 5px 0 5px 0; } .logo { object-fit: cover; max-height: 100px; } 
+</style>
+<table>
+	<tbody>
+		<tr>
+			<td>
+				<!-- CABEÇALHO -->
+				<table class="my-table">
+					<tbody>
+						<tr>
+							<td class="gray" style="width: 50%;">{[data]}</td>
+							<td class="big gray" style="width: 50%; text-align: right;"><b class="big" style="color: black;">Proposta de filiação</b></td>
+						</tr>
+					</tbody>
+				</table>
+				<!-- INFO EMPRESA -->
+				<table class="my-table">
+					<tbody>
+						<tr>
+							<td style="width: 20%;" valign="top">
+								<table>
+									<tbody>
+										<tr>
+											<td style="width: 100%; text-align: center;"><img class="logo" src="<?= $this->root_path.'api/sistema/logosistema' ?>" /></td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+							<td style="width: 60%;">
+								<table>
+									<tr>
+										<td style='width:100%'><b class='big'><?= $this->company['nome'] ?></b></td>
+									</tr>
+									<tr>
+										<td style='width:100%'><?= $this->company['endereco'] ?></td>
+									</tr>
+									<tr>
+										<td style='width:100%' class='gray'><?= $this->company['nome_fantasia'] ?></td>
+									</tr>
+									<tr>
+										<td style='width:100%' class='gray'>CNPJ: <?= $this->company['cnpj'] ?></td>
+									</tr>
+								</table>
+							</td>
+							<td style="width: 20%;" valign="top">
+								<table align="right">
+									<tbody>
+										<tr>
+											<td style="width: 100%; text-align: right;"><b class="big">{[consultor_telefone]}</b></td>
+										</tr>
+										<tr>
+											<td style="width: 100%; text-align: right;"><strong>Consultor</strong>: {[consultor_nome]}</td>
+										</tr>
+										<tr>
+											<td style="width: 100%; text-align: right;"><strong>Plano</strong>: {[plano]}</td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<!-- ASSOCIADO -->
+				<table>
+					<tbody>
+						<tr style="background: #dddddd;">
+							<td style="width: 100%; text-align: center;"><b>Dados do associado e veículo</b></td>
+						</tr>
+						<tr>
+							<td>
+								<table class="my-table">
+									<tbody>
+										<tr>
+											<td style="width: 50%;">Associado: <b>{[nome]}</b></td>
+											<td style="width: 50%; text-align: right;">Telefone: <b class="med-big">{[telefone]}</b></td>
+										</tr>
+										<tr>
+											<td>Veículo: <b>{[modelo]}</b></td>
+											<td style="text-align: right;">Placa: <b>{[placa]}</b></td>
+										</tr>
+										<tr>
+											<td>Marca: {[marca]}</td>
+											<td style="text-align: right;">Ano/Combustível: {[ano]}</td>
+										</tr>
+										<tr>
+											<td>Valor FIPE: {[valor_fipe]}</td>
+											<td style="text-align: right;">Email: {[email]}</td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<!-- CONDIÇÕES DE PAGAMENTO -->
+				<table class="my-table">
+					<tbody>
+						<tr style="background: #dddddd;">
+							<td style="width: 100%; text-align: center;"><b>Proposta</b></td>
+						</tr>
+						<tr>
+							<td>
+								<table style="width: 100%;" class="items">
+									<tbody>
+										<tr>
+											<td style="width: 50%; text-align: left;">Mensalidade</td>
+											<td style="text-align: left;">{[mensalidade]}</td>
+										</tr>
+										<tr>
+											<td style="width: 50%; text-align: left;">Adesão</td>
+											<td style="text-align: left;">{[adesao]}</td>
+										</tr>
+										<tr>
+											<td style="width: 50%; text-align: left;">Participação</td>
+											<td style="text-align: left;">{[participacao]}</td>
+										</tr>
+										<tr>
+											<td style="width: 50%; text-align: left;">Categoria</td>
+											<td style="text-align: left;">{[categoria]}</td>
+										</tr>
+										<tr>
+											<td style="width: 50%; text-align: left;">Grupo</td>
+											<td style="text-align: left;">{[grupo]}</td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<!-- OBSERVAÇÕES -->
+				<table class="my-table">
+					<tbody>
+						<tr style="height: 18px;">
+							<th style="width: 100%; text-align: left; border: none; height: 18px;">Benefícios</th>
+						</tr>
+						<tr>
+							<td style="width: 100%; border: none;">{[beneficios]}</td>
+						</tr>
+					</tbody>
+				</table>
+			</td>
+		</tr>
+	</tbody>
+</table>

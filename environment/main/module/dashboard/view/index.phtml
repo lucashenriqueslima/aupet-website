@@ -1,0 +1,348 @@
+<?php require_once $this->main_layouts."headers.phtml"; ?>
+    <script type="text/javascript">
+        var pagina = "<?= $this->getPath(); ?>";
+        var permissao = "<?= $this->permissao_ref; ?>";    
+    </script>
+    </head>  
+    <body ng-app='nova' ng-controller="Ctrl as ctrl" ng-init='ctrl.onInit()' style='display:none;'>
+        <?php require_once $this->main_layouts."header.phtml";  ?>
+        <div id="wrapper">
+        <?php require_once $this->main_layouts."sidebar.phtml"; ?>
+            <div id="content" class="page-content clearfix">
+                <div class="contentwrapper">
+                    <div class="heading">
+                        <h3><?= $this->module_title; ?></h3>
+                        <ul class="breadcrumb">
+                            <li>Você está aqui:</li>
+                            <li> <a href="#" class="tip" title="voltar para o painel"> <i class="s16 icomoon-icon-screen-2"></i> </a> <span class="divider"> <i class="s16 icomoon-icon-arrow-right-3"></i> </span> </li>
+                            <li class="active">Painel</li>
+                        </ul>
+                    </div>
+                <?php if ($this->permissions('indication')) : ?>
+                    <?php if ($this->allowedService("app")) : ?>
+                    <div class="row">
+                        <div class="col-md-3 col-md-3 col-sm-3 col-xs-6">
+                            <a href="#" class="chartShortcuts no-hover">
+                                <span class="head">Propostas Pendentes</span>
+                                <span class="number"><?= $this->indicacoes_pendentes ?></span>
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-md-3 col-sm-3 col-xs-6">
+                            <a href="#" class="chartShortcuts no-hover">
+                                <span class="head">Propostas Arquivadas</span>
+                                <span class="number"><?= $this->indicacoes_arquivadas ?></span>
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-md-3 col-sm-3 col-xs-6">
+                            <a href="#" class="chartShortcuts no-hover">
+                                <span class="head">Propostas Ativadas</span>
+                                <span class="number"><?= $this->indicacoes_ativadas ?></span>
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-md-3 col-sm-3 col-xs-6">
+                            <a href="#" class="chartShortcuts no-hover">
+                                <span class="head">Conversão (%)</span>
+                                <span class="number"><?= $this->formataMoedaDeBanco($this->conversao) ?></span>
+                            </a>
+                        </div>
+                    </div>
+                    <?php endif ?>
+
+                    <?php if ($this->allowedService("app")) : ?>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel panel-default toggle ">                                
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <i class="icomoon-icon-stats-up"></i> Propostas nos Últimos 30 dias
+                                            <input class="datepicker box-header-date de" name="de_visitors_chart" type="text" placeholder="De: ">
+                                            <input class="datepicker box-header-date ate" name="ate_visitors_chart" type="text" placeholder="Até: ">
+                                        </h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="vital-stats">
+                                            <div class="visitors-chart indicacoes" id="indicacoes" style="height: 230px;width:100%;margin-top:15px; margin-bottom:15px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif ?>
+
+                    <?php if ($this->allowedService("cms")) : ?>    
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel panel-default toggle ">                                
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <i class="icomoon-icon-stats-up"></i> Acessos ao Site nos Últimos 30 dias
+                                            <input class="datepicker box-header-date de" name="de_visitors" type="text" placeholder="De: ">
+                                            <input class="datepicker box-header-date ate" name="ate_visitors" type="text" placeholder="Até: ">
+                                        </h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="vital-stats">
+                                            <div class="visitors-chart acessos" id="acessos" style="height: 230px;width:100%;margin-top:15px; margin-bottom:15px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif ?>
+
+                <?php endif ?>
+                </div>
+            </div>
+            <?php require_once $this->main_layouts."footer.phtml"; ?>
+        </div>
+        <?php require_once $this->main_layouts."plugins.phtml"; ?>
+        <script src="<?= $this->main_template;?>plugins/charts/flot/jquery.flot.custom.js"></script>
+        <script src="<?= $this->main_template;?>plugins/charts/flot/jquery.flot.pie.js"></script>
+        <script src="<?= $this->main_template;?>plugins/charts/flot/jquery.flot.resize.js"></script>
+        <script src="<?= $this->main_template;?>plugins/charts/flot/jquery.flot.time.js"></script>
+        <script src="<?= $this->main_template;?>plugins/charts/flot/jquery.flot.orderBars.js"></script>
+        <script src="<?= $this->main_template;?>plugins/charts/flot/jquery.flot.tooltip.min.js"></script>
+        <link rel="stylesheet" href="/main/templates/supradmin/css/jquery-ui.css">
+        <script type="text/javascript">
+            var chartColours = ['#88bbc8', '#ed7a53', '#9FC569', '#bbdce3', '#9a3b1b', '#5a8022', '#2c7282'];
+            $(document).ready(function(){
+                $(".datepicker").mask("##/##/####");
+                $(".datepicker").datepicker({});
+
+                <?php if ($this->allowedService("app")) : ?>
+                $(function () {
+                    <?php if ($this->dados_grafico->num_rows) :?>
+                        var d1 = [<?php foreach($this->dados_grafico->rows as $key => $dia){ echo "[$key,".$dia['indicacoes']."]"; if($key < (count($this->dados_grafico->rows)-1)) echo ",";} ?>];
+                        var ticks = [<?php foreach($this->dados_grafico->rows as $key => $dia){ echo "[$key,'".$dia['dia_mes']."']"; if($key < (count($this->dados_grafico->rows)-1)) echo ",";} ?>];
+                    <?php else :?>
+                        var d1 = [];
+                        var ticks = [];
+                    <?php endif; ?>
+                    var placeholder = $(".indicacoes");
+                    var options = {
+                        grid: {
+                            show: true,
+                            aboveData: true,
+                            color: "#3f3f3f" ,
+                            labelMargin: 5,
+                            axisMargin: 0, 
+                            borderWidth: 0,
+                            borderColor:null,
+                            minBorderMargin: 5 ,
+                            clickable: true, 
+                            hoverable: true,
+                            autoHighlight: true,
+                            mouseActiveRadius: 20
+                        },
+                        series: {
+                            grow: {
+                                active: false,
+                                stepMode: "linear",
+                                steps: 50,
+                                stepDelay: true
+                            },
+                            lines: {
+                                show: true,
+                                fill: true,
+                                lineWidth: 4,
+                                steps: false
+                                },
+                            points: {
+                                show:true,
+                                radius: 5,
+                                symbol: "circle",
+                                fill: true,
+                                borderColor: "#fff"
+                            }
+                        },
+                        legend: { 
+                            position: "ne", 
+                            margin: [0,-25], 
+                            noColumns: 0,
+                            labelBoxBorderColor: null,
+                            labelFormatter: function(label, series) {
+                                return label+'&nbsp;&nbsp;';
+                                }
+                        },
+                        yaxis: { min: 0 },
+                        xaxis: {ticks:ticks, tickDecimals: 0},
+                        colors: chartColours,
+                        shadowSize:1,
+                        tooltip: true, 
+                        tooltipOpts: {
+                            content: "%s : %y.0",
+                            shifts: {
+                                x: -30,
+                                y: -50
+                            }
+                        }
+                    };   
+                    $.plot(placeholder, [ { 
+                        label: "Propostas", 
+                        data: d1, 
+                        lines: {fillColor: "#f2f7f9"}, points: {fillColor: "#88bbc8"} 
+                    } ], options);
+                });
+                <?php endif ?>
+
+                <?php if ($this->allowedService("cms")) : ?> 
+                $(function () {
+                    <?php if ($this->dados_acesso_page->num_rows) :?>
+                        var p1 = [<?php foreach($this->dados_acesso_page->rows as $key => $dia){ echo "[$key,".$dia['acessos']."]"; if($key < $this->dados_acesso_page->num_rows-1) echo ",";} ?>];
+                        var tickss = [<?php foreach($this->dados_acesso_page->rows as $key => $dia){ echo "[$key,'".$dia['dia_mes']."']"; if($key < $this->dados_acesso_page->num_rows-1) echo ",";} ?>];
+                    <?php else :?>
+                        var p1 = [];
+                        var tickss = [];
+                    <?php endif; ?>
+                    var placeholderAcessos = $(".acessos");
+                    var optionsAcessos = {
+                        grid: {
+                            show: true,
+                            aboveData: true,
+                            color: "#3f3f3f" ,
+                            labelMargin: 5,
+                            axisMargin: 0, 
+                            borderWidth: 0,
+                            borderColor:null,
+                            minBorderMargin: 5 ,
+                            clickable: true, 
+                            hoverable: true,
+                            autoHighlight: true,
+                            mouseActiveRadius: 20
+                        },
+                        series: {
+                            grow: {
+                                active: false,
+                                stepMode: "linear",
+                                steps: 50,
+                                stepDelay: true
+                            },
+                            lines: {
+                                show: true,
+                                fill: true,
+                                lineWidth: 4,
+                                steps: false
+                                },
+                            points: {
+                                show:true,
+                                radius: 5,
+                                symbol: "circle",
+                                fill: true,
+                                borderColor: "#fff"
+                            }
+                        },
+                        legend: { 
+                            position: "ne", 
+                            margin: [0,-25], 
+                            noColumns: 0,
+                            labelBoxBorderColor: null,
+                            labelFormatter: function(label, series) {
+                                return label+'&nbsp;&nbsp;';
+                                }
+                        },
+                        yaxis: { min: 0 },
+                        xaxis: {ticks:tickss, tickDecimals: 0},
+                        colors: chartColours,
+                        shadowSize:1,
+                        tooltip: true, 
+                        tooltipOpts: {
+                            content: "%s : %y.0",
+                            shifts: {
+                                x: -30,
+                                y: -50
+                            }
+                        }
+                    };   
+
+                    $.plot(placeholderAcessos, [ { 
+                        label: "Acessos", 
+                        data: p1, 
+                        lines: {fillColor: "#f2f7f9"}, points: {fillColor: "#88bbc8"} 
+                    } ], optionsAcessos);
+                });
+                <?php endif ?>
+
+                $("input[name='de_visitors_chart'],input[name='ate_visitors_chart']").on("change", function(){
+                    var de_chart = $("input[name='de_visitors_chart']").val();
+                    var ate_chart = $("input[name='ate_visitors_chart']").val();
+                    var de = de_chart.split("/");
+                    var ate = ate_chart.split("/");
+                    de = de[2] + '-' + de[1] + '-' + de[0];
+                    ate = ate[2] + '-' + ate[1] + '-' + ate[0];
+                    if (ate < de) {
+                        $(".indicacoes").html('<div class="well" style="color:black">A data final não pode ser menor que a data inicial!</div>');
+                    } else {            
+                        if (de_chart.length && ate_chart.length){
+                            $(".indicacoes").html("<center><img alt='Carregando...' src='images/loaders/circular/055.gif'/></center>");
+                            $.ajax({ url: "<?= $this->getPath() ?>/chart", type: 'POST', data: { de : de, ate : ate }, 
+                                success: function(dt){
+                                    $(".indicacoes").html(dt);
+                                }
+                             }); 
+                        }
+                    }
+                });
+                $("input[name='de_visitors'],input[name='ate_visitors']").on("change", function(){
+                    var de_chart = $("input[name='de_visitors']").val();
+                    var ate_chart = $("input[name='ate_visitors']").val();
+                    var de = de_chart.split("/");
+                    var ate = ate_chart.split("/");
+                    de = de[2] + '-' + de[1] + '-' + de[0];
+                    ate = ate[2] + '-' + ate[1] + '-' + ate[0];
+                    if (ate < de) {
+                        $(".acessos").html('<div class="well" style="color:black">A data final não pode ser menor que a data inicial!</div>');
+                    } else {            
+                        if (de_chart.length && ate_chart.length){
+                            $(".acessos").html("<center><img alt='Carregando...' src='images/loaders/circular/055.gif'/></center>");
+                            $.ajax({ url: "<?= $this->getPath() ?>/chartAcessos", type: 'POST', data: { de : de, ate : ate }, 
+                                success: function(dt){
+                                    $(".acessos").html(dt);
+                                }
+                             }); 
+                        }
+                    }
+                });
+            });
+            /* =========================================================== */
+            angular.module('nova', ['novaServices'])
+            .controller('Ctrl', function($scope, $http, $sce, NS, $window) {    
+                this.onInit = async () => {
+                    $('body').show();
+                    this.visconshow = true;
+                    this.termodigshow = true;
+                    // $http.get("<?= $this->getPath() ?>/dadosVistorias").then(res => this.vistorias = res.data);
+                    // $http.get("<?= $this->getPath() ?>/dadosTermos").then(res => this.termos = res.data);
+                    // $http.get("<?= $this->getPath() ?>/dadosOrigens").then(res => this.origens = res.data);
+                    // $http.get("<?= $this->getPath() ?>/dadosArquivamento").then(res => this.arquivamentos = res.data);
+                }
+                this.termoDtChg = () => {
+                    if(!this.termoDtChgDe || !this.termoDtChgAte) return;
+                    $http.get(`<?= $this->getPath() ?>/dadosTermos?de=${this.termoDtChgDe}&ate=${this.termoDtChgAte}`).then(res => this.termos = res.data);
+                }
+                this.vistoriaDtChg = () => {
+                    if(!this.vistoriaDtChgDe || !this.vistoriaDtChgAte) return;
+                    $http.get(`<?= $this->getPath() ?>/dadosVistorias?de=${this.vistoriaDtChgDe}&ate=${this.vistoriaDtChgAte}`).then(res => this.vistorias = res.data);
+                }
+                this.origemDtChg = () => {
+                    if(!this.origemDtChgDe || !this.origemDtChgAte) return;
+                    $http.get(`<?= $this->getPath() ?>/dadosOrigens?de=${this.origemDtChgDe}&ate=${this.origemDtChgAte}`).then(res => this.origens = res.data);
+                }
+                this.arquivamentoDtChg = () => {
+                    if(!this.arquivamentoDtChgDe || !this.arquivamentoDtChgAte) return;
+                    $http.get(`<?= $this->getPath() ?>/dadosArquivamento?de=${this.arquivamentoDtChgDe}&ate=${this.arquivamentoDtChgAte}`).then(res => this.arquivamentos = res.data);
+                }
+            })
+        </script>
+        <style>
+            .header-accordion {
+                cursor: pointer;
+            }
+            .chartShortcuts  .head{
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+            }
+        </style>
+    </body>
+</html>

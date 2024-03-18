@@ -1,0 +1,403 @@
+<?php require_once $this->main_layouts . "headers.phtml"; ?>
+
+<link href="<?php echo $this->main_template;?>css/supr-theme/jquery.ui.supr.css" rel="stylesheet" type="text/css"/> 
+    
+<link href="<?php echo $this->main_template;?>plugins/files/elfinder/elfinder.css" type="text/css" rel="stylesheet" />
+<link href="<?php echo $this->main_template;?>plugins/files/plupload/jquery.ui.plupload/css/jquery.ui.plupload.css" type="text/css" rel="stylesheet" />
+
+<link href="<?php echo $this->main_template;?>plugins/gallery/jpages/jPages.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo $this->main_template;?>plugins/gallery/pretty-photo/prettyPhoto.css" type="text/css" rel="stylesheet" />   
+
+<link href="<?php echo $this->main_template;?>plugins/gallery/pretty-photo/prettyPhoto.css" type="text/css" rel="stylesheet" /> 
+
+<script type="text/javascript">
+    var pagina = "<?php echo $this->getPath(); ?>";
+    var permissao = "<?php echo $this->permissao_ref; ?>";
+    var controller = "<?php echo $this->getPath(); ?>/save";
+    var retorno = "<?php echo $this->retorno; ?>";
+</script>
+</head>
+<body>
+<?php require_once $this->main_layouts . "header.phtml"; ?>
+<div id="wrapper">
+    <?php require_once $this->main_layouts . "sidebar.phtml"; ?>
+    <div id="content" class="page-content clearfix">
+        <div class="contentwrapper">
+            <div class="heading">
+                <h3><?php echo $this->module_title; ?></h3>
+                <ul class="breadcrumb">
+                    <li>Você está aqui:</li>
+                    <li>
+                        <a href="#" class="tip" title="Painel">
+                            <i class="s16 icomoon-icon-screen-2"></i>
+                        </a>
+                        <span class="divider">
+                            <i class="s16 icomoon-icon-arrow-right-3"></i>
+                        </span>
+                    </li>
+                    <li>
+                        <a class="tip" title="<?php echo $this->module_title; ?>" href="<?php echo $this->module_link;?>">
+                            <i class="s16 <?php echo $this->module_icon; ?>"></i>
+                        </a>
+                    </li>
+                    <span class="divider">
+                        <i class="s16 icomoon-icon-arrow-right-3"></i>
+                    </span>
+                    <li class="active">Registro</li>
+                </ul>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="tabs mb20">
+                        <ul id="myTab" class="nav nav-tabs">
+                            <li>
+                                <a href="#conteudo" data-toggle="tab">Conteúdo</a>
+                            </li>
+                            <?php if ($this->id!=""): ?>
+                            <li class="">
+                                <a href="#fotos" data-toggle="tab">Fotos</a>
+                            </li>
+                            <?php endif; ?>
+                        </ul>
+
+                        <div id="myTabContent2" class="tab-content">
+                            <div class="tab-pane fade active in" id="conteudo">
+                                <form name="main" enctype="multipart/form-data" method="post" class="form-horizontal group-border">
+                                    <input type="hidden" name="id" value="<?php echo $this->id; ?>"/>
+                                    <input type="hidden" name="id_pagina" value="<?php echo $this->registro['id_pagina']; ?>"/>
+                                    <input type="hidden" name="retorno" value="<?php echo $this->retorno; ?>">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="panel panel-default toggle">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">Dados do Blog</h4>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="form-group">
+                                                        <label class="col-lg-2 control-label" for="id_categoria">Categoria padrão:</label>
+                                                        <div class="col-lg-10">
+                                                            <select class="form-control" id="id_categoria" name="id_categoria">
+                                                                <option value="">Selecione..</option>
+                                                                <?php foreach ($this->categorias as $categoria) : ?>
+                                                                    <option <?php if ($categoria['id'] == $this->registro['id_categoria']) echo "selected"; ?> value="<?= $categoria['id']; ?>"><?= $categoria['nome']; ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-2 control-label" for="data">Data:</label>
+                                                        <div class="col-lg-10">
+                                                            <input autocomplete="off" class="form-control data" name="data" id="data" type="text" value="<?php echo $this->registro['data']; ?>"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group target_toggle">
+                                                        <label class="col-lg-2 control-label" for="titulo">Título</label>
+                                                        <div class="col-lg-10">
+                                                            <input class="form-control" name="titulo" id="titulo" type="text" value="<?php echo $this->registro['titulo']; ?>"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group target_toggle">
+                                                        <label class="col-lg-2 control-label" for="descricao">Descrição</label>
+                                                        <div class="col-lg-10">
+                                                            <textarea class="form-control elastic" name="descricao" id="descricao"><?php echo $this->registro['descricao']; ?></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group target_toggle">
+                                                        <label class="col-lg-2 control-label" for="conteudo">Conteúdo</label>
+                                                        <div class="col-lg-10">
+                                                            <textarea tinymce class="form-control tinymce" name="conteudo" id="conteudo"><?php echo $this->registro['conteudo']; ?></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group target_toggle">
+                                                        <label class="col-lg-2 control-label" for="fileupload">Imagem:</label>
+                                                        <div class="col-lg-10">
+                                                            <label class="fileupload" for="fileupload">
+                                                                <?php if ($this->registro['imagem'] == "") : ?>
+                                                                    <img src="http://placehold.it/<?= $this->crop_sizes[0]['width']; ?>x<?= $this->crop_sizes[0]['height']; ?>?text=<?= $this->crop_sizes[0]['width']; ?>x<?= $this->crop_sizes[0]['height']; ?>" alt="" class="image marginR10"/>
+                                                                <?php else : ?>
+                                                                    <img src="<?php echo $this->getImageFileSized($this->registro['imagem'],$this->crop_sizes[0]['width'],$this->crop_sizes[0]['height']); ?>" alt="" class="image marginR10"/>
+                                                                <?php endif; ?>
+                                                            </label>
+                                                            <input type="file" name="fileupload" id="fileupload" class="files btn btn-default"/>
+                                                            <span class="help-block blue">a imagem será apresentada na seguinte proporção <?= $this->crop_sizes[0]['width']; ?>x<?= $this->crop_sizes[0]['height']; ?> pixels.</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" id="categorias">
+                                        <div class="col-lg-12">
+                                            <div class="panel panel-default toggle">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">Categorias</h4>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="form-group">
+                                                        <label class="col-lg-2 control-label" for="">Categorias:</label>
+                                                        <div class="col-lg-10">
+                                                            <div class="leftBox" style="margin:0;">
+                                                                <div class="searchBox">
+                                                                    <input type="text" id="box1Filter" class="searchField form-control" style="margin:0;" placeholder="filtrar ..."/>
+                                                                    <button id="box1Clear" type="button" class="btn">
+                                                                        <span class="s14  entypo-icon-close "></span>
+                                                                    </button>
+                                                                </div>
+                                                                <select id="box1View" multiple="multiple" class="multiple nostyle form-control" style="height:300px;">
+                                                                    <?php if ($this->categorias) : ?>
+                                                                        <?php foreach ($this->categorias as $categoria) : ?>
+                                                                            <?php if ($categoria['id_categoria'] == "") : ?>
+                                                                                <option value="<?= $categoria['id']; ?>"><?= $categoria['nome']; ?></option>
+                                                                            <?php endif ?>
+                                                                        <?php endforeach ?>
+                                                                    <?php endif ?>
+                                                                </select>
+                                                                <br>
+                                                                <span>Categorias <span class="label-warning" style="padding:0 2px;">não relacionadas</span> a este blog</span>
+                                                                <br>
+                                                                <span id="box1Counter" class="count"></span>
+                                                                <div class="dn"><select id="box1Storage" name="box1Storage" class="nostyle"></select></div>
+                                                            </div>
+                                                            <div class="dualBtn">
+                                                                <button id="to2" type="button" class="btn" ><span class="icon12 minia-icon-arrow-right-3"></span></button>
+                                                                <button id="allTo2" type="button" class="btn" ><span class="icon12 iconic-icon-last"></span></button>
+                                                                <button id="to1" type="button" class="btn marginT5"><span class="icon12 minia-icon-arrow-left-3"></span></button>
+                                                                <button id="allTo1" type="button" class="btn marginT5" ><span class="icon12 iconic-icon-first"></span></button>
+                                                            </div>
+                                                            <div class="rightBox" style="margin:0;">
+                                                                <div class="searchBox">
+                                                                    <input type="text" id="box2Filter" class="searchField form-control" style="margin:0;" placeholder="filtrar ..." />
+                                                                    <button id="box2Clear"  type="button" class="btn" >
+                                                                        <span class="s14  entypo-icon-close "></span>
+                                                                    </button>
+                                                                </div>
+                                                                <select id="box2View" multiple="multiple" name="categorias[]" class="multiple nostyle form-control" style="height:300px;">
+                                                                    <?php if ($this->categorias) : ?>
+                                                                        <?php foreach ($this->categorias as $categoria) : ?>
+                                                                            <?php if ($categoria['id_categoria'] != "") : ?>
+                                                                                <option value="<?= $categoria['id']; ?>"><?= $categoria['nome']; ?></option>
+                                                                            <?php endif ?>
+                                                                        <?php endforeach ?>
+                                                                    <?php endif ?>
+                                                                </select>
+                                                                <br>
+                                                                <span>Categorias <span class="label-success white" style="padding:0 2px;">relacionadas</span> a este blog</span>
+                                                                <br>
+                                                                <span id="box2Counter" class="count"></span>
+                                                                <div class="dn"><select id="box2Storage" class="nostyle"></select></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php require_once $this->main_layouts . "seo_form.phtml"; ?>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="panel panel-default toggle">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">Agendamento</h4>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="form-group" style="margin-top: 10px;">
+                                                        <label class="col-lg-2 control-label" for="agendar_entrada_data">Data de entrada:</label>
+                                                        <div class="col-lg-4">
+                                                            <input autocomplete="off" class="form-control data" name="agendar_entrada_data" id="agendar_entrada_data" type="text" value="<?php echo $this->registro['agendar_entrada_data']; ?>"/>
+                                                        </div>
+                                                        <label class="col-lg-2 control-label" for="agendar_entrada_hora">Hora de entrada:</label>
+                                                        <div class="col-lg-4">
+                                                            <input autocomplete="off" class="form-control hora" name="agendar_entrada_hora" id="agendar_entrada_hora" type="text" value="<?php echo $this->registro['agendar_entrada_hora']; ?>"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group" style="margin-top: 10px;">
+                                                        <label class="col-lg-2 control-label" for="agendar_saida_data">Data de saída:</label>
+                                                        <div class="col-lg-4">
+                                                            <input autocomplete="off" class="form-control data" name="agendar_saida_data" id="agendar_saida_data" type="text" value="<?php echo $this->registro['agendar_saida_data']; ?>"/>
+                                                        </div>
+                                                        <label class="col-lg-2 control-label" for="agendar_saida_hora">Hora de saída:</label>
+                                                        <div class="col-lg-4">
+                                                            <input autocomplete="off" class="form-control hora" name="agendar_saida_hora" id="agendar_saida_hora" type="text" value="<?php echo $this->registro['agendar_saida_hora']; ?>"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <?php if ($this->id == "") : ?>
+                                            <?php if (!$this->permissions[$this->permissao_ref]['gravar']) : ?>
+                                                <div class="form-group">
+                                                    <div class="col-lg-offset-2 col-lg-10">
+                                                        <span class="label label-warning "><span class="icon24 typ-icon-warning"></span>Você não tem permissão para gravar esta função.</span>
+                                                    </div>
+                                                </div>
+                                            <?php else : ?>
+                                                <div class="form-group">
+                                                    <div class="col-lg-offset-2 col-lg-10">
+                                                        <button type="button" class="btn btn-info clickformsubmit">Salvar novo</button>
+                                                    </div>
+                                                </div>
+                                            <?php endif; ?>
+                                        <?php else : ?>
+                                            <?php if (!$this->permissions[$this->permissao_ref]['editar']) : ?>
+                                                <div class="form-group">
+                                                    <div class="col-lg-offset-2 col-lg-10">
+                                                        <span class="label label-warning">
+                                                            <span class="icon24 icomoon-icon-warning "></span>
+                                                            Você não tem permissão para editar esta função.
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            <?php else : ?>
+                                                <div class="form-group">
+                                                    <div class="col-lg-offset-2 col-lg-10">
+                                                        <button type="button" class="btn btn-info clickformsubmit">Salvar alterações</button>
+                                                    </div>
+                                                </div>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                </form>
+                            </div>
+                            <?php if ($this->id!=""): ?>
+                                <div class="tab-pane fade" id="fotos">
+                                    <div id="edita_imagem" style="display:none;">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="panel panel-default">
+                                                <!-- Start .panel -->
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title"><i class="entypo-icon-images"></i>Galeria de Imagens</h4>
+                                                </div>
+                                                <div class="panel-body noPad">
+                                                    <ul id="itemContainer" class="galleryView center sortable">
+                                                    </ul>
+                                                </div>
+                                            </div><!-- End .span12 -->
+                                        </div><!-- End .panel -->
+                                    </div><!-- End .row -->
+                                    <div class="row">
+                                        <div class="col-lg-12 center sortable_save" style="display:none">
+                                            <button type="button" class="btn btn-info sortablesubmitgallery">Salvar nova ordenação</button><br><br>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="panel panel-default toggle">
+                                                <!-- Start .panel -->
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title"><i class="icomoon-icon-upload"></i>Gerenciador de envio</h4>
+                                                </div>
+                                                <div class="panel-body noPad">
+                                                    <div id="html4_uploader" style="width: 100%; height: 100%;">O seu navegador não tem suporte HTML 4.</div>
+                                                </div>
+                                            </div><!-- End .panel -->
+                                        </div><!-- End .span12 -->
+                                    </div><!-- End .row -->
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <?php require_once $this->main_layouts . "footer.phtml"; ?>
+</div>
+<?php require_once $this->main_layouts . "plugins.phtml"; ?>
+
+<script src="<?php echo $this->main_template; ?>plugins/forms/tiny_mce/tinymce.min.js"></script>
+
+<script src="<?php echo $this->main_template;?>plugins/ui/tabdrop/bootstrap-tabdrop.js"></script>
+<script src="<?php echo $this->main_template;?>js/pages/tabs.js"></script>
+
+
+<script type="text/javascript" src="<?php echo $this->main_template;?>plugins/files/elfinder/elfinder.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->main_template;?>plugins/files/plupload/plupload.js"></script>
+<script type="text/javascript" src="<?php echo $this->main_template;?>plugins/files/plupload/plupload.html4.js"></script>
+<script type="text/javascript" src="<?php echo $this->main_template;?>plugins/files/plupload/plupload.flash.js"></script>
+<script type="text/javascript" src="<?php echo $this->main_template;?>plugins/files/plupload/jquery.plupload.queue/jquery.plupload.queue.js"></script>
+
+<script type="text/javascript" src="<?php echo $this->main_template;?>plugins/gallery/pretty-photo/jquery.prettyPhoto.js"></script>
+
+<script src="<?php echo $this->main_template; ?>plugins/forms/autosize/jquery.autosize.js"></script>
+<script type="text/javascript" src="<?php echo $this->main_template; ?>plugins/forms/dualselect/jquery.dualListBox-1.3.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.configureBoxes();
+        saveKey(true);
+        tinymceInit({css:'tinymce.css', 'galeria': true});
+        $('.elastic').autosize();
+        $(".data").datepicker({
+            dateFormat: 'dd/mm/yy',
+            dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+            dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S', 'D'],
+            dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+            monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            nextText: 'Próximo',
+            prevText: 'Anterior'
+        });
+
+        $('.hora').mask('00:00');
+        $('.data').mask('00/00/0000');
+
+        var load_galery_url = "<?php echo $this->getPath(); ?>/fotos/id/<?php echo $this->id; ?>"
+        $(".galleryView").load(load_galery_url).data("load_galery_url",load_galery_url);
+
+        //------------- Plupload php upload  -------------//
+        $("#html4_uploader").pluploadQueue({
+            // General settings
+            runtimes : 'flash,silverlight,html4', 
+            url : '<?php echo $this->getPath(); ?>/upload/id/<?php echo $this->id ?>/session/<?php echo $_SESSION["login_session"];?>',
+            max_file_size : '10mb',
+            max_file_count: 15, // user can add no more then 15 files at a time
+            chunk_size : '0',
+            unique_names : false,
+            multiple_queues : true,
+
+            // Resize images on clientside if we can
+            //resize : {width : 320, height : 240, quality : 80},
+
+            // Rename files by clicking on their titles
+            rename: false,
+
+            // Sort files
+            sortable: true,
+
+            // Flash settings
+            flash_swf_url : '<?php echo $this->main_template; ?>plugins/files/plupload/plupload.flash.swf',
+
+            // Specify what files to browse for
+            filters : [
+                {title : "Image files", extensions : "jpg,gif,png"},
+                {title : "Zip files", extensions : "zip,avi"}
+            ],
+
+            init : {
+                FileUploaded: function(up, file, info) {
+                    console.log(up);
+                    console.log(file);
+                    console.log(info);
+                    // Called when all files are either uploaded or failed
+                    $(".galleryView").load(load_galery_url);
+                },
+                UploadComplete: function(up, files) {
+                    console.log(up);
+                    console.log(files);                            
+                    // Called when all files are either uploaded or failed
+                    $(".galleryView").load(load_galery_url);
+                }
+            }
+
+        });
+
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,497 @@
+<?php require_once $this->main_layouts . "headers.phtml"; ?>
+    <link href="<?php echo $this->main_template; ?>plugins/gallery/jpages/jPages.css" rel="stylesheet" type="text/css" />        
+    <link href="<?php echo $this->main_template; ?>plugins/forms/select/select2.css" type="text/css" rel="stylesheet" />
+
+    <link href="<?php echo $this->main_template;?>plugins/gallery/pretty-photo/prettyPhoto.css" type="text/css" rel="stylesheet" /> 
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+
+    <script type="text/javascript">
+        var pagina = "<?= $this->getPath(); ?>";
+        var permissao = "<?= $this->permissao_ref; ?>";
+        var controller = "<?= $this->getPath(); ?>/save";
+        var retorno = "<?= $this->retorno; ?>";
+    </script>
+    </head>  
+    <body ng-app='nova' ng-controller="Ctrl as ctrl" ng-init='ctrl.onInit()' style='display:none;'>
+        <?php require_once $this->main_layouts . "header.phtml"; ?>
+        <div id="wrapper">
+        <?php require_once $this->main_layouts."sidebar.phtml"; ?>
+            <div id="content" class="page-content clearfix">
+                <div class="contentwrapper">
+                    <div class="heading">
+                        <h3><?= $this->module_title; ?></h3>
+                        <ul class="breadcrumb">
+                            <li>Você está aqui:</li>
+                            <li><a href="#" class="tip" title="Painel"><i class="s16 icomoon-icon-screen-2"></i></a>
+                                <span class="divider">
+                                    <i class="s16 icomoon-icon-arrow-right-3"></i>
+                                </span>
+                            </li>
+                            <li><a class="tip" title="<?= $this->module_title; ?>" href="<?= $this->module_link;?>"><i class="s16 <?= $this->module_icon; ?>"></i></a></li>
+                            <span class="divider">
+                                <i class="s16 icomoon-icon-arrow-right-3"></i>
+                            </span>
+                            <li class="active">Registro</li>
+                        </ul>
+                    </div>
+                    <form ng-submit="ctrl.submitForm()" class="form-horizontal group-border">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Dados básicos</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="foto">Logo</label>
+                                            <div class="col-lg-10">
+                                                <label class="logo" for="foto">
+                                                    <?php if ($this->registro['logo'] == null): ?>
+                                                        <img src="/main/templates/supradmin/images/SemImagem.png" alt="" class="image marginR10"/>
+                                                    <?php else: ?>
+                                                        <img style="object-fit: cover;height: 100px;" src="<?= $this->registro['logo'] ?>" alt="" class="image marginR10"/>
+                                                    <?php endif ?>
+                                                </label>
+                                                <input type="file" accept='image/*' imageread="ctrl.registro.logo" class="files btn btn-default"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="nome">Nome Completo</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" ng-model="ctrl.registro.nome" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="nome_fantasia">Razão Social</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" ng-model="ctrl.registro.nome_fantasia" />
+                                            </div>
+                                        </div>               
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="cnpj">CNPJ</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" mask-cnpj ng-model="ctrl.registro.cnpj" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="telefone">Telefone</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control telefone" mask-telefone ng-model="ctrl.registro.telefone" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" >Telefone secundário</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" mask-telefone ng-model="ctrl.registro.telefone2" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="email">E-mail principal</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" ng-model="ctrl.registro.email"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Acesso</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                    <!-- <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="id_equipe">Equipe</label>
+                                            <div class="col-lg-10">
+                                                <select class="form-control select2" ng-model="ctrl.registro.id_equipe">
+                                                    <option value="" hidden>Selecione..</option>
+                                                    <?php foreach ($this->equipes->rows as $equipe) : ?>
+                                                    <option ng-value="<?= $equipe['id']; ?>"><?= $equipe['titulo']; ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                        </div> -->
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="senha">Senha</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" autocomplete="new-password" type="password" ng-model="ctrl.registro.novaSenha"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="repetir_senha">Repetir Senha</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" autocomplete="off" type="password" ng-model="ctrl.registro.novaSenha2" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Endereço</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="cep">CEP</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control"  mask-cep ng-model="ctrl.registro.cep" ng-change="ctrl.buscaCEP(ctrl.registro.cep)" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="rua">Logradouro</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" ng-model="ctrl.registro.rua" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="numero">Número</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" ng-model="ctrl.registro.numero"  />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="complemento">Complemento</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" ng-model="ctrl.registro.complemento" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="id_estado">Estado</label>
+                                            <div class="col-lg-10">
+                                                <select class="form-control" ng-model="ctrl.registro.id_estado" ng-change="ctrl.findCidades()">
+                                                    <option value="" hidden>Selecione..</option>
+                                                    <option ng-repeat="row in ctrl.estados" ng-value="row.id">{{ row.estado }}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="id_cidade">Cidade</label>
+                                            <div class="col-lg-10">
+                                                <select class="form-control" ng-disabled="!ctrl.cidades.length" ng-model="ctrl.registro.id_cidade">
+                                                    <option value="" hidden>Selecione..</option>
+                                                    <option ng-repeat="row in ctrl.cidades" ng-value="row.id">{{ row.cidade }}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="bairro">Bairro</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" ng-model="ctrl.registro.bairro" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="latitude">Latitude:</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control"  ng-model="ctrl.registro.latitude"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="longitude">Longitude:</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control"  ng-model="ctrl.registro.longitude"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="zoom">Zoom:</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control"  ng-model="ctrl.registro.zoom"/>
+                                            </div>
+                                        </div> 
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="longitude">Clique na localização:</label>
+                                            <div class="col-lg-10">
+                                                <div id="mapa" style="height:40vw;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row"> 
+                            <div class="col-lg-12"> 
+                                <div class="panel panel-default toggle"> 
+                                    <div class="panel-heading"> 
+                                        <h4 class="panel-title"> Especialidades da clinica</h4> 
+                                    </div> 
+                                    <div class="panel-body form-horizontal">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 col-md-3 control-label">Especialidades</label>
+                                            <div class="col-lg-10 col-md-9">
+                                                <?php foreach ($this->beneficios->rows as $beneficio) : ?>
+                                                    <?php  if($beneficio['stats'] =='1'): ?>
+                                                    <div class="checkbox-custom">
+                                                        <input type="checkbox" name='beneficios[]' value="<?=$beneficio['id']?>" id="checkbox<?=$beneficio['id']?>" <?= ($this->id && ($beneficio['id_clinica'] == $this->id)) ? 'checked' : '' ?>>
+                                                        <label for="checkbox<?=$beneficio['id']?>"><?=$beneficio['nome']?></label>
+                                                    </div>
+                                                     <?php endif; ?>
+                                                <?php endforeach; ?>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div> 
+                            </div> 
+                        </div> 
+
+                        <?php if ($this->id!=""): ?>
+                        <div class="row">
+                            <div class="col-lg-12 ">
+                                <div class="tabs mb20">
+                                    <div id="myTabContent2" class="tab-content">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">Galeria</h4>
+                                        </div>
+                                        <div class="tab-pane  <?php if ($this->id != "") echo 'active in'; else echo 'fade'; ?>" id="fotos">
+                                            <div id="edita_imagem" <?php if ($this->id == "") echo 'style="display:none;"';?>>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="panel panel-default">
+                                                        <!-- Start .panel -->
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title"><i class="entypo-icon-images"></i>Imagens</h4>
+                                                        </div>
+                                                        <div class="panel-body noPad">
+                                                            <ul id="itemContainer" class="galleryView center sortable">
+                                                            </ul>
+                                                        </div>
+                                                    </div><!-- End .span12 -->
+                                                </div><!-- End .panel -->
+                                            </div><!-- End .row -->
+                                            <div class="row">
+                                                <div class="col-lg-12 center sortable_save" style="display:none">
+                                                    <button type="button" class="btn btn-info sortablesubmit">Salvar nova ordenação</button><br><br>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="panel panel-default toggle">
+                                                        <!-- Start .panel -->
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title"><i class="icomoon-icon-upload"></i>Gerenciador de envio</h4>
+                                                        </div>
+                                                        <div class="panel-body noPad">
+                                                            <div id="html4_uploader" style="width: 100%; height: 100%;">O seu navegador não tem suporte para Flash, Silverlight ou HTML5.</div>
+                                                        </div>
+                                                    </div><!-- End .panel -->
+                                                </div><!-- End .span12 -->
+                                            </div><!-- End .row -->
+                                        </div>
+                                    </div>                                
+                                </div>
+                            </div>
+                        </div>
+                        <?php endif; ?>
+                        
+                        <div class="row">
+                            <?php if ($this->id==""): ?>
+                            <?php if (!$this->permissions[$this->permissao_ref]['gravar']): ?>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <span class="label label-warning "><span class="icon24 typ-icon-warning"></span>Você não tem permissão para gravar esta função.</span>
+                                </div>
+                            </div>   
+                            <?php else: ?>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <button type="submit" class="btn btn-info">Salvar novo</button>
+                                </div>
+                            </div>
+                            <?php endif ?>
+                            <?php else: ?>
+                            <?php if (!$this->permissions[$this->permissao_ref]['editar']): ?>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <span class="label label-warning"><span class="icon24 icomoon-icon-warning "></span>Você não tem permissão para editar esta função.</span>
+                                </div>
+                            </div>
+                            <?php else: ?>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <button type="submit" class="btn btn-info">Salvar alterações</button>
+                                </div>
+                            </div>
+                            <?php endif ?>
+                            <?php endif ?>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <?php require_once $this->main_layouts . "footer.phtml"; ?>
+        </div>
+        <?php require_once $this->main_layouts."plugins.phtml"; ?>
+
+        <!-- Gallery plugins -->
+        <script type="text/javascript" src="<?php echo $this->main_template;?>plugins/files/plupload/plupload.full.min.js"></script>
+        <script type="text/javascript" src="<?php echo $this->main_template;?>plugins/files/plupload/jquery.plupload.queue/jquery.plupload.queue.js"></script>
+        <script type="text/javascript" src="<?php echo $this->main_template;?>plugins/files/plupload/i18n/pt_BR.js"></script>
+
+        <script type="text/javascript" src="<?php echo $this->main_template;?>plugins/gallery/pretty-photo/jquery.prettyPhoto.js"></script>
+
+        <!-- Map -->
+        <script src="https://maps.google.com/maps/api/js?key=AIzaSyAZsbCV78p6wPynedXVB6BqBqQNhcJ_zLc"></script>
+        <script type="text/javascript" src="<?php echo $this->main_template;?>js/gmaps.js"></script>
+
+        <script src='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script> <!-- MapBox -->
+        
+        <script type="text/javascript">
+            $(document).ready(function(){
+                /* GALERIAS */
+                var load_galery_url = "<?php echo $this->getPath() ?>/fotos/id/<?php echo $this->id; ?>"
+                $(".galleryView").load(load_galery_url).data("load_galery_url",load_galery_url);
+
+                    //------------- Plupload php upload  -------------//
+                var uploader = $("#html4_uploader").pluploadQueue({
+                    // General settings
+                    runtimes : 'html5,flash,silverlight,html4',
+                    url : '<?php echo $this->getPath() ?>/upload/id/<?php echo $this->id ?>/session/<?php echo $_SESSION["login_session"];?>',
+                    max_file_size : '10mb',
+                    chunk_size : '0mb',
+                    multiple_queues : true,
+                    unique_names : false,
+                    // Rename files by clicking on their titles
+                    rename: false,
+                    dragdrop: true,
+                    // Specify what files to browse for
+                    filters : [
+                        {title : "Image files", extensions : "jpg,gif,png,jpeg"},
+                        {title : "Zip files", extensions : "zip,avi"}
+                    ],
+
+                    init : {
+                        UploadComplete: function(up, files) {
+                            console.log(up);
+                            console.log(files);                            
+                            // Called when all files are either uploaded or failed
+                            $(".galleryView").load(load_galery_url);
+                            //setTimeout(function() { up.splice();}, 1500)
+                        }
+                    },
+                    // Flash settings
+                    flash_swf_url : '<?php echo $this->main_template;?>plugins/files/plupload/Moxie.swf',
+                    // Silverlight settings
+                    silverlight_xap_url : '<?php echo $this->main_template;?>plugins/files/plupload/Moxie.xap'
+
+                });
+
+                   // /* GEOLOCALIZAÇÂO */
+
+                mapboxgl.accessToken = 'pk.eyJ1IjoiamFsZXNjYXJkb3NvIiwiYSI6ImNrM2lyZ2FzZDBiaDgzY3J2c3B1dmtkMjcifQ.q6SdKJ6hGYlUv-DJ3BCHfw';
+
+                var latitude  ='<?= $this->registro['latitude']; ?>';
+                var longitude = '<?= $this->registro['longitude']; ?>';
+                var zoom  = '<?= $this->registro['zoom']; ?>';
+
+                if(latitude == '') latitude = -16.647740;
+                if(longitude == '') longitude = -49.296421;
+                if(zoom == '') zoom = 14;
+                
+                mapa = new mapboxgl.Map({
+                    container: 'mapa', // container ID
+                    style: 'mapbox://styles/mapbox/streets-v11', // style URL
+                    center: [longitude, latitude], // starting position [lng, lat]
+                    zoom: zoom // starting zoom
+
+                });
+
+                var marker = new mapboxgl.Marker().setLngLat([longitude,latitude]).addTo(mapa);
+
+                $('input[ng-model="ctrl.registro.latitude"]').on("focusout",function(){
+                    changeMap();
+                });
+                $('input[ng-model="ctrl.registro.longitude"]').on("focusout",function(){
+                    changeMap();
+                });
+                $('input[ng-model="ctrl.registro.zoom"]').on("focusout",function(){
+                    changeMap();
+                });
+
+                function changeMap(){
+                    latitude = $('input[ng-model="ctrl.registro.latitude"]').val();
+                    longitude = $('input[ng-model="ctrl.registro.longitude"]').val();
+                    zoom = $('input[ng-model="ctrl.registro.zoom"]').val();
+                    if(latitude !='' &&  longitude !=''){
+                        var marker = new mapboxgl.Marker().setLngLat([longitude,latitude]).addTo(mapa);
+                    }
+                }
+
+                                  
+                mapa.on('click',function(e){
+                    marker.remove();
+                    marker = new mapboxgl.Marker().setLngLat(e.lngLat).addTo(mapa);
+
+                    // debugger
+                    $('input[ng-model="ctrl.registro.latitude"]').val(e.lngLat.lat);
+                    $('input[ng-model="ctrl.registro.latitude"]').trigger('input');
+                    $('input[ng-model="ctrl.registro.longitude"]').val(e.lngLat.lng);
+                    $('input[ng-model="ctrl.registro.longitude"]').trigger('input');
+                    // mapa.clearMarkers();
+                    // mapa.createMarker(lat, lng, '');
+                });
+
+                mapa.on('zoom',function(zoom){
+                    $('input[ng-model="ctrl.registro.zoom"]').val(mapa.getZoom());
+                    $('input[ng-model="ctrl.registro.zoom"]').trigger('input');
+                });
+
+            });
+            
+
+            angular.module('nova', ['novaServices'])
+            .controller('Ctrl', function($scope, $http, $sce, NS, $window) {   
+                this.registro = <?= json_encode($this->registro); ?>;
+                this.estados = <?= json_encode($this->estados->rows); ?>;
+                this.onInit = () => {
+                    $('body').show();
+                    this.findCidades();
+                    //this.getCordenadas();
+                }
+                this.submitForm = async () => {
+                    if(this.registro.novaSenha !== undefined && this.registro.novaSenha !== this.registro.novaSenha2) return NS.notifInfo("Senhas divergentes");
+                    this.registro.beneficios = $.map($('[name^=beneficios]:checked'), e => $(e).val())
+                    let res = await NS.actionHandler($http.post(`<?= $this->getPath();?>/save`,this.registro));
+                    window.location = "<?= $this->getPath(); ?>/edit/id/"+res.data;
+                }
+                this.findCidades = async () => {
+                    if(!this.registro.id_estado) return;
+                    this.cidades = [];
+                    this.cidades = (await $http.post(`main/general/getCidadesByEstadoId`, { id:this.registro.id_estado })).data;
+                    $scope.$digest();
+                }
+
+                this.buscaCEP = async (cep) => {
+                    if(cep.length  != 9) return;
+                    let data = (await NS.actionHandler($http.get(`https://viacep.com.br/ws/${cep.replace('-','').replace('.','')}/json/`), '#tab-associado', 'Cep consultado')).data;
+                    this.registro.rua = data.logradouro;
+                    if (!this.registro.complemento) this.registro.complemento = data.complemento;
+                    this.registro.bairro = data.bairro;
+                    this.registro.id_estado = parseInt(this.estados.find(x => x.uf == data.uf).id);
+                    await this.findCidades(this.registro.id_estado);
+                    this.registro.id_cidade = this.cidades.find(x => x.cidade == data.localidade).id;
+                    
+                    this.registro.latitude  = " ";
+                    this.registro.longitude = " "; 
+                    //this.getCordenadas;
+                    $scope.$digest();
+                }
+
+                //função só ira funcionar si a key do map for paga                 
+                // this.getCordenadas = async () => {
+                //     let data = (await $http.get(`http://maps.googleapis.com/maps/api/geocode/json?address=${this.registro.rua}+${this.registro.numero}&key=AIzaSyAZsbCV78p6wPynedXVB6BqBqQNhcJ_zLc`)).data;
+                //     this.registro.latitude = data.results[0].geometry.location.lat;  
+                //     this.registro.longitude = data.results[0].geometry.location.lng;
+                //     this.registro.zoom   = '15';
+                //     $scope.$digest();
+                // }
+
+            })
+        </script>
+    </body>
+</html>

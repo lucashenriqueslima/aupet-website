@@ -1,0 +1,80 @@
+@mixin efeito_input {
+    position: relative;
+    // padding-top: 13px;
+
+    input{
+        border: 0;
+        border-bottom: 2px solid lightgrey;
+        outline: none;
+        min-width: 180px;
+        font-size: 16px;
+        transition: all .3s ease-out;
+        -webkit-transition: all .3s ease-out;
+        -moz-transition: all .3s ease-out;
+        -webkit-appearance:none;
+        border-radius: 0;
+
+        &:focus{
+            border-bottom: 2px solid #3951b2;
+
+            &:required{
+                &:invalid{
+                    border-bottom: 2px solid red;
+
+                    &+label{
+                        color: red;
+                    }
+                }
+            }
+
+            &+label{
+                font-size: 13px;
+                margin-top: 0;
+                color: #3951b2;
+            }
+        }
+        &::placeholder{
+            color:transparent;
+        }
+        &:required{
+            &:invalid{
+                &+label{
+                    color: red;
+
+                    &:before{
+                        content: '*';
+                    }
+                }
+            }
+        }
+        &:not(:placeholder-shown){
+            &+label{
+                font-size: 13px;
+                margin-top: 0;
+                color: #3951b2;
+            }
+        }
+          
+    }
+
+    label{
+        pointer-events: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin-top: 13px;
+        transition: all .3s ease-out;
+        -webkit-transition: all .3s ease-out;
+        -moz-transition: all .3s ease-out;
+    }
+}
+
+// <div class="item">
+//   <input type="text" placeholder=" "/>
+//   <label>Telefone</label>
+// </div>
+
+// <div class="item">
+//   <input type="text" placeholder=" " required/>
+//   <label>Nome de Usuário</label>
+// </div>

@@ -1,0 +1,187 @@
+<?php
+    require_once $this->main_layouts . "headers.phtml";
+?>
+
+    <script type="text/javascript">
+        var pagina = "<?php echo $this->getPath(); ?>";
+        var permissao = "<?php echo $this->permissao_ref; ?>";
+        var controller = "<?php echo $this->getPath(); ?>/save";
+        var retorno = "<?php echo $this->retorno; ?>";
+    </script>
+    
+    </head>  
+    
+    
+    <body>
+<?php  require_once $this->main_layouts . "header.phtml"; ?>
+
+        <!-- / #header -->
+        <div id="wrapper">
+        <!-- #wrapper -->
+
+<?php  require_once $this->main_layouts . "sidebar.phtml"; ?>
+            
+            <!--Body content-->
+            <div id="content" class="page-content clearfix">
+                <div class="contentwrapper">
+                    <!--Content wrapper-->
+                    <div class="heading">
+                        <!--  .heading-->
+                        <h3><?php echo $this->module_title; ?></h3>
+
+                        <ul class="breadcrumb">
+                            <li>Você está aqui:</li>
+                            <li>
+                                <a href="#" class="tip" title="Painel">
+                                    <i class="s16 icomoon-icon-screen-2"></i>
+                                </a>
+                                <span class="divider">
+                                    <i class="s16 icomoon-icon-arrow-right-3"></i>
+                                </span>
+                            </li>
+                            <li>
+                                <a class="tip" title="<?php echo $this->module_title; ?>" href="<?php echo $this->module_link;?>">
+                                    <i class="s16 <?php echo $this->module_icon; ?>"></i>                                    
+                                </a>
+                            </li>
+                            <span class="divider">
+                                <i class="s16 icomoon-icon-arrow-right-3"></i>
+                            </span>
+                            <li class="active">Registro</li>
+                        </ul>
+                    </div>
+                    <!-- End  / heading-->
+                    <!-- Start .row -->
+                  
+                    <form name="main" enctype="multipart/form-data" method="post" class="form-horizontal group-border">
+                        <input type="hidden" name="id" value="<?php echo $this->id; ?>" />                        
+                        <input type="hidden" name="retorno" value="<?php echo $this->retorno; ?>">
+                        
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <!-- Start .panel -->
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title"><?php echo $this->nome;?></h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <div class="col-lg-12">
+                                                <div class="leftBox">
+                                                    <h4>Não recebe</h4>
+
+                                                    <select id="box1View" multiple="multiple" class="multiple nostyle form-control" style="height:300px;">
+                                                        <?php if ($this->users->num_rows): ?>
+                                                            <?php foreach ($this->users->rows as $user): ?>
+                                                                <?php if ($user['id_form']!=$this->id): ?>
+                                                                    <option value="<?php echo $user['id'] ?>"><?php echo $user['nome'] . " - " .$user['email'] ?></option>
+                                                                <?php endif ?>
+                                                            <?php endforeach ?>
+                                                        <?php endif ?>
+                                                    </select>
+                                                    
+                                                    
+                                                </div>
+
+                                                <div class="dualBtn">
+
+                                                    <button id="to2" type="button" class="btn" ><span class="icon12 minia-icon-arrow-right-3"></span></button>
+                                                    <button id="allTo2" type="button" class="btn" ><span class="icon12 iconic-icon-last"></span></button>
+                                                    <button id="to1" type="button" class="btn marginT5"><span class="icon12 minia-icon-arrow-left-3"></span></button>
+                                                    <button id="allTo1" type="button"class="btn marginT5" ><span class="icon12 iconic-icon-first"></span></button>
+
+                                                </div>
+
+                                                <div class="rightBox">
+                                                    <h4>Recebe</h4>
+                                                    <select id="box2View" multiple="multiple" name="emails[]" class="multiple nostyle form-control" style="height:300px;">
+                                                        <?php if ($this->users->num_rows): ?>
+                                                            <?php foreach ($this->users->rows as $user): ?>
+                                                                <?php if ($user['id_form']==$this->id): ?>
+                                                                    <option value="<?php echo $user['id'] ?>"><?php echo $user['nome'] . " - " .$user['email'] ?></option>
+                                                                <?php endif ?>
+                                                            <?php endforeach ?>
+                                                        <?php endif ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div><!-- End .form-group  -->
+                                    </div>
+                                </div>
+                            </div>                                
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <!-- Start .panel -->
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Formulário</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="mensagem">Mesagem de sucesso:</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="mensagem" id="mensagem"  type="text" value="<?php echo $this->registro['mensagem'] ?>"  />
+                                                <p class="text-muted"><small>* Padrão: "Mensagem enviada com sucesso, em breve entraremos em contato!"</small></p>
+                                            </div>
+                                        </div><!-- End .form-group  -->
+                                    </div>
+                                </div>
+                            </div>                                
+                        </div>
+                            
+                        <div class="row">
+                            <?php if ($this->id==""): ?>
+                                <?php if (!$this->permissions[$this->permissao_ref]['gravar']): ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <span class="label label-warning "><span class="icon24 typ-icon-warning"></span>Você não tem permissão para gravar esta função.</span>
+                                        </div>
+                                    </div><!-- End .form-group  -->   
+                                <?php else: ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <button type="button" class="btn btn-info clickformsubmit">Salvar novo</button>
+                                        </div>
+                                    </div><!-- End .form-group  -->
+                                <?php endif ?>
+                            <?php else: ?>
+                                <?php if (!$this->permissions[$this->permissao_ref]['editar']): ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <span class="label label-warning"><span class="icon24 icomoon-icon-warning "></span>Você não tem permissão para editar esta função.</span>
+                                        </div>
+                                    </div><!-- End .form-group  -->   
+                                <?php else: ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <button type="button" class="btn btn-info clickformsubmit">Salvar alterações</button>
+                                        </div>
+                                    </div><!-- End .form-group  -->
+                                <?php endif ?>
+                            <?php endif ?>
+                        </div><!-- End .row -->   
+                    </form>
+                                        
+                </div>
+                <!-- End contentwrapper -->
+            </div>
+            <!-- End #content -->
+            
+            
+<?php  require_once $this->main_layouts . "footer.phtml"; ?>
+        
+        </div>
+        
+<?php  require_once $this->main_layouts . "plugins.phtml"; ?>
+        <!-- Init plugins only for page -->        
+        <script type="text/javascript" src="<?php echo $this->main_template;?>plugins/forms/dualselect/jquery.dualListBox-1.3.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $.configureBoxes();
+                saveKey(true);
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,68 @@
+
+            <div id="footer" class="clearfix sidebar-page right-sidebar-page">
+                <!-- Start #footer  -->
+                <p class="pull-left">
+                    Copyrights &copy; <?php echo date('Y');?> <b>Híbrida Inteligência Web.</b> <!--<a href="http://www.hibrida.biz/?utm_source=<?php echo str_replace("+", "-", $this->trataParameter($this->_empresa['nome']));?>&utm_medium=sistema&utm_campaign=assinaturas" class="color-blue strong" target="_blank">Híbrida</a>.--> Todos os direitos reservados.
+                </p>
+                <p class="pull-right">
+                    <span class="mr5">
+                        <?php
+                            // Terminamos o "contador" e exibimos
+                            list($usec, $sec) = explode(' ', microtime());
+                            $script_end = (float) $sec + (float) $usec;
+                            $elapsed_time = round($script_end - $script_start, 5);
+
+                            // Exibimos uma mensagem
+                            // echo 'Tempo de execução: ', $elapsed_time, ' secs. Memória usada: ', round(((memory_get_peak_usage(true) / 1024) / 1024), 2), 'Mb';
+                        ?>
+                    </span>
+                    
+                    <a href="#" class="mr5" data-toggle="modal" data-target="#termos_de_uso">Termos de uso</a>
+                    |
+                    <a href="#" class="ml5 mr25" data-toggle="modal" data-target="#politica_privacidade">Política de Privacidade</a>
+                </p>
+            </div>
+            <!-- End #footer  -->
+            
+            <div class="modal fade" id="politica_privacidade" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">Política de Privacidade</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+                                est laborum.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal fade" id="termos_de_uso" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">Termos de uso</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+                                est laborum.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            

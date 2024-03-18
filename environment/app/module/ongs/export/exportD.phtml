@@ -1,0 +1,30 @@
+<table border="1">
+    <tr>
+        <td colspan="5" align="center"><h1><?= "Relatório de Doaçãoes"; ?></h1></td>
+    </tr>
+    <tr>
+        <th align="left" >Nome do doador</th>
+        <th align="left" >Campanha</th>
+        <th align="left" >Telefone</th>
+        <th align="left" >Email</th>
+        <th align="left" >Data</th>
+        <th align="left" >Tipo</th>
+        <th align="left" >Valor</th>
+    </tr>
+    <?php
+    if ($Doacoes->num_rows) {
+        foreach ($Doacoes->rows as $registro) { ?>
+            <tr>
+                <td align="left"><?= $registro["nome_doador"]; ?></td>
+                <td align="left"><?= $registro["campanha"]; ?></td>
+                <td align="left"><?= $registro["telefone_doador"]; ?></td>
+                <td align="left"><?= $registro["email_doador"]; ?></td>
+                <td align="left"><?= $registro["criacao"]; ?></td>
+                <td align="left"><?= $registro["tipo"]; ?></td>
+                <td style="text-align:right"><?php echo ($this->formataMoedaDeBanco($registro['valor'] ?? '')); ?></td>
+            </tr>
+            <?php
+		}
+    }
+    ?>
+</table>

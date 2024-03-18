@@ -1,0 +1,192 @@
+<?php require_once $this->main_layouts . "headers.phtml"; ?>
+    <script type="text/javascript">
+        var pagina = "<?= $this->getPath(); ?>";
+        var permissao = "<?= $this->permissao_ref; ?>";
+        var controller = "<?= $this->getPath(); ?>/save";
+        var retorno = "<?= $this->retorno; ?>";
+    </script>
+    </head>
+    <body ng-app='nova' ng-controller="EditCtrl as ctrl" ng-init='ctrl.onInit()' style='display:none'>
+        <?php require_once $this->main_layouts . "header.phtml"; ?>
+        <div id="wrapper">
+            <?php require_once $this->main_layouts . "sidebar.phtml"; ?>
+            <div id="content" class="page-content clearfix">
+                <div class="contentwrapper">
+                    <div class="heading">
+                        <h3><?= $this->module_title; ?></h3>
+                        <ul class="breadcrumb">
+                            <li>Você está aqui</li>
+                            <li>
+                                <a href="#" class="tip" title="Painel">
+                                    <i class="s16 icomoon-icon-screen-2"></i>
+                                </a>
+                                <span class="divider">
+                                    <i class="s16 icomoon-icon-arrow-right-3"></i>
+                                </span>
+                            </li>
+                            <li>
+                                <a class="tip" title="<?= $this->module_title; ?>" href="<?= $this->getPath(); ?>">
+                                    <i class="s16 <?= $this->module_icon; ?>"></i>
+                                </a>
+                            </li>
+                            <span class="divider">
+                                <i class="s16 icomoon-icon-arrow-right-3"></i>
+                            </span>
+                            <li class="active">Registro</li>
+                        </ul>
+                    </div>
+
+                    <form class="form-horizontal group-border" ng-submit='ctrl.submitForm()'>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Cliente</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="nickname">Identificador<br><i style="font-size: x-small;">(Subdomínio do cliente)</i></label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" ng-model='ctrl.data.nickname' required />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="nome_fantasia">Nome fantasia</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" ng-model='ctrl.data.nome_fantasia' />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="empresa">Nome razão social</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" ng-model='ctrl.data.empresa' />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="cnpj">CNPJ</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control cnpj" ng-model='ctrl.data.cnpj' />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="email">E-mail</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" type='email' ng-model='ctrl.data.email' />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="telefone">Telefone</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control telefone" ng-model='ctrl.data.telefone' />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="celular">Celular</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control telefone" ng-model='ctrl.data.celular' />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="cep">CEP</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" mask-cep ng-model='ctrl.data.cep' />
+                                            </div>
+                                        </div>
+
+                                        <div class='form-group'>
+                                            <label class='col-lg-2 control-label'>Logradouro</label>
+                                            <div class='col-lg-10'>
+                                                <input class='form-control' ng-model='ctrl.data.logradouro' />
+                                            </div>
+                                        </div>
+                                        <div class='form-group'>
+                                            <label class='col-lg-2 control-label'>Numero</label>
+                                            <div class='col-lg-10'>
+                                                <input class='form-control' ng-model='ctrl.data.numero' />
+                                            </div>
+                                        </div>
+                                        <div class='form-group'>
+                                            <label class='col-lg-2 control-label'>Complemento</label>
+                                            <div class='col-lg-10'>
+                                                <input class='form-control' ng-model='ctrl.data.complemento' />
+                                            </div>
+                                        </div>
+                                        <div class='form-group'>
+                                            <label class='col-lg-2 control-label'>Bairro</label>
+                                            <div class='col-lg-10'>
+                                                <input class='form-control' ng-model='ctrl.data.bairro' />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="id_estado">Estado</label>
+                                            <div class="col-lg-10">
+                                                <select class="form-control" ng-model='ctrl.data.id_estado' ng-change='ctrl.changeEstado()'>
+                                                    <option value="">Selecione..</option>
+                                                    <?php foreach ($this->estados->rows as $estado) : ?>
+                                                    <option <?php if ($estado['id'] == $this->registro['id_estado']) echo "selected"; ?> value="<?= $estado['id']; ?>" data-uf="<?= $estado['uf'] ?>"><?= $estado['estado']; ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="id_cidade">Cidade</label>
+                                            <div class="col-lg-10">
+                                                <select class="form-control" ng-model='ctrl.data.id_cidade'>
+                                                    <option value="">Selecione..</option>
+                                                    <option ng-repeat='row in ctrl.cidades' value="{{row.id}}">{{row.cidade}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <button type="submit" class="btn btn-info">Salvar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    </div>
+                </div>
+            </div>
+            <?php require_once $this->main_layouts . "footer.phtml"; ?>
+        </div>
+
+        <?php require_once $this->main_layouts . "plugins.phtml"; ?>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $(".cnpj").mask('00.000.000/0000-00');
+                $('[mask-cep]').mask('#####-###');
+            });
+            angular.module('nova', ['novaServices'])
+            .controller('EditCtrl', function($scope, $http, $sce, NS, $window) {
+
+                this.onInit = () => {
+                    $('body').show();
+                }
+
+                this.submitForm = async () => {
+                    let res = await NS.actionHandler($http.post("<?= $this->getPath(); ?>/save", this.data));
+                    window.location.href = retorno+'/edit/id/'+res.data;
+                }
+
+                this.changeEstado = async () => {
+                    let res = await NS.actionHandler($http.post("main/general/getCidades", {id: this.data.id_estado}),'body','Buscando cidades ...');
+                    this.cidades = res.data;
+                    $scope.$digest();
+                }
+            })
+
+        </script>
+    </body>
+</html>

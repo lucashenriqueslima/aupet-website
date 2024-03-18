@@ -1,0 +1,137 @@
+<?php  require_once $this->main_layouts . "headers.phtml"; ?>
+<style type="text/css">
+.target, .bootbox-body, .modal-body{
+    overflow-x: hidden; 
+}
+.modal-body{border-radius: 5px 5px 0 0}
+.modal-content{border-radius: 5px 5px 10px 10px !important;}
+.login-page {
+    background: url(../images/patterns/2.png) repeat;
+}
+.login-page #header .navbar-brand {
+    float: none;
+}
+.login-page > .login-container {
+    width: 360px;
+}
+.login-page .login-panel {
+    margin-top: 100px;
+}
+.login-page .login-panel:after,.login-page .login-panel:before {
+    background-image: linear-gradient(to bottom, #f8f8f8 0%, #f9f9f9 100%);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff8f8f8', endColorstr='#fff9f9f9', GradientType=0);
+    border: 1px solid #c4c6ca;
+    content: "";
+    display: block;
+    height: 100%;
+    left: -1px;
+    position: absolute;
+    width: 100%;
+}
+.login-page .login-panel:after {
+    -webkit-transform: rotate(2deg);
+    -ms-transform: rotate(2deg);
+    transform: rotate(2deg);
+    top: 0;
+    z-index: -1;
+}
+.login-page .login-panel:before {
+    -webkit-transform: rotate(-3deg);
+    -ms-transform: rotate(-3deg);
+    transform: rotate(-3deg);
+    top: 0;
+    z-index: -2;
+}
+.login-page .login-panel .user-avatar {
+    text-align: center;
+    background-image: linear-gradient(to bottom, #ffffff 0%, #f3f3f3 100%);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#fff3f3f3', GradientType=0);
+    border-bottom: 1px solid #c4c4c4;
+    padding: 15px 0;
+    margin: 0 -15px 20px;
+}
+.login-page .login-panel .user-avatar img {
+    border-radius: 50%;
+}
+</style>
+<?php
+function sanitize_output() {
+    $search = array(
+        '/\>[^\S ]+/s',  // strip whitespaces after tags, except space
+        '/[^\S ]+\</s',  // strip whitespaces before tags, except space,
+        '/\}[^\S ]+/s',  //
+        '/[^\S ]+\{/s',  //
+        '/\;[^\S ]+/s',  // 
+        '/(\s)+/s',      // shorten multiple whitespace sequences
+        '/{LOGO}/'
+    );
+    $replace = array(
+        '>',
+        '<',
+        '}',
+        '{',
+        ';',
+        '\\1',
+        "../main/templates/supradmin/images/logo-hibrida.png"
+    );
+    $content = preg_replace($search, $replace, file_get_contents("services/main/modules/login/view/popup_content.phtml"));
+    return $content;
+}
+$content = sanitize_output();
+?>
+<?php  //require_once $this->main_layouts . "plugins.phtml"; ?>
+<!-- / #wrapper -->
+<!-- Bootbox fast bootstrap modals -->
+<script src="<?php echo $this->main_template;?>plugins/ui/bootbox/bootbox.js"></script>
+<script type="text/javascript">
+    $("body #span-msg").css({
+        "display": "inline-block",
+        "padding": "15px 20px 15px 35px",
+        "background": "url(" + main_template + "images/icon_clickform_error.png) no-repeat 12px 17px #b9110d",
+        "border": "1px solid #67110f",
+        "-webkit-border-radius": "5px",
+        "-moz-border-radius": "5px",
+        "border-radius": "5px",
+        "font-family": "Arial, Helvetica, sans-serif",
+        "font-size": 14,
+        "color": "#ffffff"
+    });
+    var dialog = bootbox.dialog({
+        message: '<?php echo $content ?>',
+        closeButton : false
+    });
+    $(document).on("click", "a[href^=#]", function (e) {
+        e.preventDefault();
+    });
+    $("#username").focus();
+    $('body').on('click', 'span.click-form', function () {
+        $("input, textarea").css("border-color","#ccc");
+        $("span.click-form").hide();
+    });
+    $('body #loginForm').clickform({"validateUrl":"main/login/entrar", "activateEnterKey": true, 'submitButton': '.clickformsubmit'}, function(data){
+        if(data.type=="success"){
+            dialog.modal('hide');
+            $("body iframe#clickformiframe").remove();
+            $("body #popup_login").remove();
+        }
+    });
+    var countClic = 0;
+    var texto = "";
+    $('body').on('click', '#esqueceu-senha', function(){
+        if (countClic%2==0) {
+            texto = "Fazer Login?";
+            $("body #loginBtn").html('Enviar');
+            $("body #recuperar-senha").val(1);
+        } else {
+            texto = "Esqueceu a Senha?";
+            $("body #loginBtn").html('Entrar');
+            $("body #recuperar-senha").val("");
+        }
+        $("body #usuario").focus();
+        $("body .div-senha").slideToggle('fast');
+        $("body #esqueceu-senha").html(texto);
+        countClic++;
+    });
+</script>

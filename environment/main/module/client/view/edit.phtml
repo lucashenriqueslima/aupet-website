@@ -1,0 +1,692 @@
+<?php require_once $this->main_layouts . "headers.phtml"; ?>
+    <script type="text/javascript">
+        var pagina = "<?= $this->getPath(); ?>";
+        var permissao = "<?= $this->permissao_ref; ?>";
+        var controller = "<?= $this->getPath(); ?>/save";
+        <?php if ($this->id) : ?>
+            var retorno = "<?= $this->retorno . '/edit/id/' . $this->id ?>";
+        <?php else : ?>
+            var retorno = "<?= $this->retorno; ?>";
+        <?php endif ?>
+    </script>
+    </head>
+    <body>
+        <?php require_once $this->main_layouts . "header.phtml"; ?>
+        <div id="wrapper">
+            <?php require_once $this->main_layouts . "sidebar.phtml"; ?>
+            <div id="content" class="page-content clearfix">
+                <div class="contentwrapper">
+                    <div class="heading">
+                        <h3><?= $this->module_title; ?></h3>
+                        <ul class="breadcrumb">
+                            <li>Você está aqui:</li>
+                            <li> <a href="#" class="tip" title="Painel"> <i class="s16 icomoon-icon-screen-2"></i> </a> <span class="divider"> <i class="s16 icomoon-icon-arrow-right-3"></i> </span> </li>
+                            <li> <a class="tip" title="<?= $this->module_title; ?>" href="<?= $this->getPath(); ?>"> <i class="s16 <?= $this->module_icon; ?>"></i> </a> </li>
+                            <span class="divider">
+                                <i class="s16 icomoon-icon-arrow-right-3"></i>
+                            </span>
+                            <li class="active">Registro</li>
+                        </ul>
+                    </div>
+                    <div class="tabs">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#data" data-toggle="tab">Dados</a>
+                            </li>
+                            <li>
+                                <a href="#releases" data-toggle="tab">Lançamentos</a>
+                            </li>
+                            <li>
+                                <a href="#files" data-toggle="tab">Anexos</a>
+                            </li>
+                            <li>
+                                <a href="#permissions" data-toggle="tab">Permissões</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade active in" id="data">
+                                <form name="main" enctype="multipart/form-data" method="post" class="form-horizontal group-border">
+                                    <input type="hidden" name="id" value="<?= $this->id; ?>" />
+                                    <input type="hidden" name="retorno" value="<?= $this->retorno; ?>">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="panel panel-default toggle">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">Cliente</h4>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <?php if ($this->id) : ?>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-2 control-label" for="nickname">Identificador:</label>
+                                                            <div class="col-lg-10">
+                                                                <input class="form-control" disabled id="nickname" type="text" value="<?= $this->registro['nickname'] ?>" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-2 control-label" for="registrado_em">Registrado em:</label>
+                                                            <div class="col-lg-10">
+                                                                <input class="form-control date" name="registrado_em" id="registrado_em" type="text" value="<?= $this->formataDataDeBanco($this->registro['registrado_em']) ?>" />
+                                                            </div>
+                                                        </div>
+                                                    <?php else : ?>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-2 control-label" for="nickname">Identificador:</label>
+                                                            <div class="col-lg-10">
+                                                                <input class="form-control" name="nickname" id="nickname" type="text" value="<?= $this->registro['nickname'] ?>" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-2 control-label" for="registrado_em">Registrado em:</label>
+                                                            <div class="col-lg-10">
+                                                                <input class="form-control date" name="registrado_em" id="registrado_em" type="text" value="<?= date('d/m/Y') ?>" />
+                                                            </div>
+                                                        </div>
+                                                    <?php endif ?>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-2 control-label" for="nome_fantasia">Nome fantasia:</label>
+                                                        <div class="col-lg-10">
+                                                            <input class="form-control" name="nome_fantasia" id="nome_fantasia" type="text" value="<?= $this->registro['nome_fantasia'] ?>" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-2 control-label" for="empresa">Nome razão social:</label>
+                                                        <div class="col-lg-10">
+                                                            <input class="form-control" name="empresa" id="empresa" type="text" value="<?= $this->registro['empresa'] ?>" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-2 control-label" for="cnpj">CNPJ:</label>
+                                                        <div class="col-lg-10">
+                                                            <input class="form-control cnpj" name="cnpj" id="cnpj" type="text" value="<?= $this->registro['cnpj'] ?>" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-2 control-label" for="email">E-mail:</label>
+                                                        <div class="col-lg-10">
+                                                            <input class="form-control" name="email" id="email" type="email" value="<?= $this->registro['email'] ?>" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-2 control-label" for="telefone">Telefone:</label>
+                                                        <div class="col-lg-10">
+                                                            <input class="form-control telefone" name="telefone" id="telefone" type="text" value="<?= $this->registro['telefone'] ?>" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-2 control-label" for="celular">Celular:</label>
+                                                        <div class="col-lg-10">
+                                                            <input class="form-control telefone" name="celular" id="celular" type="text" value="<?= $this->registro['celular'] ?>" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-2 control-label" for="cep">CEP:</label>
+                                                        <div class="col-lg-10">
+                                                            <input class="form-control" name="cep" id="cep" type="text" value="<?= $this->registro['cep'] ?>" />
+                                                        </div>
+                                                    </div>
+                                                    <div class='form-group'>
+                                                        <label class='col-lg-2 control-label'>Logradouro</label>
+                                                        <div class='col-lg-10'>
+                                                            <input class='form-control' type="text" name="logradouro" value="<?= $this->registro['logradouro'] ?>" />
+                                                        </div>
+                                                    </div>
+                                                    <div class='form-group'>
+                                                        <label class='col-lg-2 control-label'>Numero</label>
+                                                        <div class='col-lg-10'>
+                                                            <input class='form-control' type="text" name="numero" value="<?= $this->registro['numero'] ?>" />
+                                                        </div>
+                                                    </div>
+                                                    <div class='form-group'>
+                                                        <label class='col-lg-2 control-label'>Complemento</label>
+                                                        <div class='col-lg-10'>
+                                                            <input class='form-control' type="text" name="complemento" value="<?= $this->registro['complemento'] ?>" />
+                                                        </div>
+                                                    </div>
+                                                    <div class='form-group'>
+                                                        <label class='col-lg-2 control-label'>Bairro</label>
+                                                        <div class='col-lg-10'>
+                                                            <input class='form-control' type="text" name="bairro" value="<?= $this->registro['bairro'] ?>" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-2 control-label" for="id_estado">Estado:</label>
+                                                        <div class="col-lg-10">
+                                                            <select class="form-control select2" id="id_estado" name="id_estado">
+                                                                <option value="">Selecione..</option>
+                                                                <?php foreach ($this->estados->rows as $estado) : ?>
+                                                                    <option <?php if ($estado['id'] == $this->registro['id_estado']) echo "selected"; ?> value="<?= $estado['id']; ?>" data-uf="<?= $estado['uf'] ?>"><?= $estado['estado']; ?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-2 control-label" for="id_cidade">Cidade:</label>
+                                                        <div class="col-lg-10">
+                                                            <select class="form-control select2" id="id_cidade" name="id_cidade">
+                                                                <option value="">Selecione..</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php if ($this->id && $this->modulos->num_rows) : ?>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="panel panel-default toggle">
+                                                    <div class="panel-heading">
+                                                        <h4 class="panel-title">Módulos</h4>
+                                                    </div>
+                                                    <div class="panel-body">                                                        
+                                                        <?php foreach ($this->modulos->rows as $index => $item): ?>
+                                                            <div class="form-group col-md-12">                                                    
+                                                                <label class="control-label"for="i-<?= $item['id'] ?>"><?= $item['nome'] ?></label>
+                                                                <div id="modules-linha" class="col-md-12 modules-linha">
+                                                                    <div class="col-md-1 toggle-custom">
+                                                                        <label class="toggle" data-on="ON" data-off="OFF">
+                                                                            <input type="hidden" id="modules[<?= $index ?>][id]" name="modules[<?= $index ?>][id]" value="<?= $item['id'] ?>">
+                                                                            <input type="checkbox" id="modules[<?= $index ?>][check]" name="modules[<?= $index ?>][check]" value="<?= $item['id'] ?>" <?php if($item['valor'] !== ''): ?> checked <?php endif ?>>
+                                                                            <span class="button-checkbox"></span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-addon">R$</span>
+                                                                            <input id="modules[<?= $index ?>][valor]" name="modules[<?= $index ?>][valor]" type="text" class="form-control" placeholder="Valor pago" value="<?= $item['valor'] ?>">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class='col-md-4'>
+                                                                        <label class="col-lg-4 control-label">Dt. Vencimento</label>
+                                                                        <div class="col-lg-8">
+                                                                            <input class="form-control date" id="modules[<?= $index ?>][data_vencimento]" name="modules[<?= $index ?>][data_vencimento]" value="<?= $this->formataDataDeBanco($item['data_vencimento']) ?>">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class='col-md-2'>
+                                                                        <label class="col-lg-4">Qtde parcelas</label>
+                                                                        <div class="col-lg-8">
+                                                                            <select class="form-control" id="modules[<?= $index ?>][qtde]">
+                                                                                <option value="">Selecione..</option>
+                                                                                <?php for ($i = 1; $i <= 12; $i++) : ?>
+                                                                                <option value="<?= $i ?>"><?= $i ?></option>
+                                                                                <?php endfor ?>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <button type="button" onclick="geraLancamentos(<?= $index ?>)" class="btn btn-default"><i class="fa fa-dollar"></i>Gerar parcela(s)</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        <?php endforeach ?>                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endif ?>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="panel panel-default toggle">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">Equipe</h4>
+                                                </div>
+                                                <div class="panel-body" id="members">
+                                                    <?php if ($this->id && $this->members->num_rows) : ?>
+                                                        <?php foreach ($this->members->rows as $index => $member) : ?>
+                                                            <div class="form-group">
+                                                                <div class="col-lg-3">
+                                                                    <input class="form-control" name="members[<?= $index ?>][nome]" type="text" value="<?= $member['nome'] ?>" placeholder="Nome" />
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <input class="form-control" name="members[<?= $index ?>][departamento]" type="text" value="<?= $member['departamento'] ?>" placeholder="Departamento" />
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <input class="form-control" name="members[<?= $index ?>][email]" type="text" value="<?= $member['email'] ?>" placeholder="Email" />
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                    <input class="form-control date" name="members[<?= $index ?>][nascimento]" type="text" value="<?= $this->formataDataDeBanco($member['nascimento']) ?>" placeholder="Nascimento" />
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                    <input class="form-control telefone" name="members[<?= $index ?>][telefone]" type="text" value="<?= $member['telefone'] ?>" placeholder="Telefone" />
+                                                                </div>
+                                                                <div class="col-lg-1">
+                                                                    <button class="btn btn-default add-member">
+                                                                        <i class="icomoon-icon-plus-circle" style="margin:0;"></i>
+                                                                    </button>
+                                                                    <button class="btn btn-default remove-member">
+                                                                        <i class="icomoon-icon-minus-circle" style="margin:0;"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        <?php endforeach ?>
+                                                    <?php else : ?>
+                                                        <div class="form-group">
+                                                            <input type="hidden" name="members[0][id]" value="">
+                                                            <div class="col-lg-3">
+                                                                <input class="form-control" name="members[0][nome]" type="text" value="" placeholder="Nome" />
+                                                            </div>
+                                                            <div class="col-lg-3">
+                                                                <input class="form-control" name="members[0][departamento]" type="text" value="" placeholder="Departamento" />
+                                                            </div>
+                                                            <div class="col-lg-3">
+                                                                <input class="form-control" name="members[0][email]" type="text" value="" placeholder="Email" />
+                                                            </div>
+                                                            <div class="col-lg-1">
+                                                                <input class="form-control date" name="members[0][nascimento]" type="text" value="" placeholder="Nascimento" />
+                                                            </div>
+                                                            <div class="col-lg-1">
+                                                                <input class="form-control telefone" name="members[0][telefone]" type="text" value="" placeholder="Telefone" />
+                                                            </div>
+                                                            <div class="col-lg-1">
+                                                                <button class="btn btn-default add-member">
+                                                                    <i class="icomoon-icon-plus-circle" style="margin:0;"></i>
+                                                                </button>
+                                                                <button class="btn btn-default remove-member">
+                                                                    <i class="icomoon-icon-minus-circle" style="margin:0;"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    <?php endif ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="panel panel-default toggle">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">BI</h4>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="form-group">
+                                                        <label class="col-lg-2 control-label" for="bi_usuario">Usuário</label>
+                                                        <div class="col-lg-10">
+                                                            <input class="form-control" name="bi_usuario" id="bi_usuario" type="text" value="<?= $this->registro['bi_usuario'] ?>" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-lg-2 control-label" for="bi_senha">Senha</label>
+                                                        <div class="col-lg-10">
+                                                            <input class="form-control" name="bi_senha" id="bi_senha" type="text" value="<?= $this->desembaralhar($this->registro['bi_senha']) ?>" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="panel panel-default toggle">
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">Anotações</h4>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="form-group">
+                                                        <label class="col-lg-2 control-label" for="anotacoes">Anotações:</label>
+                                                        <div class="col-lg-10">
+                                                            <textarea class="form-control tinymce" name="anotacoes" id="anotacoes"><?= $this->registro['anotacoes'] ?></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <?php if ($this->id == "") : ?>
+                                            <?php if (!$this->permissions[$this->permissao_ref]['gravar']) : ?>
+                                                <div class="form-group">
+                                                    <div class="col-lg-offset-2 col-lg-10">
+                                                        <span class="label label-warning "><span class="icon24 typ-icon-warning"></span>Você não tem permissão para gravar esta função.</span>
+                                                    </div>
+                                                </div>
+                                            <?php else : ?>
+                                                <div class="form-group">
+                                                    <div class="col-lg-offset-2 col-lg-10">
+                                                        <button type="button" class="btn btn-info clickformsubmit">Salvar novo</button>
+                                                    </div>
+                                                </div>
+                                            <?php endif ?>
+                                        <?php else : ?>
+                                            <?php if (!$this->permissions[$this->permissao_ref]['editar']) : ?>
+                                                <div class="form-group">
+                                                    <div class="col-lg-offset-2 col-lg-10">
+                                                        <span class="label label-warning"><span class="icon24 icomoon-icon-warning "></span>Você não tem permissão para editar esta função.</span>
+                                                    </div>
+                                                </div>
+                                            <?php else : ?>
+                                                <div class="form-group">
+                                                    <div class="col-lg-offset-2 col-lg-10">
+                                                        <button type="button" class="btn btn-info clickformsubmit">Salvar alterações</button>
+                                                    </div>
+                                                </div>
+                                            <?php endif ?>
+                                        <?php endif ?>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane fade" id="releases">
+                                <table cellpadding="0" cellspacing="0" border="0" class="tabletools table table-striped table-bordered" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th style="display:none;"></th>
+                                            <th width="20%" class="tal">Vencimento</th>
+                                            <th width="10%" class="tal">Valor</th>
+                                            <th width="30%" class="tal">Descrição</th>
+                                            <th width="10%" class="tal">Tipo</th>
+                                            <th width="10%" class="tal">Pago</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($this->lancamentos->rows as $lancamento): ?>
+                                        <tr>
+                                            <td style="display:none;"><?= $lancamento['expira_em'] ?></td>
+                                            <td class="tal">
+                                                <a href="main/release/edit/id/<?= $lancamento['id'] ?>">
+                                                    <?= $this->formataDataDeBanco($lancamento['data_vencimento']) ?>
+                                                </a>
+                                            </td>
+                                            <td class="tal">
+                                                <a href="main/release/edit/id/<?= $lancamento['id'] ?>">
+                                                    <?= $this->formataMoedaDeBanco($lancamento['valor']) ?>
+                                                </a>
+                                            </td>
+                                            <td class="tal">
+                                                <a href="main/release/edit/id/<?= $lancamento['id'] ?>">
+                                                    <?= $lancamento['descricao'] ?>
+                                                </a>
+                                            </td>
+                                            <td class="tal">
+                                                <a href="main/release/edit/id/<?= $lancamento['id'] ?>">
+                                                    <span style="color:<?= $lancamento['tipo'] == 'R' ? 'green' : 'red' ?>;"><?= $lancamento['tipo'] ?></span>
+                                                </a>
+                                            </td>
+                                            <td class="tal">
+                                                <a href="main/release/edit/id/<?= $lancamento['id'] ?>">
+                                                    <?= $lancamento['pago_em'] ? $this->formataDataDeBanco($lancamento['data_pagamento']) : '' ?>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <?php endforeach ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade" id="files">
+                                <form name="attacheds" enctype="multipart/form-data" method="post" class="form-horizontal" action="<?= $this->getPath() ?>/fileUpload/id/<?= $this->id ?>">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <div class="col-lg-7">
+                                                <input type="text" name="descricao" class="form-control" id="descricao" placeholder="Descrição" required>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <input type="file" name="file" class="form-control" id="file" required>
+                                            </div>
+                                            <div class="col-lg-1">
+                                                <button type="button" class="btn btn-info" id="submit-file">Enviar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <table cellpadding="0" cellspacing="0" border="0" class="tabletools table table-striped table-bordered" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th width="10%" class="tal">Registrado em</th>
+                                            <th width="30%" class="tal">Usuário</th>
+                                            <th width="30%" class="tal">Arquivo</th>
+                                            <th style="width:120px;" class="center">Ação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php if ($this->anexos->num_rows) : ?>
+                                            <?php foreach ($this->anexos->rows as $anexo) : ?>
+                                                <tr>
+                                                    <td class="tal">
+                                                        <a href="<?= $this->upload_path . $anexo['arquivo'] ?>">
+                                                            <?= date('d/m/Y H:i:s', strtotime($anexo['registrado_em'])) ?>
+                                                        </a>
+                                                    </td>
+                                                    <td class="tal">
+                                                        <a href="<?= $this->upload_path . $anexo['arquivo'] ?>">
+                                                            <?= $anexo['usuario'] ?>
+                                                        </a>
+                                                    </td>
+                                                    <td class="tal">
+                                                        <a href="<?= $this->upload_path . $anexo['arquivo'] ?>">
+                                                            <?= pathinfo($this->upload_folder . $anexo['arquivo'], PATHINFO_BASENAME) ?>
+                                                        </a>
+                                                    </td>
+                                                    <td class="center" style="width:120px;">
+                                                        <?php if ($this->permissions[$this->permissao_ref]['excluir']) : ?>
+                                                            <a class="bt_system_delete" data-controller="<?= $this->getPath() ?>" data-del="fileDel" data-retorno="<?= $this->getPath() ?>/edit/id/<?= $this->id ?>" data-id="<?= $anexo['id']; ?>" href="#"><i class="s12 icomoon-icon-remove"></i></a>
+                                                        <?php endif ?>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach ?>
+                                        <?php endif ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade" id="permissions">
+                                <form name="main" enctype="multipart/form-data" method="post" class="form-horizontal group-border">
+                                    <input type="hidden" name="id" value="<?= $this->id; ?>" />
+                                    <input type="hidden" name="retorno" value="<?= $this->retorno; ?>">
+                                    <?php require_once("{$this->main_layouts}permissoes.phtml") ?>
+                                    <div class="row">
+                                        <?php if ($this->id == "") : ?>
+                                            <?php if (!$this->permissions[$this->permissao_ref]['gravar']) : ?>
+                                                <div class="form-group">
+                                                    <div class="col-lg-offset-2 col-lg-10">
+                                                        <span class="label label-warning "><span class="icon24 typ-icon-warning"></span>Você não tem permissão para gravar esta função.</span>
+                                                    </div>
+                                                </div>
+                                            <?php else : ?>
+                                                <div class="form-group">
+                                                    <div class="col-lg-offset-2 col-lg-10">
+                                                        <button type="button" class="btn btn-info clickformsubmit">Salvar novo</button>
+                                                    </div>
+                                                </div>
+                                            <?php endif ?>
+                                        <?php else : ?>
+                                            <?php if (!$this->permissions[$this->permissao_ref]['editar']) : ?>
+                                                <div class="form-group">
+                                                    <div class="col-lg-offset-2 col-lg-10">
+                                                        <span class="label label-warning"><span class="icon24 icomoon-icon-warning "></span>Você não tem permissão para editar esta função.</span>
+                                                    </div>
+                                                </div>
+                                            <?php else : ?>
+                                                <div class="form-group">
+                                                    <div class="col-lg-offset-2 col-lg-10">
+                                                        <button type="button" class="btn btn-info clickformsubmit">Salvar alterações</button>
+                                                    </div>
+                                                </div>
+                                            <?php endif ?>
+                                        <?php endif ?>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php require_once $this->main_layouts . "footer.phtml"; ?>
+        </div>
+        <?php require_once $this->main_layouts . "plugins.phtml"; ?>
+        <script src="<?= $this->main_template; ?>plugins/tables/dataTables/jquery.dataTables.js"></script>
+        <script src="<?= $this->main_template; ?>plugins/tables/dataTables/dataTables.tableTools.js"></script>
+        <script src="<?= $this->main_template; ?>plugins/tables/dataTables/dataTables.bootstrap.js"></script>
+        <script src="<?= $this->main_template; ?>plugins/tables/dataTables/dataTables.responsive.js"></script>
+        <script type="text/javascript" src="<?= $this->main_template; ?>plugins/forms/dualselect/jquery.dualListBox-1.3.min.js"></script>
+        <script src="<?= $this->main_template; ?>plugins/forms/tiny_mce/tinymce.min.js"></script>
+        <script src="<?= $this->main_template; ?>plugins/forms/select2/select2.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $(".select2").select2();
+                $("[name=cnpj]").mask('00.000.000/0000-00');
+                $("[name=telefone]").mask('(99) 9999-9999');
+                $("[name=celular]").mask('(99) 99999-9999');
+                $('.value').mask('##0.##0.##0.##0,00', {
+                    reverse: true
+                });
+                $('.elastic').autosize();
+                var cityByCep = null;
+                $('input[name=cep]').mask('00000-000')
+                    .keyup(function(e) {
+                        if ($(this).val().length === 9) {
+                            let numbers = $(this).val().replace(/\D/g, '');
+                            $.get('https://viacep.com.br/ws/' + numbers + '/json')
+                                .done(function(response) {
+                                    if (response.erro) return;
+                                    cityByCep = response.localidade;
+                                    var select = $('select#id_estado');
+                                    select.find('option:selected').prop('selected', false);
+                                    select.find('option[data-uf=' + response.uf + ']').prop('selected', true);
+                                    select.select2().trigger('change');
+                                    $('input[name=logradouro]').val(response.logradouro);
+                                    $('input[name=numero]').val(response.unidade);
+                                    $('input[name=complemento]').val(response.complemento);
+                                    $('input[name=bairro]').val(response.bairro);
+                                });
+                        }
+                    });
+                $("#id_estado").on("change", function() {
+                    var id = $(this).val();
+                    if (!id) return
+                    $.ajax({
+                            method: "POST",
+                            url: "main/general/getCidadesByEstado",
+                            data: {
+                                id: id
+                            },
+                            async: false
+                        })
+                        .done(function(data) {
+                            var cidadeSelect = $("select[name=id_cidade]");
+                            cidadeSelect.html(data);
+                            if (cityByCep) {
+                                cidadeSelect.find('option:selected').prop('slected', false);
+                                cidadeSelect.find('option[data-name="' + cityByCep + '"]').prop('selected', true);
+                            }
+                            cidadeSelect.select2().trigger('change');
+                        });
+                });
+                <?php if ($this->id && $this->registro['id_estado']) : ?>
+                    $("#id_estado").trigger("change");
+                    $("#id_cidade").val("<?= $this->registro['id_cidade'] ?>").trigger("change");
+                <?php endif ?>
+                $('#submit-file').click(function(e) {
+                    e.preventDefault();
+                    var formData = new FormData($('form[name=attacheds]')[0]);
+                    $.ajax({
+                        type: 'post',
+                        url: "<?= $this->getPath() ?>/fileUpload/id/<?= $this->id ?>",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        dataType: 'json',
+                        success: function(res) {
+                            if (res.type === 'error') {
+                                alert(res.message);
+                                return;
+                            }
+                            location.reload();
+                        }
+                    });
+                });
+                if ($('table').hasClass('tabletools')) {
+                    $('.tabletools').dataTable({
+                        "oLanguage": {
+                            "sSearch": "",
+                            "sLengthMenu": "<span>_MENU_</span>",
+                            "sProcessing": "Processando...",
+                            "sZeroRecords": "Não foram encontrados resultados",
+                            "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                            "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros",
+                            "sInfoFiltered": "",
+                            "sInfoPostFix": "",
+                            "sUrl": "",
+                            "oPaginate": {
+                                "sFirst": "Primeiro",
+                                "sPrevious": "Anterior",
+                                "sNext": "Seguinte",
+                                "sLast": "Último"
+                            }
+                        },
+                        "sDom": "T<'row'<'col-md-6 col-xs-12 'l><'col-md-6 col-xs-12'f>r>t<'row'<'col-md-4 col-xs-12'i><'col-md-8 col-xs-12'p>>",
+                        "aaSorting": [
+                            [0, "asc"]
+                        ],
+                        tableTools: {
+                            "sSwfPath": "http://cdn.datatables.net/tabletools/2.2.2/swf/copy_csv_xls_pdf.swf",
+                            "aButtons": []
+                        }
+                    });
+                }
+                var reorderRows = function() {
+                    $('#members > div.form-group').each(function(rowIndex) {
+                        $(this).find('input').each(function() {
+                            var name = $(this).attr('name');
+                            $(this).attr('name', name.replace(/\d/g, rowIndex));
+                            if ($(this).hasClass('date')) {
+                                $(this).datepicker({
+                                    dateFormat: 'dd/mm/yy',
+                                    dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+                                    dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S', 'D'],
+                                    dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+                                    monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                                    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                                    nextText: 'Próximo',
+                                    prevText: 'Anterior'
+                                }).mask('##/##/####');
+                            }
+                            if ($(this).hasClass('telefone')) {
+                                window.maskTelefone($(this));
+                            }
+                        });
+                    });
+                };
+                $('body').on('click', '.add-member', function(e) {
+                    e.preventDefault();
+                    var row = $(this).parent().parent();
+                    var clone = row.clone();
+                    clone.find('input')
+                        .val('')
+                        .each(function() {
+                            var name = $(this).attr('name');
+                            $(this).attr('name', name.replace(/\d/g, row.parent().find('.form-group').length));
+                        });
+                    row.after(clone);
+                    reorderRows();
+                });
+                $('body').on('click', '.remove-member', function(e) {
+                    e.preventDefault();
+                    $(this).parent().parent().remove();
+                    reorderRows();
+                });
+            });
+            function geraLancamentos(linha){
+                var id = document.getElementById('modules['+ linha + '][check]').value;
+                var valor = document.getElementById('modules['+ linha + '][valor]').value;
+                var data = document.getElementById('modules['+ linha + '][data_vencimento]').value;
+                var qtde = document.getElementById('modules['+ linha + '][qtde]').value;
+                if(!valor || !data || !qtde) return;
+                $.ajax({
+                    type: "POST",
+                    url: "<?= $this->getPath() ?>/gerarLancamentos/id/<?= $this->id ?>",
+                    data: {
+                        'id': id,
+                        'valor': valor,
+                        'data': data,
+                        'qtde': qtde,
+                    },   
+                    dataType: 'json',
+                    success: function(res) {
+                        if (res.type === 'error') {
+                            alert(res.message);
+                            return;
+                        }
+                        location.reload();
+                    }                     
+                });
+            }
+        </script>
+    </body>
+    </html>

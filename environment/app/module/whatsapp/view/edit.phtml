@@ -1,0 +1,172 @@
+<?php require_once $this->main_layouts."headers.phtml"; ?>
+    <script type="text/javascript">
+        var pagina = "<?php echo $this->getPath(); ?>";
+        var permissao = "<?php echo $this->permissao_ref; ?>";
+        var controller = "<?php echo $this->getPath(); ?>/save";
+        var retorno = "<?php echo $this->retorno; ?>";
+    </script>
+    </head>  
+    <body ng-app='nova' ng-controller="EditCtrl as ctrl" ng-init='ctrl.onInit()' style='display:none'>
+        <?php require_once $this->main_layouts."header.phtml"; ?>
+        <div id="wrapper">
+            <?php require_once $this->main_layouts."sidebar.phtml"; ?>
+            <div id="content" class="page-content clearfix">
+                <div class="contentwrapper">
+                    <div class="heading">
+                        <h3><?php echo $this->module_title; ?></h3>
+                        <ul class="breadcrumb">
+                            <li>Você está aqui:</li>
+                            <li> <a href="#" class="tip" title="Painel"> <i class="s16 icomoon-icon-screen-2"></i> </a> <span class="divider"> <i class="s16 icomoon-icon-arrow-right-3"></i> </span> </li>
+                            <li> <a class="tip" title="<?php echo $this->module_title; ?>" href="<?php echo $this->module_link;?>"> <i class="s16 <?php echo $this->module_icon; ?>"></i> </a> </li>
+                            <span class="divider">
+                                <i class="s16 icomoon-icon-arrow-right-3"></i>
+                            </span>
+                            <li class="active">Registro</li>
+                        </ul>
+                    </div>
+                    <form class="form-horizontal group-border" >
+                        <input type="hidden" name="id" value="<?php echo $this->id; ?>" />
+      
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">WhatsApp</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 col-md-3 control-label">Status </label>
+                                            <div class="col-lg-10 col-md-9">
+                                                <div class="toggle-custom">
+                                                    <label class="toggle" data-on="ON" data-off="OFF">
+                                                        <input type="checkbox" ng-model='ctrl.data.leadszapp_status' ng-true-value="1" ng-false-value="0">
+                                                        <span class="button-checkbox"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" >Token <i class="fa fa-question-circle cursor" data-container="body" data-toggle="popover" data-placement="top" data-content="Para obter acesse http://hub.leadszapp.com/profile" title="" data-original-title="" ></i> </label>
+                                            <div class="col-lg-8">
+                                                <input class="form-control" ng-model='ctrl.data.leadszapp_token'/>
+                                            </div>
+                                            <div class="col-lg-offset-2">
+                                                <button class="btn btn-info" ng-click='ctrl.verifyLeadszappToken()'>Verificar token</button>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="sga_token"> Id bot
+                                            <i class="fa fa-question-circle cursor" data-container="body" data-toggle="popover" data-placement="top" data-content="Cole apenas o numero do id do bot" title="" data-original-title="" ></i></label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" type='number' ng-model='ctrl.data.leadszapp_bot' />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Mercado Pago</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <!-- <div class="form-group">
+                                            <label class="col-lg-2 col-md-3 control-label">Status </label>
+                                            <div class="col-lg-10 col-md-9">
+                                                <div class="toggle-custom">
+                                                    <label class="toggle" data-on="ON" data-off="OFF">
+                                                        <input type="checkbox" ng-model='ctrl.data.leadszapp_status' ng-true-value="1" ng-false-value="0">
+                                                        <span class="button-checkbox"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div> -->
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" >Public Key <i class="fa fa-question-circle cursor" data-container="body" data-toggle="popover" data-placement="top" data-content="Insira aqui sua Public Key do Mercado Pago" title="" data-original-title="" ></i> </label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" ng-model='ctrl.data.public_key'/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" >Access Token <i class="fa fa-question-circle cursor" data-container="body" data-toggle="popover" data-placement="top" data-content="Insira aqui seu Access Token do Mercado Pago" title="" data-original-title="" ></i> </label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" type="password" ng-model='ctrl.data.access_token'/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" >Client ID <i class="fa fa-question-circle cursor" data-container="body" data-toggle="popover" data-placement="top" data-content="Insira aqui sua Client ID do Mercado Pago" title="" data-original-title="" ></i> </label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" ng-model='ctrl.data.client_id'/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" >Client Secret <i class="fa fa-question-circle cursor" data-container="body" data-toggle="popover" data-placement="top" data-content="Insira aqui sua Client Secret do Mercado Pago" title="" data-original-title="" ></i> </label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" type="password" ng-model='ctrl.data.client_secret'/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" >Url Para Retorno<i class="fa fa-question-circle cursor" data-container="body" data-toggle="popover" data-placement="top" data-content="Essa é a Url pra receber as Notificações do Mercado Pago " title="" data-original-title="" ></i> </label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" value="https://api.aupetheinsten.com.br/pagamentos/notificacoes" disabled />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <?php if ($this->permissions($this->permissao_ref,'editar')) : ?>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <button ng-click='ctrl.submitForm()' class="btn btn-info">Salvar alterações</button>
+                                </div>
+                            </div>
+                        </div>
+                        <?php endif ?>
+                    </form>
+                </div>
+            </div>
+            <?php require_once $this->main_layouts."footer.phtml"; ?>
+        </div>
+        <?php require_once $this->main_layouts."plugins.phtml"; ?>
+        <script src="<?php echo $this->main_template; ?>plugins/tables/dataTables/jquery.dataTables.js"></script>
+        <script src="<?php echo $this->main_template; ?>plugins/tables/dataTables/dataTables.tableTools.js"></script>
+        <script src="<?php echo $this->main_template; ?>plugins/tables/dataTables/dataTables.bootstrap.js"></script>
+        <script src="<?php echo $this->main_template; ?>plugins/tables/dataTables/dataTables.responsive.js"></script>
+        <?php use main\classes\{Util}; ?>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('.tabletools').dataTable({
+                    "pageLength": 10,
+                    "oLanguage": { "sSearch": "", "sLengthMenu": "<span>_MENU_</span>", "sProcessing": "Processando...", "sZeroRecords": "Não foram encontrados resultados", "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros", "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros", "sInfoFiltered": "", "sInfoPostFix": "", "sUrl": "", "oPaginate": { "sFirst": "Primeiro", "sPrevious": "Anterior", "sNext": "Seguinte", "sLast": "Último" } },
+                    "sDom": "T<'row'<'col-md-6 col-xs-12 'l><'col-md-6 col-xs-12'f>r>t<'row'<'col-md-4 col-xs-12'i><'col-md-8 col-xs-12'p>>",
+                    "aaSorting": [ [0, "asc"] ],
+                    "tableTools": { "sSwfPath": "http://cdn.datatables.net/tabletools/2.2.2/swf/copy_csv_xls_pdf.swf", "aButtons": [] }
+                });
+            });
+            angular.module('nova', ['novaServices'])
+            .controller('EditCtrl',function($scope, $http, $sce, NS, $window) {
+                this.data = <?= Util::json_encode($this->registro); ?>;
+                this.onInit = () => {
+                    this.data.leadszapp_bot = Number(this.data.leadszapp_bot);
+                    $('body').show();
+                }
+                this.submitForm = async () => {
+                    await NS.actionHandler($http.post("<?php echo $this->getPath(); ?>/save",this.data));
+                    location.reload();
+                }
+                
+                this.verifyLeadszappToken = async () => {
+                    await NS.actionHandler($http.get("<?php echo $this->getPath(); ?>/verifyLeadszappToken/token/"+this.data.leadszapp_token), 'body','Token OK','Token inválido');
+                }
+            })
+            $(document).ready(function(){ });
+        </script>
+    </body>
+</html>

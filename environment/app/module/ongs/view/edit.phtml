@@ -1,0 +1,552 @@
+<?php require_once $this->main_layouts . "headers.phtml"; ?>
+    <link href="<?php echo $this->main_template; ?>plugins/gallery/jpages/jPages.css" rel="stylesheet" type="text/css" />        
+    <link href="<?php echo $this->main_template; ?>plugins/forms/select/select2.css" type="text/css" rel="stylesheet" />
+
+    <link href="<?php echo $this->main_template;?>plugins/gallery/pretty-photo/prettyPhoto.css" type="text/css" rel="stylesheet" /> 
+    <script type="text/javascript">
+        var pagina = "<?php echo $this->getPath(); ?>";
+        var permissao = "<?php echo $this->permissao_ref; ?>";
+        var controller = "<?php echo $this->getPath(); ?>/save";
+        var retorno = "<?php echo $this->retorno; ?>";
+    </script>
+    
+    </head>  
+    <body ng-app='nova' ng-controller="Ctrl as ctrl" ng-init='ctrl.onInit()' style='display:none;'>
+        <?php require_once $this->main_layouts . "header.phtml"; ?>
+        <div id="wrapper">
+        <?php require_once $this->main_layouts."sidebar.phtml"; ?>
+            <div id="content" class="page-content clearfix">
+                <div class="contentwrapper">
+                    <div class="heading">
+                        <h3><?php echo $this->module_title; ?></h3>
+                        <ul class="breadcrumb">
+                            <li>Você está aqui:</li>
+                            <li><a href="#" class="tip" title="Painel"><i class="s16 icomoon-icon-screen-2"></i></a>
+                                <span class="divider">
+                                    <i class="s16 icomoon-icon-arrow-right-3"></i>
+                                </span>
+                            </li>
+                            <li><a class="tip" title="<?php echo $this->module_title; ?>" href="<?php echo $this->module_link;?>"><i class="s16 <?php echo $this->module_icon; ?>"></i></a></li>
+                            <span class="divider">
+                                <i class="s16 icomoon-icon-arrow-right-3"></i>
+                            </span>
+                            <li class="active">Registro</li>
+                        </ul>
+                    </div>
+                    <form name="main" enctype="multipart/form-data" method="post" class="form-horizontal group-border">
+                        <input type="hidden" name="id" value="<?php echo $this->id; ?>" />
+                        <input type="hidden" name="retorno" value="<?php echo $this->retorno; ?>">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Dados básicos</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="nome">Nome </label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="nome" id="nome" type="text" value="<?php echo $this->registro['nome'] ?>" />
+                                            </div>
+                                        </div>
+                            
+
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="telefone1">Telefone principal</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control telefone" name="telefone1" value="<?php echo $this->registro['telefone1'] ?>" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="telefone2">Telefone secundário</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control telefone" name="telefone2" value="<?php echo $this->registro['telefone2'] ?>" />
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="descricao">Descrição</label>
+                                            <div class="col-lg-10">
+                                                <textarea class="form-control" name="descricao" id="descricao" rows='6' type="text" ><?php echo $this->registro['descricao'] ?></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group target_toggle">
+                                            <label class="col-lg-2 control-label" for="logo">Imagem:</label>
+                                            <div class="col-lg-10">
+                                                <label class="fileupload" for="logo">
+                                                    <?php if ($this->registro['logo'] == ""): ?>
+                                                        <img src="https://placehold.it/450x300" alt="" class="image marginR10"/>
+                                                    <?php else: ?>
+                                                        <img src="<?php echo $this->registro['logo']; ?>" width="450" height="300" alt="" class="image marginR10"/>
+                                                    <?php endif ?>
+                                                </label>
+                                                <input type="file" name="logo" id="logo" class="files btn btn-default"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Endereço</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="cep">CEP</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="cep" id="cep" type="text" value="<?php echo $this->registro['cep'] ?>" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="rua">Logradouro</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="rua" id="rua" type="text" value="<?php echo $this->registro['rua'] ?>" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="numero">Número</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="numero" id="numero" type="text" value="<?php echo $this->registro['numero'] ?>" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="complemento">Complemento</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="complemento" id="complemento" type="text" value="<?php echo $this->registro['complemento'] ?>" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="id_estado">Estado</label>
+                                            <div class="col-lg-10">
+                                                <select class="form-control select2" id="id_estado" name="id_estado">
+                                                    <option value="">Selecione..</option>
+                                                    <?php if ($this->estados->num_rows) : ?>
+                                                        <?php foreach ($this->estados->rows as $estado) : ?>
+                                                            <option <?php if ($estado['id'] == $this->registro['id_estado']) echo "selected"; ?> value="<?php echo $estado['id']; ?>"><?php echo $estado['estado']; ?></option>
+                                                        <?php endforeach; ?>
+                                                    <?php endif; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="id_cidade">Cidade</label>
+                                            <div class="col-lg-10">
+                                                <select class="form-control select2" id="id_cidade" name="id_cidade">
+                                                    <option value="">Selecione..</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="bairro">Bairro</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="bairro" id="bairro" type="text" value="<?php echo $this->registro['bairro'] ?>" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <?php if((bool)$this->id) : ?>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="panel panel-default toggle">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">Dados Bancários</h4>
+                                        </div>
+                                        <div class="panel-body">
+                                            <?php if(!(isset($this->contas) && $this->contas->num_rows)) : ?>
+                                                <div class="form-group">
+                                                    <div class=" col-md-12">
+                                                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal_solicitacao">Nova Conta</button>
+                                                    </div>
+                                                </div>
+                                            <?php endif ?>
+                                            <div class="panel-body">
+                                                <table cellpadding="0" cellspacing="0" border="0" class="tabletools table table-striped table-bordered" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="tal">Cpf/Cnpj</th>
+                                                            <th class="tal">Banco</th>
+                                                            <th class="tal">Agência</th>
+                                                            <th class="tal">Operação</th>
+                                                            <th class="tal">Conta</th>
+                                                            <th width="120px" class="center">Ação</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php if (isset($this->contas) && $this->contas->num_rows) : ?>
+                                                            <?php foreach ($this->contas->rows as $k => $contas) : ?>
+                                                                <tr id="<?=  $this->id; ?>">
+                                                                    <td class="tal"><?= $contas['cpf_cnpj']; ?></td>
+                                                                    <td class="tal"><?= $contas['banco']; ?></td>
+                                                                    <td class="tal"><?= $contas['agencia']; ?></td>
+                                                                    <td class="tal"><?= $contas['operacao']; ?></td>
+                                                                    <td class="tal"><?= $contas['conta']; ?></td>
+                                                                    <td class="center">
+                                                                        <?php if ($this->permissions[$this->permissao_ref]['editar']) : ?>
+                                                                            <a ng-click="ctrl.modal_arquivos(<?=  $this->id; ?>)" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar"  ><i class="s12 icomoon-icon-pencil"></i></a>
+                                                                        <?php endif ?>
+                                                                    </td>
+                                                                </tr>
+                                                            <?php endforeach; ?>
+                                                        <?php endif; ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endif ?>
+
+                        <?php if((bool)$this->doacoes && ($this->doacoes->num_rows > 0)) : ?>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                     <div class="dropdown mb10 mr10">
+                                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Relatórios de Doações <span class="caret"></span></button>
+                                            <ul class="dropdown-menu right animated fadeIn" role="menu">
+                                                <li><a onclick="openRel('<?php echo $this->getPath(); ?>/exportDtab/id/<?php echo $this->id; ?>')" ><span class="s14 icomoon-icon-new-tab color-black"></span>Relatório na tela</a></li>
+                                                <li><a onclick="openRel('<?php echo $this->getPath(); ?>/exportD/id/<?php echo $this->id; ?>')" ><span class="s14 icomoon-icon-file-excel color-black"></span>Baixar Relatório em Excel</a></li>
+                                            </ul>
+                                        </div>
+                                    <div class="panel panel-default toggle">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">Doações Recebidas</h4>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="panel-body">
+                                                <table cellpadding="0" cellspacing="0" border="0" class="tabletools table table-striped table-bordered" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="tal">Nome do Doador</th>
+                                                            <th class="tal">Campanha </th>
+                                                            <th class="tal">Data da Doação</th>
+                                                            <th class="tal">Valor</th>
+                                                            <th class="tal">Tipo</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php if (isset($this->doacoes) && ($this->doacoes->num_rows > 0)) : ?>
+                                                            <?php foreach ($this->doacoes->rows as $k => $doacao) : ?>
+                                                                <tr id="<?=  $this->id; ?>">
+                                                                    <td class="tal"><?= $doacao['nome_doador']; ?></td>
+                                                                    <td class="tal"><?= $doacao['campanha']; ?></td>
+                                                                    <td class="tal"><?= $doacao['criacao']; ?></td>
+                                                                    <td class="tal"><?= $this->formataMoedaShow($doacao['valor']); ?></td>
+                                                                    <td class="tal"><?= $doacao['tipo']; ?></td>
+                                                                </tr>
+                                                            <?php endforeach; ?>
+                                                        <?php endif; ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endif ?> 
+
+                         <div class="row"> 
+                            <div class="col-lg-12"> 
+                                <div class="panel panel-default toggle"> 
+                                    <div class="panel-heading"> 
+                                        <h4 class="panel-title"> Campanhas De Doações</h4> 
+                                    </div> 
+                                    <div class="panel-body form-horizontal">
+                                        <div class="form-group">
+                                            <!-- <label class="col-lg-2 col-md-3 control-label">Campanhas</label> -->
+                                            <div class="col-lg-10 col-md-9">
+                                                <?php foreach ($this->campanhas->rows as $campanha) : ?>
+                                                <div class="checkbox-custom">
+                                                    <input type="checkbox" name='campanhas[]' value="<?=$campanha['id']?>" id="checkbox<?=$campanha['id']?>" <?= ($this->id && ($campanha['id_ong'] == $this->id)) ? 'checked' : '' ?>>
+                                                    <label for="checkbox<?=$campanha['id']?>"><?=$campanha['nome']?></label>
+                                                </div>
+                                                <?php endforeach; ?>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div> 
+                            </div> 
+                        </div>  
+
+                        <?php if ($this->id!=""): ?>
+                            <div class="row">
+                                <div class="col-lg-12 ">
+                                    <div class="tabs mb20">
+                                        <div id="myTabContent2" class="tab-content">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">Galeria</h4>
+                                            </div>
+                                            <div class="tab-pane  <?php if ($this->id != "") echo 'active in'; else echo 'fade'; ?>" id="fotos">
+                                                <div id="edita_imagem" <?php if ($this->id == "") echo 'style="display:none;"';?>>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="panel panel-default">
+                                                            <!-- Start .panel -->
+                                                            <div class="panel-heading">
+                                                                <h4 class="panel-title"><i class="entypo-icon-images"></i>Imagens</h4>
+                                                            </div>
+                                                            <div class="panel-body noPad">
+                                                                <ul id="itemContainer" class="galleryView center sortable">
+                                                                </ul>
+                                                            </div>
+                                                        </div><!-- End .span12 -->
+                                                    </div><!-- End .panel -->
+                                                </div><!-- End .row -->
+                                                <div class="row">
+                                                    <div class="col-lg-12 center sortable_save" style="display:none">
+                                                        <button type="button" class="btn btn-info sortablesubmit">Salvar nova ordenação</button><br><br>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <div class="panel panel-default toggle">
+                                                            <!-- Start .panel -->
+                                                            <div class="panel-heading">
+                                                                <h4 class="panel-title"><i class="icomoon-icon-upload"></i>Gerenciador de envio</h4>
+                                                            </div>
+                                                            <div class="panel-body noPad">
+                                                                <div id="html4_uploader" style="width: 100%; height: 100%;">O seu navegador não tem suporte para Flash, Silverlight ou HTML5.</div>
+                                                            </div>
+                                                        </div><!-- End .panel -->
+                                                    </div><!-- End .span12 -->
+                                                </div><!-- End .row -->
+                                            </div>
+                                        </div>                                
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+
+                        <div class="row">
+                            <?php if ($this->id==""): ?>
+                                <?php if (!$this->permissions[$this->permissao_ref]['gravar']): ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <span class="label label-warning "><span class="icon24 typ-icon-warning"></span>Você não tem permissão para gravar esta função.</span>
+                                        </div>
+                                    </div>   
+                                <?php else: ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <button type="button" class="btn btn-info clickformsubmit">Salvar novo</button>
+                                        </div>
+                                    </div>
+                                <?php endif ?>
+                            <?php else: ?>
+                                <?php if (!$this->permissions[$this->permissao_ref]['editar']): ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <span class="label label-warning"><span class="icon24 icomoon-icon-warning "></span>Você não tem permissão para editar esta função.</span>
+                                        </div>
+                                    </div>   
+                                <?php else: ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <button type="button" class="btn btn-info clickformsubmit">Salvar alterações</button>
+                                        </div>
+                                    </div>
+                                <?php endif ?>
+                            <?php endif ?>
+                        </div>
+
+                        
+                    </form>
+                </div>
+            </div>
+            <?php require_once $this->main_layouts . "footer.phtml"; ?>
+        </div>
+        <?php require_once "modais.phtml"; ?>
+        <?php require_once $this->main_layouts."plugins.phtml"; ?>
+
+        <script src="<?= $this->main_template; ?>plugins/forms/timeentry/jquery.timeentry.min.js"></script>
+        <script src="<?= $this->main_template; ?>plugins/forms/select2/select2.js"></script>
+        <script src="<?= $this->main_template; ?>plugins/forms/autosize/jquery.autosize.js"></script>
+        <script src="<?= $this->main_template; ?>plugins/tables/dataTables/jquery.dataTables.js"></script>
+        <script src="<?= $this->main_template; ?>plugins/tables/dataTables/dataTables.tableTools.js"></script>
+        <script src="<?= $this->main_template; ?>plugins/tables/dataTables/dataTables.bootstrap.js"></script>
+        <script src="<?= $this->main_template; ?>plugins/tables/dataTables/dataTables.responsive.js"></script>
+        <script src="<?= $this->main_template; ?>plugins/forms/summernote/summernote.js"></script>
+
+        <!-- Gallery plugins -->
+        <script type="text/javascript" src="<?php echo $this->main_template;?>plugins/files/plupload/plupload.full.min.js"></script>
+        <script type="text/javascript" src="<?php echo $this->main_template;?>plugins/files/plupload/jquery.plupload.queue/jquery.plupload.queue.js"></script>
+        <script type="text/javascript" src="<?php echo $this->main_template;?>plugins/files/plupload/i18n/pt_BR.js"></script>
+
+        <script type="text/javascript" src="<?php echo $this->main_template;?>plugins/gallery/pretty-photo/jquery.prettyPhoto.js"></script>
+        
+        <script type="text/javascript">
+            $(document).ready(function(){
+                saveKey(true);
+                $("#nascimento").mask("##/##/####");
+                $(".datepicker").datepicker({});
+
+                $('.elastic').autosize();
+                if ($('table').hasClass('tabletools')) {
+                    $('.tabletools').dataTable({
+                        "oLanguage": { "sSearch": "", "sLengthMenu": "<span>_MENU_</span>", "sProcessing": "Processando...", "sZeroRecords": "Não foram encontrados resultados", "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros", "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros", "sInfoFiltered": "", "sInfoPostFix": "", "sUrl": "", "oPaginate": { "sFirst": "Primeiro", "sPrevious": "Anterior", "sNext": "Seguinte", "sLast": "Último" } },
+                        "sDom": "T<'row'<'col-md-6 col-xs-12 'l><'col-md-6 col-xs-12'f>r>t<'row'<'col-md-4 col-xs-12'i><'col-md-8 col-xs-12'p>>",
+                        "aaSorting": [ [0, "asc"] ],
+                        tableTools: { "sSwfPath": "http://cdn.datatables.net/tabletools/2.2.2/swf/copy_csv_xls_pdf.swf", "aButtons": [] }
+                    });
+                }
+                $(".select2").select2();
+                $('#cnpj').mask('##.###.###/####-##');
+                $('[name=telefone1]').mask('(##) #####-####');
+                $('[name=telefone2]').mask('(##) #####-####');
+                $('#cep').mask('##.###-###');
+                $("#id_estado").on("change",function () {
+                    var id = $(this).val();
+                    if(id !== ""){
+                        $.ajax({
+                            method:"POST",
+                            url:"main/general/getCidadesByEstado",
+                            data:{id:id},
+                            async:false
+                        }).done(function(data){
+                            $("select[name=id_cidade]").html(data);
+                            $("select[name=id_cidade]").select2();
+                        });
+                    }
+                });
+
+                $("[cpf_cnpj]").keydown(function(e) {
+                var digit = e.key && e.key.replace(/\D/g, '') || '';
+                var value = $(this).val().replace(/\D/g, '');
+                var size = value.concat(digit).length;
+                $(this).mask((size <= 11) ? '000.000.000-00' : '00.000.000/0000-00');
+                });
+                <?php if($this->id != "") :?>
+                    $("#id_estado").trigger("change");
+                    $("#id_cidade").val("<?php echo $this->registro['id_cidade'] ?>").trigger("change");
+                <?php endif; ?>
+
+                /* GALERIAS */
+
+                var load_galery_url = "<?php echo $this->getPath() ?>/fotos/id/<?php echo $this->id; ?>"
+                $(".galleryView").load(load_galery_url).data("load_galery_url",load_galery_url);
+
+                    //------------- Plupload php upload  -------------//
+                var uploader = $("#html4_uploader").pluploadQueue({
+                    // General settings
+                    runtimes : 'html5,flash,silverlight,html4',
+                    url : '<?php echo $this->getPath() ?>/upload/id/<?php echo $this->id ?>/session/<?php echo $_SESSION["login_session"];?>',
+                    max_file_size : '10mb',
+                    chunk_size : '0mb',
+                    multiple_queues : true,
+                    unique_names : false,
+
+                    // Rename files by clicking on their titles
+                    rename: false,
+
+                    dragdrop: true,
+
+                    // Specify what files to browse for
+                    filters : [
+                        {title : "Image files", extensions : "jpg,gif,png,jpeg"},
+                        {title : "Zip files", extensions : "zip,avi"}
+                    ],
+
+                    init : {
+                        UploadComplete: function(up, files) {
+                            console.log(up);
+                            console.log(files);                            
+                            // Called when all files are either uploaded or failed
+                            $(".galleryView").load(load_galery_url);
+                            //setTimeout(function() { up.splice();}, 1500)
+                            
+                        }
+                    },
+                
+                    // Flash settings
+                    flash_swf_url : '<?php echo $this->main_template;?>plugins/files/plupload/Moxie.swf',
+                    
+                    // Silverlight settings
+                    silverlight_xap_url : '<?php echo $this->main_template;?>plugins/files/plupload/Moxie.xap'
+
+                });
+
+
+                $('#cep').on("focusout",function() {
+                    let estados = <?php echo json_encode($this->estados->rows) ?>
+                    
+                    var cep = $(this).val().replace('-','').replace('.','');
+                    if(cep.length == 8) {
+                        $.get(`https://viacep.com.br/ws/${cep}/json/`)
+                        .then(data => {
+                            $('#rua').val(data.logradouro);
+                            $('#complemento').val(data.complemento);
+                            $('#bairro').val(data.bairro);
+                            let id_estado = estados.find(x => x.uf == data.uf).id;
+                            $("select[name=id_estado]").val(id_estado).change();
+
+                            let id_cidade = $(`select[name=id_cidade] option[data-name='${data.localidade}']`).val();
+                            $("select[name=id_cidade]").val(id_cidade).change();
+                        })
+                    }
+                })
+
+
+                $('body').show();
+                summernote();
+            });
+
+
+            function openRel(url) {
+                    window.open(url);
+              }
+
+
+            /* ANGULAR */
+
+            angular.module('nova', ['novaServices'])
+            .controller('Ctrl', function($scope, $http, $sce, NS, $window) {   
+                this.anexos = <?= json_encode($this->contas->rows[0]); ?>;
+                this.onInit = () => {
+                    $('body').show();
+                }
+                this.modal_arquivos = (id) => {
+                    // this.anexo = this.anexos && this.anexos.find(x => x.id == id) || {};
+                    // this.anexo.id = '<?= $this->id ?>';
+
+                   console.log(this.anexos);
+                    $('#modal_arquivos').modal('show');
+                }
+                // this.deleteBanco = async (id) => {
+                //     if (!confirm('Deseja apagar registro de Banco?')) return;
+                //     let data = await NS.actionHandler($http.delete("<?= $this->getPath(); ?>/deleteBanco/id/" + id));
+                //     if (data.status == 200){
+                //         $('.table-contas tr#' + id).remove();
+                //     }
+                // }
+                $scope.trustAsHtml = function(string) {
+                    return $sce.trustAsHtml(string);
+                }
+                this.submitSolArq = async () => {
+                    this.solArq.id = '<?= $this->id ?>';
+                    await NS.actionHandler($http.post("<?= $this->getPath(); ?>/alterarConta", this.solArq), '#modal_solicitacao');
+                    location.reload();
+                }
+                this.submitEditarConta = async () => {
+                    await NS.actionHandler($http.post("<?= $this->getPath(); ?>/alterarConta", this.anexos), '#modal_arquivos');
+                    location.reload();
+                }
+                // this.submitModalLeadzapp = async () => {
+                //     await NS.actionHandler($http.post("<?= $this->getPath(); ?>/mensagemLeadszapp", this.leadszapp), '#modalLeadzapp', 'Mensagem enviada!');
+                //     $('#modalLeadzapp').modal('toggle');
+                // }
+            })
+        </script>
+    </body>
+</html>

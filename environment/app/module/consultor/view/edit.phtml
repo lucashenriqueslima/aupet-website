@@ -1,0 +1,319 @@
+<?php require_once $this->main_layouts . "headers.phtml"; ?>
+    <script type="text/javascript">
+        var pagina = "<?= $this->getPath(); ?>";
+        var permissao = "<?= $this->permissao_ref; ?>";
+        var controller = "<?= $this->getPath(); ?>/save";
+        var retorno = "<?= $this->retorno; ?>";
+    </script>
+    </head>  
+    <body ng-app='nova' ng-controller="Ctrl as ctrl" ng-init='ctrl.onInit()' style='display:none;'>
+        <?php require_once $this->main_layouts . "header.phtml"; ?>
+        <div id="wrapper">
+        <?php require_once $this->main_layouts."sidebar.phtml"; ?>
+            <div id="content" class="page-content clearfix">
+                <div class="contentwrapper">
+                    <div class="heading">
+                        <h3><?= $this->module_title; ?></h3>
+                        <ul class="breadcrumb">
+                            <li>Você está aqui:</li>
+                            <li><a href="#" class="tip" title="Painel"><i class="s16 icomoon-icon-screen-2"></i></a>
+                                <span class="divider">
+                                    <i class="s16 icomoon-icon-arrow-right-3"></i>
+                                </span>
+                            </li>
+                            <li><a class="tip" title="<?= $this->module_title; ?>" href="<?= $this->module_link;?>"><i class="s16 <?= $this->module_icon; ?>"></i></a></li>
+                            <span class="divider">
+                                <i class="s16 icomoon-icon-arrow-right-3"></i>
+                            </span>
+                            <li class="active">Registro</li>
+                        </ul>
+                    </div>
+                    <form ng-submit="ctrl.submitForm()" class="form-horizontal group-border">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Dados básicos</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="foto">Foto de Perfil</label>
+                                            <div class="col-lg-10">
+                                                <label class="logo" for="foto">
+                                                    <?php if ($this->registro['foto'] == null): ?>
+                                                        <img src="/main/templates/supradmin/images/SemImagem.png" alt="" class="image marginR10"/>
+                                                    <?php else: ?>
+                                                        <img style="object-fit: cover;height: 100px;" src="<?= $this->registro['foto'] ?>" alt="" class="image marginR10"/>
+                                                    <?php endif ?>
+                                                </label>
+                                                <input type="file" accept='image/*' imageread="ctrl.registro.foto" class="files btn btn-default"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="nome">Nome Completo</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" ng-model="ctrl.registro.nome" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="cpf">CPF</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" mask-cpf ng-model="ctrl.registro.cpf" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="telefone">Telefone</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control telefone" mask-telefone ng-model="ctrl.registro.telefone" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" >Telefone secundário</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" mask-telefone ng-model="ctrl.registro.telefone2" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="email">E-mail principal</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" ng-model="ctrl.registro.email"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Acesso</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                    <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="id_equipe">Equipe</label>
+                                            <div class="col-lg-10">
+                                                <select class="form-control select2" ng-model="ctrl.registro.id_equipe">
+                                                    <option value="" hidden>Selecione..</option>
+                                                    <?php foreach ($this->equipes->rows as $equipe) : ?>
+                                                    <option ng-value="<?= $equipe['id']; ?>"><?= $equipe['titulo']; ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="senha">Senha</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" autocomplete="new-password" type="password" ng-model="ctrl.registro.novaSenha"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="repetir_senha">Repetir Senha</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" autocomplete="off" type="password" ng-model="ctrl.registro.novaSenha2" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Documentos</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="col-lg-3 col-md-3">
+                                            <label class="col-lg-2 control-label" for="rg_frente">RG Frente</label>
+                                            <div class="col-lg-10">
+                                                <label class="logo" for="rg_frente">
+                                                    <?php if ($this->registro['rg_frente'] == null): ?>
+                                                        <img src="/main/templates/supradmin/images/SemImagem.png" alt="" class="image marginR10"/>
+                                                    <?php else: ?>
+                                                        <img style="object-fit: cover;height: 100px;" src="{{ctrl.registro.rg_frente}}" alt="" class="image marginR10"/>
+                                                    <?php endif ?>
+                                                </label>
+                                                <input type="file" accept='image/*' name="rg_frente" id="rg_frente" imageread="ctrl.registro.rg_frente" />
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3">
+                                            <label class="col-lg-2 control-label" for="rg_verso">RG Verso</label>
+                                            <div class="col-lg-10">
+                                                <label class="logo" for="rg_verso">
+                                                    <?php if ($this->registro['rg_verso'] == null): ?>
+                                                        <img src="/main/templates/supradmin/images/SemImagem.png" alt="" class="image marginR10"/>
+                                                    <?php else: ?>
+                                                        <img style="object-fit: cover;height: 100px;" src="<?= $this->registro['rg_verso']; ?>" alt="" class="image marginR10"/>
+                                                    <?php endif ?>
+                                                </label>
+                                                <input type="file" accept='image/*' name="rg_verso" id="rg_verso" imageread="ctrl.registro.rg_verso" />
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3">
+                                            <label class="col-lg-2 control-label" for="cnh_frente">CNH Frente</label>
+                                            <div class="col-lg-10">
+                                                <label class="logo" for="cnh_frente">
+                                                    <?php if ($this->registro['cnh_frente'] == null): ?>
+                                                        <img src="/main/templates/supradmin/images/SemImagem.png" alt="" class="image marginR10"/>
+                                                    <?php else: ?>
+                                                        <img style="object-fit: cover;height: 100px;" src="<?= $this->registro['cnh_frente']; ?>" alt="" class="image marginR10"/>
+                                                    <?php endif ?>
+                                                </label>
+                                                <input type="file" accept='image/*' name="cnh_frente" id="cnh_frente" imageread="ctrl.registro.cnh_frente" />
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3">
+                                            <label class="col-lg-2 control-label" for="cnh_verso">CNH Verso</label>
+                                            <div class="col-lg-10">
+                                                <label class="logo" for="cnh_verso">
+                                                    <?php if ($this->registro['cnh_verso'] == null): ?>
+                                                        <img src="/main/templates/supradmin/images/SemImagem.png" alt="" class="image marginR10"/>
+                                                    <?php else: ?>
+                                                        <img style="object-fit: cover;height: 100px;" src="<?= $this->registro['cnh_verso']; ?>" alt="" class="image marginR10"/>
+                                                    <?php endif ?>
+                                                </label>
+                                                <input type="file" accept='image/*' name="cnh_verso" id="cnh_verso"  imageread="ctrl.registro.cnh_verso"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Endereço</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="cep">CEP</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" mask-cep ng-model="ctrl.registro.cep" ng-change="ctrl.buscaCEP(ctrl.registro.cep)" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="rua">Logradouro</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" ng-model="ctrl.registro.rua" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="numero">Número</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" ng-model="ctrl.registro.numero"  />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="complemento">Complemento</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" ng-model="ctrl.registro.complemento" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="id_estado">Estado</label>
+                                            <div class="col-lg-10">
+                                                <select class="form-control" ng-model="ctrl.registro.id_estado" ng-change="ctrl.findCidades()">
+                                                    <option value="" hidden>Selecione..</option>
+                                                    <option ng-repeat="row in ctrl.estados" ng-value="row.id">{{ row.estado }}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="id_cidade">Cidade</label>
+                                            <div class="col-lg-10">
+                                                <select class="form-control" ng-disabled="!ctrl.cidades.length" ng-model="ctrl.registro.id_cidade">
+                                                    <option value="" hidden>Selecione..</option>
+                                                    <option ng-repeat="row in ctrl.cidades" ng-value="row.id">{{ row.cidade }}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="bairro">Bairro</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" ng-model="ctrl.registro.bairro" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <?php if ($this->id==""): ?>
+                            <?php if (!$this->permissions[$this->permissao_ref]['gravar']): ?>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <span class="label label-warning "><span class="icon24 typ-icon-warning"></span>Você não tem permissão para gravar esta função.</span>
+                                </div>
+                            </div>   
+                            <?php else: ?>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <button type="submit" class="btn btn-info">Salvar novo</button>
+                                </div>
+                            </div>
+                            <?php endif ?>
+                            <?php else: ?>
+                            <?php if (!$this->permissions[$this->permissao_ref]['editar']): ?>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <span class="label label-warning"><span class="icon24 icomoon-icon-warning "></span>Você não tem permissão para editar esta função.</span>
+                                </div>
+                            </div>
+                            <?php else: ?>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <button type="submit" class="btn btn-info">Salvar alterações</button>
+                                </div>
+                            </div>
+                            <?php endif ?>
+                            <?php endif ?>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <?php require_once $this->main_layouts . "footer.phtml"; ?>
+        </div>
+        <?php require_once $this->main_layouts."plugins.phtml"; ?>
+        <script type="text/javascript">
+            $(document).ready(function(){
+            });
+            angular.module('nova', ['novaServices'])
+            .controller('Ctrl', function($scope, $http, $sce, NS, $window) {   
+                this.registro = <?= json_encode($this->registro); ?>;
+                this.estados = <?= json_encode($this->estados->rows) ?>;
+                this.onInit = () => {
+                    $('body').show();
+                    this.findCidades();
+                }
+                this.submitForm = async () => {
+                    if(this.registro.novaSenha !== undefined && this.registro.novaSenha !== this.registro.novaSenha2) return NS.notifInfo("Senhas divergentes");
+                    let res = await NS.actionHandler($http.post(`<?= $this->getPath();?>/save`,this.registro));
+                    window.location = "<?= $this->getPath(); ?>/edit/id/"+res.data;
+                }
+                this.findCidades = async () => {
+                    if(!this.registro.id_estado) return;
+                    this.cidades = [];
+                    this.cidades = (await $http.post(`main/general/getCidadesByEstadoId`, { id: this.registro.id_estado })).data;
+                    $scope.$digest();
+                }
+                this.buscaCEP = async (cep) => {
+                    if(cep.length < 9) return;
+                    let data = (await NS.actionHandler($http.get(`https://viacep.com.br/ws/${cep.replace('-','').replace('.','')}/json/`), '#tab-associado', 'Cep consultado')).data;
+                    this.registro.rua = data.logradouro;
+
+                    if (!this.registro.complemento) this.registro.complemento = data.complemento;
+                    this.registro.bairro = data.bairro;
+
+                    this.registro.id_estado = parseInt(this.estados.find(x => x.uf == data.uf).id);
+
+                    await this.findCidades(this.registro.id_estado);
+                    this.registro.id_cidade = this.cidades.find(x => x.cidade == data.localidade).id;
+                    $scope.$digest();
+                }
+            })
+        </script>
+    </body>
+</html>

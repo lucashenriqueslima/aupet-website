@@ -1,0 +1,266 @@
+<?php
+require_once $this->main_layouts . "headers.phtml";
+?>
+
+
+<link href="<?php echo $this->main_template;?>css/supr-theme/jquery.ui.supr.css" rel="stylesheet" type="text/css"/>
+
+<link href="<?php echo $this->main_template;?>plugins/files/plupload/jquery.ui.plupload/css/jquery.ui.plupload.css" type="text/css" rel="stylesheet" />
+
+<link href="<?php echo $this->main_template;?>plugins/gallery/jpages/jPages.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo $this->main_template;?>plugins/gallery/pretty-photo/prettyPhoto.css" type="text/css" rel="stylesheet" />
+
+<script type="text/javascript">
+    var pagina = "<?php echo $this->getPath(); ?>";
+    var permissao = "<?php echo $this->permissao_ref; ?>";
+    var controller = "<?php echo $this->getPath(); ?>/save";
+    var retorno = "<?php echo $this->retorno; ?>";
+</script>
+
+</head>
+
+
+<body>
+<?php   require_once $this->main_layouts . "header.phtml"; ?>
+
+<!-- / #header -->
+<div id="wrapper">
+    <!-- #wrapper -->
+
+    <?php   require_once $this->main_layouts . "sidebar.phtml"; ?>
+
+    <!--Body content-->
+    <div id="content" class="page-content clearfix">
+        <div class="contentwrapper">
+            <!--Content wrapper-->
+            <div class="heading">
+                <!--  .heading-->
+                <h3><?php echo $this->module_title; ?></h3>
+
+                <ul class="breadcrumb">
+                    <li>Você está aqui:</li>
+                    <li>
+                        <a href="#" class="tip" title="Painel">
+                            <i class="s16 icomoon-icon-screen-2"></i>
+                        </a>
+                        <span class="divider">
+                                    <i class="s16 icomoon-icon-arrow-right-3"></i>
+                                </span>
+                    </li>
+                    <li>
+                        <a class="tip" title="<?php echo $this->module_title; ?>" href="<?php echo $this->module_link;?>">
+                            <i class="s16 <?php echo $this->module_icon; ?>"></i>
+                        </a>
+                    </li>
+                    <span class="divider">
+                                <i class="s16 icomoon-icon-arrow-right-3"></i>
+                            </span>
+                    <li class="active">Registro</li>
+                </ul>
+            </div>
+            <!-- End  / heading-->
+            <!-- Start .row -->
+            <div class="row">
+                <div class="col-lg-12 ">
+                    <div class="tabs mb20">
+                        <ul id="myTab" class="nav nav-tabs">
+                            <?php if ($this->id!=""): ?>
+                                <li class="active">
+                                    <a href="#fotos" data-toggle="tab">Fotos [Hotsite: <?php echo $this->produto['titulo'];?>]</a>
+                                </li>
+                            <?php endif; ?>
+                            <li>
+                                <a href="#conteudo" data-toggle="tab">Galeria [Hotsite: <?php echo $this->produto['titulo'];?>]</a>
+                            </li>
+                        </ul>
+                        <div id="myTabContent2" class="tab-content">
+                            <div class="tab-pane <?php if ($this->id == "") echo 'active in'; else echo 'fade'; ?>" id="conteudo">
+                                <form name="main" enctype="multipart/form-data" method="post" class="form-horizontal group-border">
+                                    <input type="hidden" name="id" value="<?php echo $this->id; ?>" />
+                                    <input type="hidden" name="retorno" value="<?php echo $this->retorno; ?>">
+                                    <input type="hidden" name="id_blog" value="<?php echo $this->getParameter('id_blog'); ?>" />
+
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="panel panel-default toggle">
+                                                <!-- Start .panel -->
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title">Dados da Galeria</h4>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="form-group">
+                                                        <label class="col-lg-2 control-label" for="titulo">Título:</label>
+                                                        <div class="col-lg-10">
+                                                            <input
+                                                                    class="form-control"
+                                                                    name="<?php  echo 'ongs' ?>"
+                                                                    id="<?php  echo 'ongs' ?>"
+                                                                    type="hidden"
+                                                                    value="<?php echo $this->getParameter('ongs') ?>"
+                                                            />
+                                                            <input class="form-control" name="titulo" id="titulo" type="text" value="<?php echo $this->registro['titulo'] ?>" />
+                                                        </div>
+                                                    </div><!-- End .form-group  -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <?php if ($this->id==""): ?>
+                                            <?php if (!$this->permissions[$this->permissao_ref]['gravar']): ?>
+                                                <div class="form-group">
+                                                    <div class="col-lg-offset-2 col-lg-10">
+                                                        <span class="label label-warning "><span class="icon24 typ-icon-warning"></span>Você não tem permissão para gravar esta função.</span>
+                                                    </div>
+                                                </div><!-- End .form-group  -->
+                                            <?php else: ?>
+                                                <div class="form-group">
+                                                    <div class="col-lg-offset-2 col-lg-10">
+                                                        <button type="button" class="btn btn-info clickformsubmit">Salvar novo</button>
+                                                        <a href="<?php if($this->getParameter('ongs')) echo "desk/ongs/edit/id/"; else echo "desk/blog/edit/id/" ?><?php echo $this->getParameter('id_blog'); ?>/alvo/table-gallery"><button type="button" class="btn btn-warning">Voltar</button></a>
+                                                    </div>
+                                                </div><!-- End .form-group  -->
+                                            <?php endif ?>
+                                        <?php else: ?>
+                                            <?php if (!$this->permissions[$this->permissao_ref]['editar']): ?>
+                                                <div class="form-group">
+                                                    <div class="col-lg-offset-2 col-lg-10">
+                                                        <span class="label label-warning"><span class="icon24 icomoon-icon-warning "></span>Você não tem permissão para editar esta função.</span>
+                                                    </div>
+                                                </div><!-- End .form-group  -->
+                                            <?php else: ?>
+                                                <div class="form-group">
+                                                    <div class="col-lg-offset-2 col-lg-10">
+                                                        <button type="button" class="btn btn-info clickformsubmit">Salvar alterações</button>
+                                                        <a href="<?php if($this->getParameter('ongs')) echo "desk/ongs/edit/id/"; else echo "desk/blog/edit/id/" ?><?php echo $this->getParameter('id_blog'); ?>/alvo/table-gallery"><button type="button" class="btn btn-warning">Voltar</button></a>
+                                                    </div>
+                                                </div><!-- End .form-group  -->
+                                            <?php endif ?>
+                                        <?php endif ?>
+                                    </div><!-- End .row -->
+                                </form>
+                            </div>
+                            <?php if ($this->id!=""): ?>
+                                <div class="tab-pane  <?php if ($this->id != "") echo 'active in'; else echo 'fade'; ?>" id="fotos">
+                                    <div id="edita_imagem" <?php if ($this->id == "") echo 'style="display:none;"';?>>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="panel panel-default">
+                                                <!-- Start .panel -->
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title"><i class="entypo-icon-images"></i>Galeria de Imagens</h4>
+                                                </div>
+                                                <div class="panel-body noPad">
+                                                    <ul id="itemContainer" class="galleryView center sortable">
+                                                    </ul>
+                                                </div>
+                                            </div><!-- End .span12 -->
+                                        </div><!-- End .panel -->
+                                    </div><!-- End .row -->
+                                    <div class="row">
+                                        <div class="col-lg-12 center sortable_save" style="display:none">
+                                            <button type="button" class="btn btn-info sortablesubmit">Salvar nova ordenação</button><br><br>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="panel panel-default toggle">
+                                                <!-- Start .panel -->
+                                                <div class="panel-heading">
+                                                    <h4 class="panel-title"><i class="icomoon-icon-upload"></i>Gerenciador de envio</h4>
+                                                </div>
+                                                <div class="panel-body noPad">
+                                                    <div id="html4_uploader" style="width: 100%; height: 100%;">O seu navegador não tem suporte para Flash, Silverlight ou HTML5.</div>
+                                                </div>
+                                            </div><!-- End .panel -->
+                                            <a href="<?php if($this->getParameter('ongs')) echo "desk/ongs/edit/id/";  else echo "desk/blog/edit/id/" ?><?php echo $this->getParameter('id_blog'); ?>/alvo/table-gallery"><button type="button" class="btn btn-warning">Voltar</button></a>
+                                        </div><!-- End .span12 -->
+                                    </div><!-- End .row -->
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End contentwrapper -->
+    </div>
+    <!-- End #content -->
+
+
+    <?php   require_once $this->main_layouts . "footer.phtml"; ?>
+
+</div>
+
+<?php   require_once $this->main_layouts . "plugins.phtml"; ?>
+<!-- Init plugins only for page -->
+<script src="<?php echo $this->main_template;?>plugins/ui/tabdrop/bootstrap-tabdrop.js"></script>
+<script src="<?php echo $this->main_template;?>js/pages/tabs.js"></script>
+<script type="text/javascript" src="<?php echo $this->main_template;?>plugins/files/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->main_template;?>plugins/files/plupload/jquery.plupload.queue/jquery.plupload.queue.js"></script>
+<script type="text/javascript" src="<?php echo $this->main_template;?>plugins/files/plupload/i18n/pt_BR.js"></script>
+
+<!-- Gallery plugins -->
+<script type="text/javascript" src="<?php echo $this->main_template;?>plugins/gallery/pretty-photo/jquery.prettyPhoto.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        $("a[rel^='prettyPhoto']").prettyPhoto({
+            default_width: 800,
+            default_height: 600,
+            theme: 'facebook',
+            social_tools: false,
+            show_title: false
+        });
+
+
+        var load_galery_url = "<?php echo $this->getPath() ?>/fotos/id/<?php echo $this->id; ?><?php if($this->getParameter('ongs')) echo "/ongs/". $this->getParameter('ongs'); ?>"
+        $(".galleryView").load(load_galery_url).data("load_galery_url",load_galery_url);
+
+        //------------- Plupload php upload  -------------//
+        var uploader = $("#html4_uploader").pluploadQueue({
+            // General settings
+            runtimes : 'html5,flash,silverlight,html4',
+            url : '<?php echo $this->getPath() ?>/upload/id/<?php echo $this->id ?>/session/<?php echo $_SESSION["login_session"];?><?php if($this->getParameter('ongs')) echo "/ongs/". $this->getParameter('ongs'); ?>',
+            max_file_size : '10mb',
+            chunk_size : '0mb',
+            multiple_queues : true,
+            unique_names : false,
+
+            // Rename files by clicking on their titles
+            rename: false,
+
+            dragdrop: true,
+
+            // Specify what files to browse for
+            filters : [
+                {title : "Image files", extensions : "jpg,gif,png,jpeg"},
+                {title : "Zip files", extensions : "zip,avi"}
+            ],
+
+            init : {
+                UploadComplete: function(up, files) {
+                    console.log(up);
+                    console.log(files);
+                    // Called when all files are either uploaded or failed
+                    $(".galleryView").load(load_galery_url);
+                    //setTimeout(function() { up.splice();}, 1500)
+
+                }
+            },
+
+            // Flash settings
+            flash_swf_url : '<?php echo $this->main_template;?>plugins/files/plupload/Moxie.swf',
+
+            // Silverlight settings
+            silverlight_xap_url : '<?php echo $this->main_template;?>plugins/files/plupload/Moxie.xap'
+
+        });
+
+    });
+</script>
+</body>
+</html>
+

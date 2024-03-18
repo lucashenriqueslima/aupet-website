@@ -1,0 +1,167 @@
+ <div id="qLoverlay"></div>
+<!--[if lt IE 9]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+<!-- .#header -->
+<div id="header">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="main/dashboard" style="text-align: center;"><img class="logo-custom" src="<?php echo $this->main_template; ?>images/logo-hibrida.svg" alt="Página Inicial" /></a>
+        </div>
+        <div id="navbar-no-collapse" class="navbar-no-collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <!--Sidebar collapse button-->
+                    <a href="#" class="collapseBtn leftbar"><i class="s16 minia-icon-list-3"></i></a>
+                </li>
+                <li style="display:none">
+                    <a href="#" class="tipB reset-layout" title="Redefinir posições do painel"><i class="s16 icomoon-icon-history"></i></a>
+                </li>
+                <?php if (isset($this->module_title)) : ?>
+                    <li class="active">
+                        <a href="<?php echo $this->getPath() ?>">
+                            <span class="s16 <?php echo $this->module_icon; ?>"></span>
+                            <span class="txt"><?php echo $this->module_title; ?></span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+                <?php if ($this->allowedService("main")) : ?>
+                    <?php if ($this->permissions['admin-logs']['ler'] || $this->permissions['admin-backups']['ler'] || $this->permissions['admin-smtp']['ler']) : ?>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="s16 icomoon-icon-cog-2"></i><span class="txt"> Sistema</span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu left dropdown-form template-settings">
+                            <li class="menu" style="width: 100%">
+                                <ul role="menu">
+                                    <li><strong>Configurações do Sistema</strong></li>
+                                    <?php if ($this->permissions['admin-bugs']['ler']) : ?>
+                                        <li><a href="main/bug"><span class="s16 icomoon-icon-bug"></span>Erros do Sistema</a></li>
+                                    <?php endif; ?>
+                                    <?php if ($this->permissions['admin-logs']['ler']) : ?>
+                                        <li><a href="main/log"><span class="s16 icomoon-icon-stack"></span>Logs</a></li>
+                                    <?php endif; ?>
+                                    <?php if ($this->permissions['admin-backups']['ler']) : ?>
+                                        <li><a href="main/backup"><span class="s16 icomoon-icon-database"></span>Backups</a></li>
+                                    <?php endif; ?>
+                                    <?php if ($this->permissions['admin-smtp']['ler']) : ?>
+                                        <li><a href="main/smtp"><span class="s16 icomoon-icon-envelop-2"></span>SMTP</a></li>
+                                    <?php endif; ?>
+                                    <li><strong>Configurações do Tema</strong>
+                                    </li>
+                                    <li>
+                                        <div class="toggle-custom">
+                                            <label class="toggle" data-on="ON" data-off="OFF">
+                                                <input type="checkbox" id="fixed-header-toggle" name="fixed-header-toggle" checked>
+                                                <span class="button-checkbox"></span>
+                                            </label>
+                                            <label for="fixed-header-toggle">Topo fixo</label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="toggle-custom">
+                                            <label class="toggle" data-on="ON" data-off="OFF">
+                                                <input type="checkbox" id="fixed-left-sidebar" name="fixed-left-sidebar" checked>
+                                                <span class="button-checkbox"></span>
+                                            </label>
+                                            <label for="fixed-left-sidebar">Lateral fixa</label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <?php endif; ?>
+                <?php endif; ?>
+                <?php if ($this->permissions['admin-empresa']['ler'] || $this->permissions['admin-unidades']['ler']) : ?>
+                <!--<li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="s16 icomoon-icon-home-4"></i><span class="txt"> Empresa</span>
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu left dropdown-form template-settings">
+                                <li class="menu" style="width: 100%">
+                                    <ul role="menu">
+                                        <li><strong>Configurações da Empresa</strong></li>
+                                        <?php if ($this->permissions['admin-unidades']['ler']) : ?>
+                                            <li><a href="main/unit"><span class="s16 silk-icon-office"></span>Unidades</a></li>
+                                        <?php endif; ?>
+
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>-->
+                <?php endif; ?>
+                <?php if ($this->permissions['admin-users']['ler'] || $this->permissions['admin-grupos']['ler'] || $this->permissions['admin-cargos']['ler'] || $this->permissions['admin-departamentos']['ler']) : ?>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="s16 icomoon-icon-user"></i><span class="txt"> Contas</span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu left dropdown-form template-settings">
+                            <li class="menu" style="width: 100%">
+                                <ul role="menu">
+                                    <li><strong>Configurações de Usuário</strong></li>
+                                    <?php if ($this->permissions['admin-users']['ler']) : ?>
+                                        <li><a href="main/user"><span class="s16 icomoon-icon-users"></span>Usuários</a></li>
+                                    <?php endif; ?>
+                                    <?php if ($this->permissions['admin-grupos']['ler']) : ?>
+                                        <li><a href="main/group"><span class="s16 icomoon-icon-users-2"></span>Grupos de Usuário</a></li>
+                                    <?php endif; ?>
+                                    <?php if ($this->permissions['admin-departamentos']['ler']) : ?>
+                                        <li><a href="main/departamentos"><span class="s16 icomoon-icon-grid "></span>Departamentos</a></li>
+                                    <?php endif; ?>
+                                    <?php if ($this->permissions['admin-cargos']['ler']) : ?>
+                                        <li><a href="main/cargos"><span class="s16 icomoon-icon-newspaper"></span>Cargos / Funções</a></li>
+                                    <?php endif; ?>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                <?php endif; ?>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle tipB" data-toggle="dropdown" title="Serviço Atual">
+                        <i class="s16 "></i><span class="txt"><?php echo $this->services[$_SESSION["admin_service"]["current"]]; ?></span>
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu left dropdown-form template-settings">
+                        <li class="menu" style="width: 100%">
+                            <ul role="menu" class="services">
+                                <li><strong>Mudar Serviço</strong></li>
+                                <?php foreach($this->services as $id => $service) : ?>
+                                    <?php if ($id != $_SESSION["admin_service"]["current"] && $service !='Atendimento') : ?>
+                                        <li><a data-id="<?php echo $id ?>" href="#"><span class="s16 typ-icon-arrow-right"></span><?php echo $service ?></a></li>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-right usernav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle avatar" data-toggle="dropdown">
+                        <img src="<?php if ($_SESSION['admin_avatar'] != "../main/uploads/[38x33].") echo $_SESSION['admin_avatar']; else echo $this->main_template . 'images/avatar.png'; ?>" alt="" class="image" />
+                        <span class="txt"><?php echo $_SESSION['admin_apelido']; ?></span>
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu right">
+                        <li class="menu">
+                            <ul>
+                                <li><a href="main/user/edit/id/<?php echo $_SESSION['admin_id']; ?>"><span class="s16 icomoon-icon-user-plus"></span>Editar dados</a></li>
+                                <?php if ($this->allowedMain() && $this->permissions["admin-users"]['gravar']) : ?>
+                                    <li><a href="main/user/edit"><span class="s16 icomoon-icon-plus"></span>Add user</a></li>
+                                <?php endif; ?>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="admin-logout"><a href="#"><i class="s16 icomoon-icon-exit"></i><span class="txt">Logout</span></a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.nav-collapse -->
+    </nav>
+    <!-- /navbar -->
+</div>

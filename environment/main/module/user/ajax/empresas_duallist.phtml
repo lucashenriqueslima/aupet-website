@@ -1,0 +1,58 @@
+<div class="leftBox" style="margin:0;">
+    <div class="searchBox">
+        <input type="text" id="box1Filter" class="searchField form-control" style="margin:0;" placeholder="filtrar ..."/>
+        <button id="box1Clear" type="button" class="btn">
+            <span class="s14  entypo-icon-close "></span>
+        </button>
+    </div>
+    <select id="box1View" multiple="multiple" class="multiple nostyle form-control" style="height:300px;">
+        <?php if ($this->unidades->num_rows): ?>
+            <?php foreach ($this->unidades->rows as $unidade): ?>
+                <?php if ($unidade['id_unidade'] == "") : ?>
+                    <option value="<?php echo $unidade['id'] ?>"><?php echo $unidade['nome'] ?></option>
+                <?php endif ?>
+            <?php endforeach ?>
+        <?php endif ?>
+    </select>
+    <br>
+    <span>Unidades <span class="label-warning" style="padding:0 2px;">não relacionadas</span> a este usuário</span>
+    <br>
+    <span id="box1Counter" class="count"></span>
+    <div class="dn"><select id="box1Storage" name="box1Storage" class="nostyle"></select></div>
+</div>
+
+
+<div class="dualBtn">
+
+    <button id="to2" type="button" class="btn" ><span class="icon12 minia-icon-arrow-right-3"></span></button>
+    <button id="allTo2" type="button" class="btn" ><span class="icon12 iconic-icon-last"></span></button>
+    <button id="to1" type="button" class="btn marginT5"><span class="icon12 minia-icon-arrow-left-3"></span></button>
+    <button id="allTo1" type="button" class="btn marginT5" ><span class="icon12 iconic-icon-first"></span></button>
+
+</div>
+
+<div class="rightBox" style="margin:0;">
+    <div class="searchBox">
+        <input type="text" id="box2Filter" class="searchField form-control" style="margin:0;" placeholder="filtrar ..." />
+        <button id="box2Clear"  type="button" class="btn" >
+            <span class="s14  entypo-icon-close "></span>
+        </button>
+    </div>
+    <select id="box2View" multiple="multiple" name="empresas[]" class="multiple nostyle form-control" style="height:300px;">
+        <?php if ($this->unidades->num_rows): ?>
+            <?php foreach ($this->unidades->rows as $unidade): ?>
+                <?php if ($unidade['id_unidade'] != "") : ?>
+                    <option value="<?php echo $unidade['id'] ?>"><?php echo $unidade['nome'] ?></option>
+                <?php endif ?>
+            <?php endforeach ?>
+        <?php endif ?>
+    </select>
+    <br>
+    <span>Unidades <span class="label-success white" style="padding:0 2px;">relacionadas</span> a este usuário</span>
+    <br>
+    <span id="box2Counter" class="count"></span>
+    <div class="dn"><select id="box2Storage" class="nostyle"></select></div>
+</div>
+<script type="text/javascript">
+    $.configureBoxes();
+</script>

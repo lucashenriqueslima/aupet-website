@@ -1,0 +1,283 @@
+<?php require_once $this->main_layouts."headers.phtml";?>
+    <link href="<?= $this->main_template ?>plugins/tables/dataTables/jquery.dataTables.css" type="text/css" rel="stylesheet" />
+    <link href="<?= $this->main_template ?>plugins/tables/dataTables/TableTools.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript">
+        var pagina = "<?= $this->getPath(); ?>";
+        var permissao = "<?= $this->permissao_ref; ?>";
+        var controller = "<?= $this->getModule(); ?>";
+    </script>
+    </head>  
+    <body ng-app='nova' ng-controller="Ctrl as ctrl" style='display:none' ng-init='ctrl.onInit()'>
+	<?php require_once $this->main_layouts."header.phtml"; ?>
+        <div id="wrapper">
+	    <?php require_once $this->main_layouts."sidebar.phtml"; ?>
+            <div id="content" class="page-content clearfix">
+                <div class="contentwrapper">
+                    <div class="heading">
+                        <h3><?= $this->module_title; ?></h3>
+                        <ul class="breadcrumb">
+                            <li>Você está aqui:</li>
+                            <li> <a href="#" class="tip" title="Painel"> <i class="s16 icomoon-icon-screen-2"></i> </a> <span class="divider"> <i class="s16 icomoon-icon-arrow-right-3"></i> </span> </li>
+                            <li class="active"><?= $this->module_title;?></li>
+                        </ul>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <?php if($this->permissions[$this->permissao_ref]['gravar']) :?>
+                            <a href="<?= $this->getPath();?>/edit"><button type="button" class="btn btn-default mr5 mb10"><i class="glyphicon glyphicon-plus mr5"></i> Novo registro</button></a>
+                            <?php endif; ?>
+                        </div>
+                        <!-- <div class="col-lg-6">
+                            <?php //if ($this->custompermissions($this->permissao_ref, 'relatorio')): ?>
+							<form id="export" method="post" class="text-right" action="<?= $this->getPath();?>/export">
+                                <button class="btn btn-info mr5 mb10"><span class="s14 icomoon-icon-file-excel color-white"></span>Excel</button>
+                            </form>
+                            <?php //endif; ?>
+                        </div> -->
+
+                        <div class="dropdown mb10 mr10 " style="display: flex; justify-content: flex-end; padding-right: 6px;">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Relatórios <span class="caret"></span> </button>
+                            <ul class="dropdown-menu right animated fadeIn" role="menu">
+                                <!-- <li><a onclick="openRelPDF('<?php echo $this->getPath(); ?>/exportPdf')" ><span class="s14 icomoon-icon-new-tab color-black"></span>Relatório em PDF</a></li> -->
+                                <li><a onclick="openRel('<?php echo $this->getPath(); ?>/exporttab')" ><span class="s14 icomoon-icon-new-tab color-black"></span>Relatório na tela</a></li>
+                                <li><a onclick="openRel('<?php echo $this->getPath(); ?>/export')" ><span class="s14 icomoon-icon-file-excel color-black"></span>Baixar Relatório em Excel</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title"><i class="<?= $this->module_icon ?>"></i> Tabela de <?= $this->module_title;?></h4>
+                                    </div>
+                                    <div class="panel-body">
+                                    <div class="col-md-12 filters" >
+                                        <i class="fa fa-filter"></i>
+                                        <button class='btn-filter'> Estado
+                                            <div class="panel groupfilter" style='display:none'>
+                                                <div class="panel-body" >
+                                                    <form class="form-horizontal" >
+                                                        <div class="col-md-12 form-group box-filter">
+                                                            <div class="input-group input-icon">
+                                                                <input type="text" class="form-control" placeholder="Filtrar ..." ng-model="estadoFiltro">
+                                                                <span class="input-group-addon"><i class="icomoon-icon-search-3 s16"></i></span>
+                                                            </div>
+                                                            <div class="checkbox-custom" style='text-align: left;' ng-repeat='row in ctrl.listEstados | filter:estadoFiltro'>
+                                                                <input type="checkbox" id="estados{{$index}}" ng-true-value='"{{row.id}}"' ng-false-value="''" ng-model='ctrl.estado' ng-change="ctrl.findCidades(row.id)">
+                                                                <label for="estados{{$index}}">{{row.estado}}</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-lg-12">
+                                                                <a ng-click='ctrl.filter()' class="btn btn-default btn-filtrar">Filtrar</a>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </button>
+
+                                        <button class='btn-filter'> Cidade
+                                            <div class="panel groupfilter" style='display:none'>
+                                                <div class="panel-body" >
+                                                    <form class="form-horizontal" >
+                                                        <div class="col-md-12 form-group box-filter">
+                                                                <div class="input-group input-icon">
+                                                                    <input type="text" class="form-control" placeholder="Filtrar ..." ng-model="cidadeFiltro">
+                                                                    <span class="input-group-addon"><i class="icomoon-icon-search-3 s16"></i></span>
+                                                                </div>
+                                                                <div class="checkbox-custom" style='text-align: left;' ng-repeat='city in ctrl.listCidades | filter:cidadeFiltro' >
+                                                                    <input type="checkbox" id="cidades{{$index}}" ng-true-value='"{{city.id}}"' ng-false-value="''" ng-model='ctrl.cidades[city.id]'>
+                                                                    <label for="cidades{{$index}}" >{{city.cidade}}</label>
+                                                                </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-lg-12">
+                                                                <a ng-click='ctrl.filter()' class="btn btn-default btn-filtrar">Filtrar</a>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </button>
+
+                                        <button class='btn-filter'> Bairro
+                                            <div class="panel groupfilter" style='display:none'>
+                                                <div class="panel-body" >
+                                                    <form class="form-horizontal" >
+                                                        <div class="col-md-12 form-group box-filter">
+                                                                <div class="input-group input-icon">
+                                                                    <input type="text" class="form-control" placeholder="Filtrar ..." ng-model="bairroFiltro">
+                                                                    <span class="input-group-addon"><i class="icomoon-icon-search-3 s16"></i></span>
+                                                                </div>
+                                                                <div class="checkbox-custom" style='text-align: left;' ng-repeat='row in ctrl.listBairros | filter:bairroFiltro' >
+                                                                    <input type="checkbox" id="bairros{{$index}}" ng-true-value='"{{row.bairro}}"' ng-false-value="''" ng-model='ctrl.bairros[$index]'>
+                                                                    <label for="bairros{{$index}}" >{{row.bairro}}</label>
+                                                                </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-lg-12">
+                                                                <a ng-click='ctrl.filter()' class="btn btn-default btn-filtrar">Filtrar</a>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </button>
+
+                                        <i ng-click='ctrl.clearFilter()' class="icomoon-icon-remove-3 btn-filter cursor tip" data-original-title="Limpar Filtros"></i>
+                                    </div>
+                                    <table cellpadding="0" cellspacing="0" border="0" class="tabletools-async table table-striped table-bordered" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="tal" >Nome</th>
+                                                <th class="tal" >Telefone</th>
+                                                <th class="tal" >Estado</th>
+                                                <th class="tal" >Cidade</th>
+                                                <th class="tal" >Bairro</th>
+                                                <th class="tal" >Status</th>
+                                                <th width="100px" class="center">Ação</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php require_once $this->main_layouts."options.phtml"; ?>
+                </div>
+            </div>
+        <?php require_once $this->main_layouts."footer.phtml"; ?>
+        </div>
+        <?php require_once $this->main_layouts."plugins.phtml"; ?>
+        <script src="<?= $this->main_template ?>plugins/tables/dataTables/jquery.dataTables.js"></script>
+        <script src="<?= $this->main_template ?>plugins/tables/dataTables/dataTables.tableTools.js"></script>
+        <script src="<?= $this->main_template ?>plugins/tables/dataTables/dataTables.bootstrap.js"></script>
+        <script src="<?= $this->main_template ?>plugins/tables/dataTables/dataTables.responsive.js"></script>
+        <script type="text/javascript">
+            var oTable;
+            var totalReg = 0;
+            $(document).ready(function() {
+                $('.tabletools-capacidade').dataTable({
+                    "searching": false,
+                    "ordering": false,
+                    "oLanguage": { "sSearch": "", "sLengthMenu": "<span>_MENU_</span>", "sProcessing": "Processando...", "sZeroRecords": "Não foram encontrados resultados", "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros", "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros", "sInfoFiltered": "", "sInfoPostFix": "", "sUrl": "", "oPaginate": { "sFirst": "Primeiro", "sPrevious": "Anterior", "sNext": "Seguinte", "sLast": "Último" } },
+                    "sDom": "T<'row'<'col-md-6 col-xs-12 'l><'col-md-6 col-xs-12'f>r>t<'row'<'col-md-4 col-xs-12'i><'col-md-8 col-xs-12'p>>",
+                    "aaSorting":[[0,"asc"]],
+                    tableTools: { "sSwfPath": "http://cdn.datatables.net/tabletools/2.2.2/swf/copy_csv_xls_pdf.swf", "aButtons": [ ] }
+                });
+                oTable = $('.tabletools-async').dataTable({
+                    "bProcessing": true,
+                    "bServerSide": true,
+                    "sAjaxSource": "<?= $this->system_path.$this->getPath();?>/datatable",
+                    "fnServerParams": function ( aoData ) {
+                        getParameter(aoData);
+                    },
+                    "fnServerData": function ( sSource, aoData, fnCallback, oSettings ) {
+                        oSettings.jqXHR = $.ajax( { "dataType": 'json', "type": "POST", "url": sSource, "data": aoData, "success": fnCallback })
+                        .done(function(data){
+                            totalReg = Number(data.iTotalDisplayRecords);
+							uniform();
+							$('.notsort').removeClass('sorting');
+                        });
+                    },
+                    "sDom": "<'row'<'col-lg-1'l><'col-lg-11'f>r>t<'row'<'col-lg-6'i><'col-lg-6'p>>",
+                    "sPaginationType": "bootstrap",
+                    "bJQueryUI": false,
+                    "bAutoWidth": false,
+                    "iDisplayLength": 50,
+                    "oLanguage": { "sProcessing": "<img src='<?= $this->main_template; ?>images/loaders/horizontal/006.gif'><br>Processando...", "sLengthMenu": "_MENU_", "sZeroRecords": "Não foram encontrados resultados", "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros", "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros", "sInfoFiltered": "", "sInfoPostFix": "", "sSearch": "", "sUrl": "", "oPaginate": { "sFirst": "Primeiro", "sPrevious": "Anterior", "sNext": "Seguinte", "sLast": "Último" } },
+                    "columnDefs": [{ "targets": 6, "orderable": false }]
+                });
+                $(".dataTables_filter input").attr('title', "Tecle ENTER Para Pesquisar");
+                $(".dataTables_filter input").unbind();
+                $(".dataTables_filter input").removeClass('input-sm');
+                $(".dataTables_filter input").keyup( function (e) { if (e.keyCode == 13) oTable.fnFilter(this.value); });
+
+ 
+            });
+            angular.module('nova', ['novaServices'])
+            .controller('Ctrl',function($scope, $http, $sce, NS, $window) {
+                this.listEstados = <?=json_encode(array_values($this->estados->rows));?>;
+                this.listBairros = <?=json_encode(array_values($this->bairros->rows));?>;
+               
+                this.estado;
+                this.cidades = [];
+                this.bairros = [];
+                this.onInit = () => {
+                    $('body').show();
+                    this.estado = getParam('estado', true);
+                    this.cidades = getParam('cidades', true);
+                    this.bairros = getParam('bairros', true);
+                }
+                this.liberarOrdemCompra = async (id) => {
+                    if(!confirm('Liberar criação de ordem de compra para esta oficina? \nEsta liberação é temporário e válida somente para uma ordem de compra do tipo nova.')) return;
+                    await NS.actionHandler($http.post("<?php echo $this->system_path . $this->getPath(); ?>/liberarOrdemCompra", {id: id}));
+                    location.reload();
+                }
+                $window.getParameter = (aoData) => {
+                    aoData.push({"name": 'estado', "value": this.estado});
+                    aoData.push({"name": 'cidades', "value": this.cidades.filter(x => x)});
+                    aoData.push({"name": 'bairros', "value": this.bairros.filter(x => x)});
+                }
+                getParam = (prop, mult = false) => {
+                    let params = new URLSearchParams(querystring);
+                    if(mult) {
+                        let a = [];
+                        (params.get(prop) || '').split(",").forEach(x => { a[x] = x; });
+                        return a;
+                    } else return params.get(prop);
+                }
+                this.clearFilter = () => {
+                    this.estado = [];
+                    this.cidades = [];
+                    this.bairros = [];
+                    oTable.fnFilter('');
+                }
+                this.filter = () => {
+                    $('.groupfilter').hide();
+                    oTable.fnFilter();
+                }
+                 this.findCidades = async (id) => {
+                    if(!id) return;
+                    this.listCidades = [];
+                    this.listCidades = (await $http.post(`main/general/getCidadesByEstadoId`, { id:id })).data;
+                    $scope.$digest();
+                }
+            });
+            function openRel(url) {
+                if(totalReg > 5000) { if(!confirm(`Há ${$("#totalwp").html()} registros selecionados, um numero grande de registros que pode gerar erros. Filtros podem diminuir essa quantidade. \nDeseja continuar?`)) return; }
+                window.open(url);
+            }
+            function openRelPDF(url) {
+                if(totalReg > 1000) {
+                    alert(`Há ${$("#totalwp").html()} registros selecionados, um numero grande de registros que pode gerar erros. No máximo 1.000 registros. Adicione Filtros para diminuir essa quantidade.`);
+                    // if(!confirm(`Há ${$("#totalwp").html()} registros selecionados, um numero grande de registros que pode gerar erros. Filtros podem diminuir essa quantidade. \nDeseja continuar?`)) return;
+                } else {
+                    window.open(url);
+                }
+            }
+            
+        </script>
+         <style>
+            .badge-tag-close {
+                color: #efe3d2;
+                margin-left: 5px;
+            }
+            .badge-label {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 100px;
+            }
+            .badge.badge-warning {
+                display: inline-flex;
+            }
+            .badge {
+                padding: 3px 7px;
+            }
+        </style>
+    </body>
+</html>

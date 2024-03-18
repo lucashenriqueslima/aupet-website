@@ -1,0 +1,92 @@
+<?php
+ini_set('memory_limit', '-1');
+ini_set('max_execution_time', 0);
+ $data = $this->DB_fetch_array("SELECT * FROM hbrd_adm_company where id = 1", 'string')->rows[0]['logo'];
+//  $base64 = 'data:image/jpeg;base64,' . base64_encode($data);
+ $base64 = $data;
+?>
+<html>
+<head>
+	<style>
+	table {
+		border-collapse: collapse;
+		width: 100%;
+	}
+	td, th {
+		border: 1px solid #dddddd;
+		text-align: center;
+		padding: 3px;
+	}
+	tr:nth-child(even) {
+		background-color: #dddddd;
+	}
+	table *{
+		vertical-align: middle;
+	}
+	.footer-table td {
+		font-weight: bold;
+	}
+	.main div img {
+		float: left;
+	}
+	.blue th, .blue td {
+		background : #0f243f;
+		color: white;
+		height: 30px;
+	}
+	.main div {
+		padding : 20px;
+	}
+	.linhas td {
+		height: 20px;
+	}
+	.logo{
+		margin-right: 10px;
+	}
+	</style>
+</head>
+<body >
+	<div class='main'>
+		<div>
+			<img class="logo" width='150' src="<?= $base64; ?>" alt="Página Inicial" />
+			<h1>Relatório de Vistorias</h1>
+			<i>Emitido em <b><?= date("d/m/Y").' às '.date("H:i"); ?></b> por <b><?= $_SESSION["admin_nome"]; ?></b>.</i>
+		</div>
+		<table>
+			<tr class='blue' style="">
+				<th width="10%" class="center">Dt. proposta</th>
+				<th width="10%" class="center">Dt. vistoria</th>
+				<th width="10%" class="tal">Ult. foto enviada</th>
+				<th width="10%" class="tal">Nome associado</th>
+				<th width="10%" class="tal">Indicador</th>
+				<th width="10%" class="tal">Equipe</th>
+				<th width="10%" class="tal">Modelo vistoria</th>
+				<th width="10%" class="tal">Nome do pet</th>
+				<th width="10%" class="tal">Especie do pet</th>
+				<th width="10%" class="tal">Mensalidade R$</th>
+				<th width="10%" class="center">Status</th>
+			</tr>
+			<?php foreach ($this->dados as $i => $item) : ?>
+			<tr class='linhas'>
+				<td style="width: 8%;"><?= $item['dt_proposta'] ?></td>
+				<td style="width: 8%;"><?= $item['dt_vistoria'] ?></td>
+				<td style="width: 8%;"><?= $item['dt_ult_ft'] ?></td>
+				<td style="width: 8%;"><?= $item['assoc_nome'] ?></td>
+				<?php $indicador = ($item['indicador'] == 'consultor' ? $item['consultor_nome'] : ($item['indicador'] == 'clinica' ? $item['clinica_nome'] : $item['associado_ind_nome'])); ?>
+				<td style="width: 10%;"><?= $indicador ?></td>
+				<td style="width: 8%;"><?= $item['equipe'] ?></td>
+				<td style="width: 8%;"><?= $item['mod_vist'] ?></td>
+				<td style="width: 8%;"><?= $item['pet_nome'] ?></td>
+				<td style="width: 8%;"><?= $item['pet_especie'] ?></td>
+				<td style="width: 8%;"><?= $item['valor'] ?></td>
+				<?php $status = $this->getStatus($item); ?>
+				<td style="width: 8%;background:<?= $status['cor'] ?>"><?= $status['status'] ?></td>
+			</tr>
+			<?php endforeach ?>
+		</table>
+	</div>
+	<br>
+	<br>
+	<i>Gerenciado por <b><?= $this->root_path; ?></b></i>
+</body>
+</html>

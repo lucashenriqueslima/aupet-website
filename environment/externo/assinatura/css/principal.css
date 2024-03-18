@@ -1,0 +1,816 @@
+@font-face {
+  font-family: montserrat;
+  src: url("../fonts/montserrat/Montserrat-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: montserrat;
+  src: url("../fonts/montserrat/Montserrat-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: montserrat;
+  src: url("../fonts/montserrat/Montserrat-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: montserrat;
+  src: url("../fonts/montserrat/Montserrat-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: montserrat;
+  src: url("../fonts/montserrat/Montserrat-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+}
+@keyframes circle_animate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(3600deg);
+  }
+}
+input[type=submit], input[type=radio], input[type=checkbox] {
+  cursor: pointer;
+}
+
+* {
+  outline: none !important;
+}
+
+select,
+input,
+textarea {
+  -webkit-appearance: none;
+}
+
+*[data-load=on] {
+  color: transparent !important;
+  pointer-events: none;
+  position: sticky;
+  filter: opacity(0.9);
+  transition: all 0.3s;
+}
+*[data-load=on]:before {
+  content: "";
+  position: absolute;
+  background: url(../img/loading.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 20px;
+  height: 20px;
+  top: calc(50% - 10px);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-name: rotate_load;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
+*[data-load=on]:after {
+  content: "Carregando";
+  position: absolute;
+  color: white;
+  font-family: ubuntu;
+  font-size: 10px;
+  top: calc(50% + 10px);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-name: text_load;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes rotate_load {
+  100% {
+    transform: translate(-50%, -50%) rotate(1080deg);
+  }
+}
+@keyframes text_load {
+  0% {
+    content: "Carregando";
+  }
+  25% {
+    content: "Carregando.";
+  }
+  50% {
+    content: "Carregando..";
+  }
+  75% {
+    content: "Carregando...";
+  }
+  100% {
+    content: "Carregando";
+  }
+}
+section.passo_item {
+  font-family: montserrat;
+  max-width: 500px;
+  margin: 0 auto;
+}
+section.passo_item[active=false] {
+  display: none !important;
+}
+section.passo_item .passo_header {
+  border-bottom: 1px solid #dbdbdb;
+  height: 75px;
+  display: flex;
+  display: -webkit-flex;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  align-items: center;
+  font-family: ubuntu;
+  font-size: 20px;
+  color: #010101;
+}
+section.passo_item .passo_header button.voltar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  width: 50px;
+  height: 50px;
+  border: none;
+  background: transparent;
+  margin: 0 10px;
+}
+section.passo_item .passo_header button.voltar svg {
+  width: 10px;
+  height: auto;
+}
+section.passo_item .passo_content {
+  padding: 0 30px 45px;
+}
+section.passo_item .passo_content h2 {
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 18px;
+  text-align: center;
+  color: #772E8A;
+  width: 100%;
+}
+section.passo_item .passo_content p {
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  color: #5e5e5e;
+  margin: 0 auto 35px;
+  width: 100%;
+}
+section.passo_item .passo_content .next {
+  width: 100%;
+  max-width: 350px;
+  height: 52px;
+  background: #772E8A;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  letter-spacing: 1px;
+  border: none;
+  border-radius: 10px;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+section.passo_item .passo_content a {
+  text-align: center;
+  line-height: 52px;
+}
+section.passo_item.passo_1 {
+  display: block;
+}
+section.passo_item.passo_1 .passo_content img.logo {
+  display: block;
+  margin: 45px auto;
+  max-width: 100%;
+}
+section.passo_item.passo_1 .passo_content img.passo {
+  display: block;
+  margin: 0 auto 55px;
+}
+section.passo_item.passo_1 .passo_content h1 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #000000;
+  text-align: center;
+  margin: 0 0 15px;
+}
+section.passo_item.passo_2 .passo_content img {
+  margin: 25px auto;
+  display: block;
+}
+section.passo_item.passo_2 .passo_content .termo input {
+  display: none;
+}
+section.passo_item.passo_2 .passo_content .termo input:checked + label:before {
+  background: url("/environment/externo/assinatura/img/checked.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 15px;
+}
+section.passo_item.passo_2 .passo_content .termo label {
+  width: fit-content;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: -o-fit-content;
+  margin: 0 auto 175px;
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000000;
+  padding-left: 35px;
+  position: relative;
+}
+section.passo_item.passo_2 .passo_content .termo label:before {
+  content: "";
+  position: absolute;
+  width: 23px;
+  height: 23px;
+  border: 1px solid #707070;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+section.passo_item.passo_2 .passo_content .termo label a {
+  color: #772E8A;
+  font-weight: bold;
+  text-decoration: revert;
+}
+section.passo_item.passo_3 .passo_content img {
+  width: 100px;
+  height: auto;
+  display: block;
+  margin: 95px auto 25px;
+}
+section.passo_item.passo_3 .passo_content h2 {
+  margin: 0 auto 15px;
+}
+section.passo_item.passo_3 .passo_content p {
+  margin: 0 auto 55px;
+}
+section.passo_item.passo_4 .passo_content {
+  padding: 42px 30px 45px;
+}
+section.passo_item.passo_4 .passo_content .document_select {
+  margin: 40px 0 210px;
+}
+section.passo_item.passo_4 .passo_content .document_select input {
+  display: none;
+}
+section.passo_item.passo_4 .passo_content .document_select input:checked + label:before {
+  border-color: #772E8A;
+}
+section.passo_item.passo_4 .passo_content .document_select input:checked + label:after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #772E8A;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+section.passo_item.passo_4 .passo_content .document_select label {
+  width: 100%;
+  font-size: 16px;
+  color: #5e5e5e;
+  margin: 0;
+  font-weight: 600;
+  padding: 20px 0 20px 40px;
+  position: relative;
+  border-bottom: 1px solid #dbdbdb;
+}
+section.passo_item.passo_4 .passo_content .document_select label:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  border: 1px solid #707070;
+  border-radius: 50%;
+}
+section.passo_item.passo_5:before {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: #772E8A;
+  left: 0;
+  bottom: 0;
+  z-index: -1;
+}
+section.passo_item.passo_5 .passo_header {
+  color: white;
+  border-bottom: 1px solid rgba(219, 219, 219, 0.3);
+}
+section.passo_item.passo_5 .passo_header button.voltar svg * {
+  fill: white;
+}
+section.passo_item.passo_5 .passo_content {
+  margin-top: 40px;
+  background: #772E8A;
+}
+section.passo_item.passo_5 .passo_content h2 {
+  color: white;
+  font-size: 16px;
+}
+section.passo_item.passo_5 .passo_content .requisitos_content {
+  padding: 40px 0 10px;
+}
+section.passo_item.passo_5 .passo_content .requisitos_content .item {
+  margin: 0 0 50px;
+}
+section.passo_item.passo_5 .passo_content .requisitos_content .item svg {
+  display: block;
+  margin: 0 auto 10px;
+}
+section.passo_item.passo_5 .passo_content .requisitos_content .item p {
+  width: 100%;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+}
+section.passo_item.passo_5 .passo_content .next {
+  color: #772E8A;
+  background: white;
+}
+section.passo_item.passo_6 .passo_content {
+  padding-top: 40px;
+}
+section.passo_item.passo_6 .passo_content p {
+  margin: 0 auto 55px;
+}
+section.passo_item.passo_6 .passo_content .document_content {
+  border-top: 1px solid #dbdbdb;
+  margin: 0 0 85px;
+}
+section.passo_item.passo_6 .passo_content .document_content .item {
+  border-bottom: 1px solid #dbdbdb;
+  padding: 25px 0;
+  position: relative;
+  font-size: 14px;
+  font-weight: bold;
+  color: #5e5e5e;
+}
+section.passo_item.passo_6 .passo_content .document_content .item[active=true] svg#icon_1 {
+  display: none;
+}
+section.passo_item.passo_6 .passo_content .document_content .item[active=true] svg#icon_2 {
+  display: block;
+}
+section.passo_item.passo_6 .passo_content .document_content .item img {
+  margin-right: 20px;
+}
+section.passo_item.passo_6 .passo_content .document_content .item svg {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+section.passo_item.passo_6 .passo_content .document_content .item svg#icon_2 {
+  display: none;
+}
+section.passo_item.passo_7:before {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: #772E8A;
+  left: 0;
+  bottom: 0;
+  z-index: -1;
+}
+section.passo_item.passo_7 .passo_header {
+  color: white;
+  border-bottom: 1px solid rgba(219, 219, 219, 0.3);
+}
+section.passo_item.passo_7 .passo_header button.voltar svg * {
+  fill: white;
+}
+section.passo_item.passo_7 .passo_content {
+  margin-top: 35px;
+  background: #772E8A;
+}
+section.passo_item.passo_7 .passo_content h2 {
+  color: white;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+section.passo_item.passo_7 .passo_content p {
+  color: white;
+  margin: 0 auto 20px;
+}
+section.passo_item.passo_7 .passo_content .requisitos_content {
+  padding: 40px 0 0;
+}
+section.passo_item.passo_7 .passo_content .requisitos_content .item {
+  margin: 0 0 60px;
+}
+section.passo_item.passo_7 .passo_content .requisitos_content .item svg {
+  display: block;
+  margin: 0 auto 10px;
+}
+section.passo_item.passo_7 .passo_content .requisitos_content .item p {
+  width: 100%;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+}
+section.passo_item.passo_7 .passo_content .next {
+  color: #772E8A;
+  background: white;
+}
+section.passo_item.passo_9:before {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: #772E8A;
+  left: 0;
+  bottom: 0;
+  z-index: -1;
+}
+section.passo_item.passo_9 .passo_header {
+  color: white;
+  border-bottom: 1px solid rgba(219, 219, 219, 0.3);
+}
+section.passo_item.passo_9 .passo_header button.voltar svg * {
+  fill: white;
+}
+section.passo_item.passo_9 .passo_content {
+  margin-top: 20px;
+  background: #772E8A;
+}
+section.passo_item.passo_9 .passo_content h2 {
+  color: white;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+section.passo_item.passo_9 .passo_content p {
+  color: white;
+  margin: 0 auto 10px;
+}
+section.passo_item.passo_9 .passo_content .requisitos_content {
+  padding: 40px 0 0;
+}
+section.passo_item.passo_9 .passo_content .requisitos_content .item {
+  margin: 0 0 45px;
+}
+section.passo_item.passo_9 .passo_content .requisitos_content .item svg {
+  display: block;
+  margin: 0 auto 10px;
+}
+section.passo_item.passo_9 .passo_content .requisitos_content .item p {
+  width: 100%;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+}
+section.passo_item.passo_9 .passo_content .next {
+  color: #772E8A;
+  background: white;
+}
+section.passo_item.tirar_foto .passo_content {
+  padding: 35px 30px;
+}
+section.passo_item.tirar_foto .passo_content .foto_content {
+  width: 300px;
+  height: 500px;
+  display: block;
+  margin: 0 auto;
+  position: relative;
+}
+section.passo_item.tirar_foto .passo_content .foto_content .camera {
+  width: 100%;
+  height: 100%;
+}
+section.passo_item.tirar_foto .passo_content .foto_content .mask {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.25);
+}
+section.passo_item.tirar_foto .passo_content .foto_content .mask .mask1:before {
+  content: "";
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-left: 4px solid white;
+  border-top: 4px solid white;
+  top: 20px;
+  left: 15px;
+}
+section.passo_item.tirar_foto .passo_content .foto_content .mask .mask1:after {
+  content: "";
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-left: 4px solid white;
+  border-bottom: 4px solid white;
+  bottom: 20px;
+  left: 15px;
+}
+section.passo_item.tirar_foto .passo_content .foto_content .mask .mask2:before {
+  content: "";
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-right: 4px solid white;
+  border-top: 4px solid white;
+  top: 20px;
+  right: 15px;
+}
+section.passo_item.tirar_foto .passo_content .foto_content .mask .mask2:after {
+  content: "";
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-right: 4px solid white;
+  border-bottom: 4px solid white;
+  bottom: 20px;
+  right: 15px;
+}
+section.passo_item.tirar_foto .passo_content .foto_content .circle {
+  width: 270px;
+  height: 330px;
+  position: absolute;
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px dashed white;
+}
+section.passo_item.tirar_foto .passo_content button.tirar_foto {
+  background: transparent;
+  border: 1px solid #707070;
+  width: 67px;
+  height: 67px;
+  border-radius: 50%;
+  display: block;
+  margin: 23px auto 0;
+  position: relative;
+}
+section.passo_item.tirar_foto .passo_content button.tirar_foto:before {
+  content: "";
+  position: absolute;
+  width: 55px;
+  height: 55px;
+  background: #000000;
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+section.passo_item.revisar_foto .passo_content {
+  padding-top: 18px;
+}
+section.passo_item.revisar_foto .passo_content img {
+  display: block;
+  width: 300px;
+  margin: 0 auto 20px;
+}
+section.passo_item.revisar_foto .passo_content h3 {
+  display: block;
+  width: 300px;
+  margin: 0 auto 10px;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: bold;
+  color: #000000;
+}
+section.passo_item.revisar_foto .passo_content p {
+  display: block;
+  width: 300px;
+  margin: 0 auto 38px;
+  font-size: 14px;
+  line-height: 18px;
+  color: #5e5e5e;
+  text-align: left;
+}
+section.passo_item.revisar_foto .passo_content .buttons {
+  width: 300px;
+  margin: 0 auto;
+  display: flex;
+  display: -webkit-flex;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+section.passo_item.revisar_foto .passo_content .buttons .outra_foto {
+  width: 120px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: bold;
+  color: #772E8A;
+  border: none;
+  background: transparent;
+}
+section.passo_item.revisar_foto .passo_content .buttons .next {
+  width: 170px;
+}
+section.passo_item.assinatura {
+  max-width: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  display: -webkit-flex;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+section.passo_item.assinatura button.voltar {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  border: none;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  display: flex;
+  display: -webkit-flex;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+}
+section.passo_item.assinatura button.voltar svg {
+  transform: rotate(90deg);
+}
+section.passo_item.assinatura button.limpar {
+  position: absolute;
+  left: -20px;
+  top: 25px;
+  width: 100px;
+  height: 45px;
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  font-weight: bold;
+  color: #772E8A;
+  transform: rotate(90deg);
+}
+section.passo_item.assinatura button.desfazer {
+  position: absolute;
+  left: -20px;
+  top: 100px;
+  width: 100px;
+  height: 45px;
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  font-weight: bold;
+  color: #772E8A;
+  transform: rotate(90deg);
+}
+section.passo_item.assinatura button.desfazer img {
+  transform: rotate(90deg);
+  height: 25px;
+}
+section.passo_item.assinatura button.salvar {
+  position: absolute;
+  left: -25px;
+  bottom: 45px;
+  width: 110px;
+  height: 45px;
+  border: none;
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+  background: #772E8A;
+  border-radius: 8px;
+  transform: rotate(90deg);
+}
+section.passo_item.assinatura canvas {
+  height: 80vh;
+  width: 60vw;
+  max-width: 400px;
+  max-height: 800px;
+  position: absolute;
+  border: 1px solid grey;
+}
+section.passo_item.assinatura .content {
+  min-width: 535px;
+  height: 260px;
+  display: block;
+  position: relative;
+  transform: rotate(90deg);
+}
+section.passo_item.assinatura .content:before {
+  content: "Assine aqui";
+  position: absolute;
+  bottom: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70vh;
+  border-top: 1px solid grey;
+  text-align: center;
+  font-family: montserrat;
+  font-size: 16px;
+  color: grey;
+  font-weight: 300;
+  padding: 5px 0 0;
+  z-index: -1;
+}
+section.passo_item.assinatura[widescreen=true] button.voltar {
+  right: initial;
+  left: 10px;
+}
+section.passo_item.assinatura[widescreen=true] button.voltar svg {
+  transform: initial;
+}
+section.passo_item.assinatura[widescreen=true] button.limpar {
+  transform: initial;
+  top: initial;
+  bottom: 10px;
+  left: 0px;
+}
+section.passo_item.assinatura[widescreen=true] button.salvar {
+  transform: initial;
+  left: initial;
+  bottom: 5px;
+  right: 15px;
+}
+section.passo_item.assinatura[widescreen=true] .content {
+  transform: initial;
+}
+section.passo_item.passo_final .passo_content {
+  padding: 65px 30px 45px;
+}
+section.passo_item.passo_final .passo_content h2 {
+  font-size: 24px;
+  line-height: 29px;
+  margin: 0 0 15px;
+}
+section.passo_item.passo_final .passo_content p {
+  margin: 0 auto 55px;
+}
+section.passo_item.passo_final .passo_content img {
+  display: block;
+  margin: 0 auto 95px;
+}
+section.passo_item.arquivos_recusados .passo_header p {
+  font-family: ubuntu;
+  line-height: 75px;
+  margin-left: 15px;
+}
+section.passo_item.arquivos_recusados .passo_content {
+  padding-top: 40px;
+}
+section.passo_item.arquivos_recusados .passo_content p {
+  margin: 0 auto 55px;
+}
+section.passo_item.arquivos_recusados .passo_content .document_content {
+  border-top: 1px solid #dbdbdb;
+  margin: 0 0 85px;
+}
+section.passo_item.arquivos_recusados .passo_content .document_content .item {
+  border-bottom: 1px solid #dbdbdb;
+  padding: 25px 0;
+  position: relative;
+  font-size: 14px;
+  font-weight: bold;
+  color: #5e5e5e;
+}
+section.passo_item.arquivos_recusados .passo_content .document_content .item[active=true] .svg {
+  content: url("/environment/externo/assinatura/img/checked2.svg");
+}
+section.passo_item.arquivos_recusados .passo_content .document_content .item img {
+  margin-right: 20px;
+}
+section.passo_item.arquivos_recusados .passo_content .document_content .item img:first-child {
+  height: 54px;
+  width: 80px;
+  object-fit: none;
+}
+section.passo_item.arquivos_recusados .passo_content .document_content .item .svg {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+section.passo_item.arquivos_recusados .passo_content .document_content .item .svg#icon_2 {
+  display: none;
+}
+
+/*# sourceMappingURL=principal.css.map */

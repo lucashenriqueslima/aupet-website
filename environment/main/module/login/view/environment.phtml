@@ -1,0 +1,27 @@
+<div class="mainbox_space"></div>
+<ul>
+    <?php if ($this->allowedServiceLogin("cms")) : ?>
+    <li>
+        <a href="#" class="environment" data-environment="cms">
+            <span class="img"><img src="<?php echo $this->main_template; ?>images/ambientes/icon_cms.png"></span>
+            Conteúdo do site
+        </a>
+    </li>
+    <?php endif ?>
+    <!-- <?php if ($this->allowedServiceLogin("desk")) : ?>
+    <li>
+        <a href="#" class="environment" data-environment="desk">
+            <span class="img"><img src="<?php echo $this->main_template; ?>images/ambientes/icon_atendimento.png"></span>
+            Atendimento
+        </a>
+    </li>
+    <?php endif ?> -->
+    <?php if ($this->allowedServiceLogin("app")) : ?>
+    <li>
+        <a href="#" class="environment" data-environment="app">
+            <span class="img"><img src="<?php echo $this->main_template; ?>images/ambientes/icon_intranet.png"></span>
+            Sistema app
+        </a>
+    </li>
+    <?php endif ?>
+</ul>

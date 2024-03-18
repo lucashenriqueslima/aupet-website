@@ -1,0 +1,40 @@
+.clear { clear:both; }
+
+    p{
+        font-weight: 200;
+        font-size: 16px;
+        line-height: 26px;
+
+        @media (max-width: 600px){
+            font-size: 14px;
+            line-height: 24px;
+        }
+    }
+
+    img {
+        max-width: 100%;
+        max-height: 100%;
+        margin: 10px auto 10px;
+        display: block;
+        height: auto;
+    
+        &.imgFull {
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
+        }
+        &.imgRight {
+            float: right;
+            margin: 0 0 10px 20px;
+        }
+        &.imgLeft {
+            float: left;
+            margin: 0 20px 10px 0;
+        }
+    }
+    
+    iframe.video-youtube {
+        width: 100%;
+        height: 478px;
+    }
+}

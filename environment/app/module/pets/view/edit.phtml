@@ -1,0 +1,447 @@
+<?php
+use app\classes\Util; ?>
+<?php require_once $this->main_layouts."headers.phtml"; ?>
+<script type="text/javascript">
+    var pagina = "<?= $this->getPath(); ?>";
+    var permissao = "<?= $this->permissao_ref; ?>";
+    var controller = "<?= $this->getPath(); ?>/save";
+    var retorno = "<?= $this->retorno; ?>";
+</script>
+</head>
+<body ng-app='nova' ng-controller="EditCtrl as ctrl" style='display:none' ng-init='ctrl.onInit()'>
+    <?php require_once $this->main_layouts."header.phtml"; ?>
+    <div id="wrapper">
+        <?php require_once $this->main_layouts."sidebar.phtml"; ?>
+        <div id="content" class="page-content clearfix">
+            <div class="contentwrapper">
+                <div class="heading">
+                    <h3><?= $this->module_title; ?></h3>
+                    <ul class="breadcrumb">
+                        <li>Você está aqui</li>
+                        <li><a href="#" class="tip" title="Painel"><i class="s16 icomoon-icon-screen-2"></i></a> <span class="divider"> <i class="s16 icomoon-icon-arrow-right-3"></i> </span> </li>
+                        <li><a class="tip" title="<?= $this->module_title; ?>" href="<?= $this->module_link; ?>"><i class="s16 <?= $this->module_icon; ?>"></i></a></li>
+                        <span class="divider"><i class="s16 icomoon-icon-arrow-right-3"></i></span>
+                        <li class="active">Registro</li>
+                    </ul>
+                </div>
+                <div class="form-horizontal group-border">
+                    <?php if((bool)$this->registro['id']) :?>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a href="#" class="chartShortcuts no-hover">
+                                <span class="head">Valor da proposta</span>
+                                <span class="number">R$ <?= $this->formataMoedaDeBanco($this->registro['valor']) ?></span>
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="#" class="chartShortcuts no-hover">
+                                <span class="head">Status</span>
+                                <span class="number"><?= ucfirst($this->registro['classificacao']) ?></span>
+                            </a>
+                        </div>
+                    </div>
+                    <?php if ($this->registro['classificacao'] == 'arquivada') : ?>
+                    <div class='row'>
+                        <div class="col-md-12">
+                            <a href="#" class="chartShortcuts no-hover">
+                                <span class="head"></span>
+                                <span class="number"><?= "Motivo: ".$this->registro['motivo'] ?></span>
+                            </a>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6">
+                            <?php if((bool)$this->registro['id_proposta']) :?>
+                            <a href="app/proposta/edit/id/<?= $this->registro['id'] ?>"><button type="button" class="btn btn-default mr5 mb10">Ver proposta</button></a>
+                            <?php endif; ?>
+                        </div>
+                        <div class="col-md-6 col-xs-6" style=" display: flex; justify-content: flex-end; text-align: right;">
+                            <?php if((bool)$this->registro['id_associado']) :?>
+                            <a href="app/associado/edit/id/<?= $this->registro['id_associado'] ?>"><button type="button" class="btn btn-default mr5 mb10">Ver associado</button></a>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+                    <form ng-submit="ctrl.submitMain()" name='formdata' novalidate>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel panel-default toggle" id="supr0">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Pet</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <div class='col-md-6'>
+                                                <label class="col-lg-2 control-label" for="foto">Foto</label>
+                                                <div class="col-lg-10">
+                                                        <?php if ($this->registro['foto'] == null): ?>
+                                                            <label class="logo" for="foto">
+                                                            <img style="object-fit: cover;height: 100px;" src="/main/templates/supradmin/images/SemImagem.png" alt="" class="image marginR10"/>
+                                                            </label>
+                                                        <?php else: ?>
+                                                            <label class="logo" >
+                                                            <img style="object-fit: cover;height: 100px;" src="<?= $this->registro['foto'] ?>" alt="" class="image marginR10"/>
+                                                            </label>
+                                                        <?php endif ?>
+                                                    <input type="file" accept='image/*' id="foto" imageread="ctrl.registro.foto" class="files btn btn-default"/>
+                                                </div>
+                                            </div>
+                                            <div class='col-md-6'>
+                                                <label class="col-lg-2 control-label">Porte</label>
+                                                <div class="col-lg-10">
+                                                    <select class="form-control" ng-model='ctrl.registro.porte' >
+                                                        <option value="" hidden>Selecione..</option>
+                                                        <option value="Pequeno">Pequeno</option>
+                                                        <option value="Médio">Médio</option>
+                                                        <option value="Grande">Grande</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class='form-group'>
+                                            <div class='col-md-6'>
+                                                <label class="col-lg-2 control-label">Associado</label>
+                                                <div class="col-lg-10">
+                                                    <input class="form-control" readonly value="<?= $this->registro['responsavel'] ?>" />
+                                                </div>
+                                            </div>
+                                            <div class='col-md-6'>
+                                                <label class="col-lg-2 control-label">Nome do pet</label>
+                                                <div class="col-lg-10">
+                                                    <input class="form-control" ng-model="ctrl.registro.nome"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class='form-group'>
+                                            <div class='col-md-6'>
+                                                <label class="col-lg-2 control-label">Especie</label>
+                                                <div class="col-lg-10">
+                                                    <select class="form-control" ng-model='ctrl.registro.id_especie' ng-change='ctrl.findRacas()'>
+                                                        <option value="" hidden>Selecione..</option>
+                                                        <?php foreach ($this->especies as $row) : ?>
+                                                        <option ng-value="<?= $row['id']; ?>"><?= $row['titulo']; ?></option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class='col-md-6'>
+                                                <label class="col-lg-2 control-label">Raça</label>
+                                                <div class="col-lg-10">
+                                                    <select class="form-control" ng-disabled="!ctrl.racas.length" ng-model='ctrl.registro.id_raca'>
+                                                        <option value="" hidden>Selecione..</option>
+                                                        <option ng-repeat="row in ctrl.racas" ng-value="row.id">{{row.titulo}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class='form-group'>
+                                            <div class='col-md-6'>
+                                                <label class="col-lg-2 control-label">Peso (Kg)</label>
+                                                <div class="col-lg-10">
+                                                    <input class="form-control" mask-money ng-model="ctrl.registro.peso"/>
+                                                </div>
+                                            </div>
+                                            <div class='col-md-6'>
+                                                <label class="col-lg-2 control-label">Cor</label>
+                                                <div class="col-lg-10">
+                                                    <input class="form-control" ng-model="ctrl.registro.cor"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class='form-group'>
+                                            <div class='col-md-6'>
+                                                <label class="col-lg-2 control-label">Sexo</label>
+                                                <div class="col-lg-10">
+                                                    <select class="form-control" ng-model='ctrl.registro.sexo' >
+                                                        <option value="" hidden>Selecione..</option>
+                                                        <option value="Macho">Macho</option>
+                                                        <option value="Fêmea">Fêmea</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class='col-md-6'>
+                                                <label class="col-lg-2 control-label">Plano</label>
+                                                <div class="col-lg-10">
+                                                    <select class="form-control" ng-model='ctrl.registro.id_plano' disabled>
+                                                        <option ng-value="" hidden>Selecione..</option>
+                                                        <option value="" <?php if((bool)$this->registro['id_plano']) echo 'selected' ?> >GRATUITO</option>
+                                                        <?php foreach ($this->planos as $row) : ?>
+                                                            <option ng-value="<?= $row['id']; ?>"><?= $row['titulo']; ?></option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='col-md-12'>
+                            <?php if (!$this->permissions[$this->permissao_ref]['editar']) : ?>
+                                <div class="form-group">
+                                    <div class="col-lg-offset-2 col-lg-10">
+                                        <span class="label label-warning"><span class="icon24 icomoon-icon-warning "></span>Você não tem permissão para editar esta função.</span>
+                                    </div>
+                                </div>
+                            <?php else : ?>
+                                <div class="form-group col-md-12">
+                                    <div class="col-lg-offset-2 col-lg-2">
+                                        <button type="submit" class="btn btn-info btn-block"><strong>Salvar</strong></button>
+                                    </div>
+                                </div>
+                            <?php endif ?>
+                        </div>
+                    </form>
+
+                    <?php if((bool)$this->external_reference): ?>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle panelClose">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title"><i class="<?= $this->module_icon ?>"></i> Tabela de Mensalidades
+                                            <label class="select-all">Selecionar estes <input type="checkbox" id="apagar_todos"></label>
+                                        </h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <table cellpadding="0" cellspacing="0" border="0" class="tabletools table table-striped table-bordered" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th class="tal">Id da Transação</th>
+                                                    <th class="tal">Descrição</th>
+                                                    <th class="tal">Dt aprovação</th>
+                                                    <th class="tal">Cartão</th>
+                                                    <th class="tal">Forma de pagamento</th>
+                                                    <th class="tal">Bandeira do Cartão</th>
+                                                    <th class="tal">Status</th>
+                                                    <th class="tal">Valor</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach ($this->list as $registro) : ?>
+                                                    <?php
+                                                        $status = '';
+
+                                                        switch($registro['status']){
+                                                            case 'approved' :
+                                                                $status = 'creditado';
+                                                                break;
+                                                            case 'rejected': 
+                                                                $status = 'rejeitado';
+                                                                break;
+                                                            default: 
+                                                                $status = 'pendente';
+                                                                break;
+                                                            }
+                                                    ?>
+
+                                                    <tr>
+                                                        <td class="tal"><a href="#"><?= $registro['id']; ?></a></td>
+                                                        <td class="tal"><a href="#"><?= $registro['description']; ?></a></td>
+                                                        <td class="tal"><a href="#"><?= ((bool)$registro['date_approved']) ? Util::formatDate($registro['date_approved'], 'd/m/Y H:i') : ''; ?></a></td>
+                                                        <td class="tal"><a href="#"><?= $registro['card']['cardholder']['name']; ?> - <?= $registro['card']['last_four_digits']; ?></a></td>
+                                                        <td class="tal"><a href="#"><?= ($registro['payment_type_id'] == 'credit_card') ? 'cartão de credito':''; ?></a></td>
+                                                        <td class="tal"><a href="#"><?= $registro['payment_method_id']; ?></a></td>
+                                                        <td class="tal"><a href="#"><?= $status; ?></a></td>
+                                                        <td class="tal"><a href="#">R$ <?= Util::formataMoeda($registro['transaction_amount']); ?></a></td>
+                                                    </tr>
+                                                <?php endforeach ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="row" style=" margin-top: 80px; ">
+                        <?php if (!$this->permissions[$this->permissao_ref]['editar']) : ?>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <span class="label label-warning"><span class="icon24 icomoon-icon-warning "></span>Você não tem permissão para editar esta função.</span>
+                                </div>
+                            </div>
+                        <?php else : ?>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-2">
+                                    <button type="button" class="btn btn-info btn-block" ng-click="ctrl.modalExcluirPet()"><strong>Excluir Pet</strong></button>
+                                </div>
+                                <?php if ((bool)$this->external_reference) : ?>
+                                    <div class="col-lg-offset-4 col-lg-2">
+                                        <button type="button" class="btn btn-warning btn-block" ng-click='ctrl.modalExcluirAssinatura()'><strong>Excluir Assinatura</strong></button>
+                                    </div>
+                                <?php endif ?>
+                            </div>
+                        <?php endif ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php require_once $this->main_layouts."footer.phtml"; ?>
+    </div>
+
+    <div id="modal_excluir_pet" class="modal fade modal-style2" >
+        <form ng-submit='ctrl.submitExcluirPet()' class="form-horizontal mt20"  >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <h4 class="modal-title" >Excluir Pet</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class='form-group'>
+                            <label class='col-lg-3 control-label' for='id_motivo'>Selecione o motivo</label>
+                            <div class='col-lg-7'>
+                                <select required class='form-control' ng-model='ctrl.id_motivo_arquivamento'>
+                                    <option value=''>Selecione..</option>
+                                    <?php foreach ($this->motivos as $row) : ?>
+                                    <option ng-value="<?= $row['id'] ?>"><?= $row['nome'] ?></option>
+                                    <?php endforeach; ?>                                
+                                </select>
+                            </div>
+                        </div>                    
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="modal_excluir_assinatura" class="modal fade modal-style2" >
+        <form ng-submit='ctrl.submitExcluirAssinatura()' class="form-horizontal mt20"  >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span aria-hidden="true">&times;</span>
+                            <span class="sr-only">Close</span>
+                        </button>
+                        <h4 class="modal-title" >Excluir Assinatura</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class='form-group'>
+                            <label class='col-lg-3 control-label' for='id_motivo'>Selecione o motivo</label>
+                            <div class='col-lg-7'>
+                                <select required class='form-control' ng-model='ctrl.id_motivo_arquivamento'>
+                                    <option value=''>Selecione..</option>
+                                    <?php foreach ($this->motivos as $row) : ?>
+                                    <option ng-value="<?= $row['id'] ?>"><?= $row['nome'] ?></option>
+                                    <?php endforeach; ?>                                
+                                </select>
+                            </div>
+                        </div>                    
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    <?php require_once $this->main_layouts."plugins.phtml"; ?>
+    <script src="<?= $this->main_template ?>plugins/tables/dataTables/jquery.dataTables.js"></script>
+    <script src="<?= $this->main_template ?>plugins/tables/dataTables/dataTables.tableTools.js"></script>
+    <script src="<?= $this->main_template ?>plugins/tables/dataTables/dataTables.bootstrap.js"></script>
+    <script src="<?= $this->main_template ?>plugins/tables/dataTables/dataTables.responsive.js"></script>
+    <script type="text/javascript" src="<?= $this->main_template; ?>plugins/forms/select/select2.js"></script>
+    <?php require_once $this->main_layouts."photoswipe.phtml"; ?>
+    <script src="<?php echo $this->main_template;?>plugins/forms/summernote/summernote.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //--------------- Data tables ------------------//
+            if ($('table').hasClass('tabletools')) {
+                $('.tabletools').dataTable({
+                    "oLanguage": {
+                        "sSearch": "",
+                        "sLengthMenu": "<span>_MENU_</span>",
+                        "sProcessing": "Processando...",
+                        "sZeroRecords": "Não foram encontrados resultados",
+                        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros",
+                        "sInfoFiltered": "(filtrado de _MAX_ registros no total)",
+                        "sInfoPostFix": "",
+                        "sUrl": "",
+                        "oPaginate": {
+                            "sFirst": "Primeiro",
+                            "sPrevious": "Anterior",
+                            "sNext": "Seguinte",
+                            "sLast": "Último"
+                        }
+                    },
+                    "sDom": "T<'row'<'col-md-6 col-xs-12 'l><'col-md-6 col-xs-12'f>r>t<'row'<'col-md-4 col-xs-12'i><'col-md-8 col-xs-12'p>>",
+                    "aaSorting": [
+                        [0, "desc"]
+                    ],
+                    "iDisplayLength": 100,
+                    tableTools: {
+                        "sSwfPath": "http://cdn.datatables.net/tabletools/2.2.2/swf/copy_csv_xls_pdf.swf",
+                        "aButtons": []
+                    }
+                });
+            }
+
+            $(document).on('pointerup', 'select[disabled]', async function (e) {
+                $("body").addClass("progresss");
+                $("body").removeClass("progresss");
+            });
+            $(".select2").select2();
+            summernote();
+        });
+        angular.module('nova', ['novaServices',])
+        .controller('EditCtrl', function($scope, $http, $sce, NS, $window) {
+            this.registro = <?= json_encode($this->registro); ?>;
+            this.perguntas_contrato = <?= $this->termo['perguntas_contrato'] ?: '[]' ?>;
+            this.onInit = () => {
+                $('body').show();
+                this.findCity();
+                this.findRacas();
+            }
+            this.submitMain = async () => {
+                let res = await NS.actionHandler($http.post(`<?= $this->getPath();?>/save`,this.registro));
+                if(this.registro.id) location.reload();
+                else window.location = "<?= $this->getPath(); ?>/edit/id/"+res.data;
+            }
+            this.findCity = async () => {
+                if (!this.registro.id_estado) return;
+                this.cidades = [];
+                this.cidades = (await $http.post(`main/general/getCidadesByEstadoId`, { id:this.registro.id_estado })).data;
+                $scope.$digest();
+            }
+            this.findRacas = async () => {
+                if(!this.registro.id_especie) return;
+                this.racas = [];
+                let res = await $http.get(`<?= $this->getPath();?>/racas/especie/${this.registro.id_especie}`);
+                this.racas = res.data;
+                $scope.$digest();
+            }
+
+            this.modalExcluirPet = async () => {
+                $('#modal_excluir_pet').modal("show");
+            }
+            this.submitExcluirPet = async () => {
+                await NS.actionHandler($http.post("<?= $this->getPath(); ?>/excluirPet", { id_pet: '<?= $this->id ?>', id_arquivamento: this.id_motivo_arquivamento }), '#modal_excluir_pet');
+                window.location.href = "<?= $this->getPath(); ?>";
+            }
+            
+            this.modalExcluirAssinatura = async () => {
+                $('#modal_excluir_assinatura').modal("show");
+            }
+
+            this.submitExcluirAssinatura = async () => {
+                await NS.actionHandler($http.post("<?= $this->getPath(); ?>/excluirAssinatura", { id_pet: '<?= $this->id ?>', id_arquivamento: this.id_motivo_arquivamento }), '#modal_excluir_assinatura');
+                location.reload();
+            }
+        });
+    </script>
+    <style>
+    </style>
+</body>
+</html>

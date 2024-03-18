@@ -1,0 +1,66 @@
+<?php require_once "headers.phtml"; ?>
+<script type="text/javascript">
+    var permissao = "<?php echo $this->permissao_ref; ?>";
+</script>
+</head>
+<body>
+<?php require_once "header.phtml"; ?>
+<!-- / #header -->
+<div id="wrapper">
+<!-- #wrapper -->
+<?php require_once "sidebar.phtml"; ?>
+    <!--Body content-->
+    <div id="content" class="page-content clearfix">
+        <div class="contentwrapper">
+            <!--Content wrapper-->
+            <div class="heading">
+                <!--  .heading-->
+                <h3><?php echo $this->module_title; ?></h3>
+                <ul class="breadcrumb">
+                    <li>Você está aqui:</li>
+                    <li>
+                        <a href="#" class="tip" title="voltar para o painel">
+                            <i class="s16 icomoon-icon-screen-2"></i>
+                        </a>
+                        <span class="divider">
+                            <i class="s16 icomoon-icon-arrow-right-3"></i>
+                        </span>
+                    </li>
+                    <li class="active"><?php echo $this->module_title; ?></li>
+                </ul>
+            </div>
+            <!-- End  / heading-->
+            <!-- Start .row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <span class="label label-warning"><span class="s24 icomoon-icon-warning "></span>Você não tem permissão de leitura para esta função.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End contentwrapper -->
+    </div>
+    <!-- End #content -->
+<?php  require_once "footer.phtml"; ?>
+</div>
+<?php  require_once "plugins.phtml"; ?>
+<script>
+ $('.admin-logout').click(function (e) {
+    e.preventDefault();
+    bootbox.confirm({
+        message: "Deseja sair do sistema ?",
+        title: "Aviso",
+        className: "modal-style2",
+        callback: function (result) {
+            if (result) {
+                window.location.href = "main/login/sair";
+            }
+        }
+    });
+    plugin.centerModal();
+});
+</script>
+</body>
+</html>
+<?php exit();?>

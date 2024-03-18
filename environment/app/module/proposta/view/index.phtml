@@ -1,0 +1,619 @@
+<?php require_once $this->main_layouts."headers.phtml";?>
+	<link href="<?php echo $this->main_template ?>plugins/tables/dataTables/jquery.dataTables.css" type="text/css" rel="stylesheet" />
+	<link href="<?php echo $this->main_template ?>plugins/tables/dataTables/TableTools.css" type="text/css" rel="stylesheet" />
+	<script type="text/javascript">
+			var pagina = "<?php echo $this->getPath(); ?>";
+			var permissao = "<?php echo $this->permissao_ref; ?>";
+			var controller = "<?php echo $this->getModule(); ?>";
+	</script>
+    </head>
+    <body ng-app='nova' ng-controller="IndexCtrl as ctrl" style='display:none' ng-init='ctrl.onInit()'>
+		<?php require_once $this->main_layouts."header.phtml";?>
+        <div id="wrapper">
+			<?php require_once $this->main_layouts."sidebar.phtml";?>
+            <div id="content" class="page-content clearfix">
+                <div class="contentwrapper">
+                    <div class="heading">
+                        <h3><?php echo $this->module_title; ?></h3>
+                        <ul class="breadcrumb">
+                            <li>Você está aqui:</li>
+                            <li><a href="#" class="tip" title="Painel"><i class="s16 icomoon-icon-screen-2"></i></a><span class="divider"><i class="s16 icomoon-icon-arrow-right-3"></i></span></li>
+                            <li class="active"><?php echo $this->module_title; ?></li>
+                        </ul>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                            <a href="#" class="chartShortcuts no-hover">
+                                <span class="head">Total de Indicações</span>
+                                <span class="number"><?php echo $this->indicacoes ?></span>
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                            <a href="#" class="chartShortcuts no-hover">
+                                <span class="head">Indicações Pendentes</span>
+                                <span class="number"><?php echo $this->indicacoes_pendentes ?></span>
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                            <a href="#" class="chartShortcuts no-hover">
+                                <span class="head">Indicações Arquivadas</span>
+                                <span class="number"><?php echo $this->indicacoes_arquivadas ?></span>
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                            <a href="#" class="chartShortcuts no-hover">
+                                <span class="head">Indicações Ativadas</span>
+                                <span class="number"><?php echo $this->indicacoes_ativadas ?></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default toggle ">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <i class="icomoon-icon-stats-up"></i> Indicações nos Últimos 30 dias
+                                        <input class="date box-header-date de datepicker" name="de_visitors_chart" type="text" placeholder="De: ">
+                                        <input class="date box-header-date ate datepicker" name="ate_visitors_chart" type="text" placeholder="Até: ">
+                                    </h4>
+                                </div>
+                                <div class="panel-body" >
+                                    <div class="vital-stats">
+                                        <div class="visitors-chart" style="height: 230px;width:100%;margin-top:15px; margin-bottom:15px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <?php if((bool)$this->solicitacao_adesao) : ?>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default toggle ">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"><i class="<?php echo $this->module_icon ?>"></i> Solicitações De Adesão
+                                    </h4>
+                                </div>
+                                <div class="panel-body">
+                                
+                                    <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered " width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="tal" >Dt.Criação</th>
+                                                <th class="tal" >Nome</th>
+                                                <th class="tal" >telefone</th>
+                                                <th class="tal" >pet</th>
+                                                <th class="tal" >Valor da proposta</th>
+                                                <th style="max-width: 5px" class="center">Ação</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach($this->solicitacao_adesao as $registro): ?>
+                                            <tr id="<?= $registro['id_pet'];?>">
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id_pet']; ?>"><?= $registro['prop_criacao'];?></a></td>
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id_pet']; ?>"><?= $registro['assoc_nome'];?></a></td>
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id_pet']; ?>"><?= $registro['assoc_telefone'];?></a></td>
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id_pet']; ?>"><?= $registro['pet_nome'];?></a></td>
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id_pet']; ?>"><?= $registro['pet_valor'];?></a></td>
+                                                <td class="center">
+                                                    <a data-toggle="tooltip" data-original-title="Editar" href="<?= $this->getPath()?>/edit/id/<?= $registro['id_pet']; ?>"><i class="s12 icomoon-icon-pencil"></i></a>
+                                                    <a data-toggle="tooltip" data-original-title="Excluir solicitação" class="bt_system_delete" data-controller="<?= $this->getPath()?>" data-id="<?= $registro['id_pet']; ?>" href="#"><i class="s12 icomoon-icon-remove"></i></a>
+                                                </td>
+                                            </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endif ?>   -->
+
+                    <div class="row">
+                        <div class="col-md-6 col-lg-6 col-sm-6 col-6">
+                            <?php if ($this->permissions('indication', 'gravar')): ?>
+                            <!-- <a href="<?php echo $this->getPath(); ?>/edit"><button type="button" class="btn btn-default mr5 mb10"><i class="glyphicon glyphicon-plus mr5"></i> Novo registro</button></a> -->
+                            <?php endif?>
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-sm-6 col-6" style="display: flex; justify-content: flex-end;">
+                            <?php if ($this->permissions('masscomunication', 'gravar')): ?>
+                            <button data-toggle="modal" data-target="#modalWhats" class="btn btn-primary mr5 mb10"><span class="s14 fa fa-comment-o color-white"></span>WhatsApp</button>
+                            <?php endif ?>
+                            <?php //if ($this->custompermissions('indication', 'relatorio')): ?>
+                            <div class="dropdown mb10 mr10">
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Relatórios <span class="caret"></span> </button>
+                                <ul class="dropdown-menu right animated fadeIn" role="menu">
+                                    <!-- <li><a onclick="openRelPDF('<?php echo $this->getPath(); ?>/exportPdf')" ><span class="s14 icomoon-icon-new-tab color-black"></span>Relatório em PDF</a></li> -->
+                                    <li><a onclick="openRel('<?php echo $this->getPath(); ?>/exporttab')" ><span class="s14 icomoon-icon-new-tab color-black"></span>Relatório na tela</a></li>
+                                    <li><a onclick="openRel('<?php echo $this->getPath(); ?>/export')" ><span class="s14 icomoon-icon-file-excel color-black"></span>Baixar Relatório em Excel</a></li>
+                                </ul>
+                            </div>
+                            <?php //endif ?>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default toggle  ">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"><i class="<?php echo $this->module_icon ?>"></i> Tabela de Propostas
+                                    </h4>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-md-12 filters" >
+                                        <i class="fa fa-filter"></i>
+                                        <button class='btn-filter'> Dt Criação
+                                            <div class="panel groupfilter" style='display:none'>
+                                                <div class="panel-body" >
+                                                    <form class="form-horizontal" >
+                                                        <div class="form-group">
+                                                            <label class="col-lg-12 control-label" for="">De</label>
+                                                            <div class="col-lg-12">
+                                                                <input  class="form-control date datepicker de"  ng-model='ctrl.datade'>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-12 control-label" for="">Até</label>
+                                                            <div class="col-lg-12">
+                                                                <input  class="form-control date datepicker ate" ng-model='ctrl.dataate'>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-lg-12">
+                                                                <a ng-click='ctrl.filter()' class="btn btn-default btn-filtrar">Filtrar</a>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </button>
+
+                                        <button class='btn-filter'> Planos
+                                            <div class="panel groupfilter" style='display:none'>
+                                                <div class="panel-body" >
+                                                    <form class="form-horizontal" >
+                                                        <div class="col-md-12 form-group box-filter">
+                                                            <div class="input-group input-icon">
+                                                                <input type="text" class="form-control" placeholder="Filtrar ..." ng-model="planoFiltro">
+                                                                <span class="input-group-addon"><i class="icomoon-icon-search-3 s16"></i></span>
+                                                            </div>
+                                                            <div class="checkbox-custom" style='text-align: left;' ng-repeat='row in ctrl.listPlanos | filter:planoFiltro'>
+                                                                <input type="checkbox" id="plano{{$index}}" ng-true-value='"{{row.id}}"' ng-false-value="''" ng-model='ctrl.plano[row.id]'>
+                                                                <label for="plano{{$index}}" >{{row.titulo}}</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-lg-12">
+                                                                <a ng-click='ctrl.filter()' class="btn btn-default btn-filtrar">Filtrar</a>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </button>
+
+                                        <button class='btn-filter'> Classificação
+                                            <div class="panel groupfilter" style='display:none'>
+                                                <div class="panel-body" >
+                                                    <form class="form-horizontal" >
+                                                        <div class="form-group col-md-12 box-filter">
+                                                            <select  class="form-control" ng-model='ctrl.classificacao'>
+                                                                <option value="pendente">Pendente</option>
+                                                                <option value="arquivada">Arquivada</option>
+                                                                <option value="ativada">Ativada</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-lg-12">
+                                                                <a ng-click='ctrl.filter()' class="btn btn-default btn-filtrar">Filtrar</a>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </button>
+
+                                        <i ng-click='ctrl.clearFilter()' class="icomoon-icon-remove-3 btn-filter cursor tip" data-original-title="Limpar Filtros"></i>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <span ng-repeat="row in ctrl.selecionados" class="badge badge-warning mr10 mb10"><span class='badge-label'>{{row.nome}}</span><span ng-click="ctrl.removeSelecionado(row)" class="badge-tag-close cursor">X</span></span>
+                                        <i ng-if="ctrl.selecionados.length" ng-click='ctrl.limparSelecionados()' class="icomoon-icon-remove-3 btn-filter cursor tip" data-original-title="Limpar selecionados"></i>
+                                    </div> 
+
+                                    <table cellpadding="0" cellspacing="0" border="0" class="tabletools table table-striped table-bordered" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th width="120px" class="center" >Dt. Criação</th>
+                                                <th class="tal" >Nome do Tutor</th>
+                                                <th class="tal" >Telefone</th>
+                                                <th class="tal" >Nome Pet</th>
+                                                <th class="tal" >Valor do Plano</th>
+                                                <th class="tal" >Nome do Plano</th>
+                                                <th class="tal" >Classificação</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php require_once $this->main_layouts."options.phtml";?>
+                </div>
+            </div>
+            <div class="modal fade" id="modalWhats" >
+                <div class="modal-dialog modal-dialog-center" >
+                    <form ng-submit='ctrl.submitmasswp()'>
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">×</span><span class="sr-only">Close</span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel2">WhatsApp em massa</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label" >Instruções</label>
+                                    <div class="col-lg-10">
+                                        <p>Use o filtro da tabela para selecionar os indicados. No momento há <b id='totalwp'></b> registros selecionados. O envio será armazenado no modulo 'Comunicados em massa'.</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label" >Mensagem</label>
+                                    <div class="col-lg-10">
+                                        <textarea required placeholder='Versão 1' ng-model='ctrl.masswp.content' rows="5" class="form-control"></textarea><br>
+                                        <textarea placeholder='Versão 2' ng-model='ctrl.masswp.content2' rows="5" class="form-control"></textarea><br>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label" >Palavras chaves</label>
+                                    <div class="col-lg-10">
+                                        <ul class="list-group">
+                                            <li ng-click='ctrl.copy("{[nome]}")' class="cursor list-group-item"><strong>{[nome]}</strong> - Nome do destinatário</li>
+                                            <li ng-click='ctrl.copy("{[nome_consultor]}")' class="cursor list-group-item"><strong>{[nome_consultor]}</strong> - Nome do consultor</li>
+                                            <li ng-click='ctrl.copy("{[telefone_consultor]}")' class="cursor list-group-item"><strong>{[telefone_consultor]}</strong> - Telefone do consultor</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-primary">Enviar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <?php require_once $this->main_layouts."footer.phtml";?>
+        </div>
+        <?php require_once $this->main_layouts."plugins.phtml";?>
+        <script src="<?php echo $this->main_template ?>plugins/tables/dataTables/jquery.dataTables.js"></script>
+        <script src="<?php echo $this->main_template ?>plugins/tables/dataTables/dataTables.tableTools.js"></script>
+        <script src="<?php echo $this->main_template ?>plugins/tables/dataTables/dataTables.bootstrap.js"></script>
+        <script src="<?php echo $this->main_template ?>plugins/tables/dataTables/dataTables.responsive.js"></script>
+        <script src="<?php echo $this->main_template; ?>plugins/charts/flot/jquery.flot.custom.js"></script>
+        <script src="<?php echo $this->main_template; ?>plugins/charts/flot/jquery.flot.pie.js"></script>
+        <script src="<?php echo $this->main_template; ?>plugins/charts/flot/jquery.flot.resize.js"></script>
+        <script src="<?php echo $this->main_template; ?>plugins/charts/flot/jquery.flot.time.js"></script>
+        <script src="<?php echo $this->main_template; ?>plugins/charts/flot/jquery.flot.orderBars.js"></script>
+        <script src="<?php echo $this->main_template; ?>plugins/charts/flot/jquery.flot.tooltip.min.js"></script>
+        <script type="text/javascript">
+            var oTable;
+            var totalReg = 0;
+            var chartColours = ['#88bbc8', '#ed7a53', '#9FC569', '#bbdce3', '#9a3b1b', '#5a8022', '#2c7282'];
+            $(document).ready(function(){
+
+                $(".datepicker").mask("##/##/####");
+                $(".datepicker").datepicker();
+
+                $('.de').val(`<?= date('d/m/Y', strtotime("-30 days", strtotime(date('Y-m-d')))); ?>` );
+                $('.ate').val(`<?= date('d/m/Y'); ?>`);
+        
+                oTable = $('.tabletools').dataTable({
+                    "bProcessing": true,
+                    "bServerSide": true,
+                    "sAjaxSource": "<?php echo $this->system_path.$this->getPath(); ?>/datatable",
+                    "fnServerParams": function ( aoData ) {
+                        getParameter(aoData);
+                    },
+                    "fnServerData": function ( sSource, aoData, fnCallback, oSettings ) {
+                        aoData = queryFilter(aoData);
+                        oSettings.jqXHR = $.ajax({
+                            "dataType": 'json',
+                            "type": "POST",
+                            "url": sSource,
+                            "data": aoData,
+                            "success": fnCallback
+                        }).done(function(data){
+                            totalReg = Number(data.iTotalDisplayRecords);
+                            $("#totalwp").text(Number(data.iTotalDisplayRecords).toLocaleString() /* +' ('+ data.iTotalDisplayRecords.extenso()+')' */);
+                            uniform();
+                            $('.notsort').removeClass('sorting');
+                            $("td:has(> .pendente)").css('background-color', "#f2f167");
+                            $("td:has(> .ativada)").css('background-color', "#82f683");
+                            $("td:has(> .arquivada)").css('background-color', "#ef6563");
+                        });
+                    },
+                    "sDom": "<'row'<'col-lg-1'l><'col-lg-11'f>r>t<'row'<'col-lg-6'i><'col-lg-6'p>>",
+                    "sPaginationType": "bootstrap",
+                    "bJQueryUI": false,
+                    "bAutoWidth": false,
+                    "oLanguage": { "sProcessing": "<img src='<?php echo $this->main_template; ?>images/loaders/horizontal/006.gif'><br>Processando...", "sLengthMenu": "_MENU_", "sZeroRecords": "Não foram encontrados resultados", "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros", "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros", "sInfoFiltered": "", "sInfoPostFix": "", "sSearch": "", "sUrl": "", "oPaginate": { "sFirst": "Primeiro", "sPrevious": "Anterior", "sNext": "Seguinte", "sLast": "Último" } },
+                    "aaSorting": [[<?= $_GET['iSortCol_0'] ?: 0 ?>,"<?= $_GET['sSortDir_0'] ?: 'desc' ?>"]],
+                    "iDisplayLength": <?= $_GET["iDisplayLength"] ?: 50 ?>,
+                    "iDisplayStart": <?= $_GET["iDisplayStart"] ?: 0 ?>
+                });
+                $(".dataTables_filter input").attr('title', "Tecle ENTER Para Pesquisar");
+                $(".dataTables_filter input").unbind();
+                $(".dataTables_filter input").keyup( function (e) { if (e.keyCode == 13) oTable.fnFilter( this.value);});
+                <?php if ($this->dados_grafico->num_rows): ?>
+					$(function () {
+						var d1 = [<?php foreach ($this->dados_grafico->rows as $key => $dia) {echo "[$key,".$dia['indicacoes']."]";if ($key < (count($this->dados_grafico->rows) - 1)) {
+                            echo ",";
+                        }
+                        }?>];
+						var ticks = [<?php foreach ($this->dados_grafico->rows as $key => $dia) {echo "[$key,'".$dia['dia_mes']."']";if ($key < (count($this->dados_grafico->rows) - 1)) {
+                            echo ",";
+                        }
+                        }?>];
+						var placeholder = $(".visitors-chart");
+						var options = {
+							grid: {
+								show: true,
+								aboveData: true,
+								color: "#3f3f3f" ,
+								labelMargin: 5,
+								axisMargin: 0,
+								borderWidth: 0,
+								borderColor:null,
+								minBorderMargin: 5 ,
+								clickable: true,
+								hoverable: true,
+								autoHighlight: true,
+								mouseActiveRadius: 20
+							},
+							series: {
+								grow: {
+									active: false,
+									stepMode: "linear",
+									steps: 50,
+									stepDelay: true
+								},
+								lines: {
+									show: true,
+									fill: true,
+									lineWidth: 4,
+									steps: false
+									},
+								points: {
+									show:true,
+									radius: 5,
+									symbol: "circle",
+									fill: true,
+									borderColor: "#fff"
+								}
+							},
+							legend: {
+								position: "ne",
+								margin: [0,-25],
+								noColumns: 0,
+								labelBoxBorderColor: null,
+								labelFormatter: function(label, series) {
+									return label+'&nbsp;&nbsp;';
+								}
+							},
+							yaxis: { min: 0 },
+							xaxis: {ticks:ticks, tickDecimals: 0},
+							colors: chartColours,
+							shadowSize:1,
+							tooltip: true,
+							tooltipOpts: {
+								content: "%s : %y.0",
+								shifts: {
+									x: -30,
+									y: -50
+								}
+							}
+						};
+						$.plot(placeholder, [
+							{
+								label: "Indicações",
+								data: d1,
+								lines: {fillColor: "#f2f7f9"},
+								points: {fillColor: "#88bbc8"}
+							}
+						], options);
+					});
+					$("input[name='de_visitors_chart'],input[name='ate_visitors_chart']").on("change", function(){
+						var de_chart = $("input[name='de_visitors_chart']").val();
+						var ate_chart = $("input[name='ate_visitors_chart']").val();
+						var de = de_chart.split("/");
+						var ate = ate_chart.split("/");
+						de = de[2] + '-' + de[1] + '-' + de[0];
+						ate = ate[2] + '-' + ate[1] + '-' + ate[0];
+						if (ate < de) {
+							$(".visitors-chart").html('<div class="well" style="color:black">A data final não pode ser menor que a data inicial!</div>');
+						} else {
+							if (de_chart.length && ate_chart.length){
+								$(".visitors-chart").html("<center><img alt='Carregando...' src='images/loaders/circular/055.gif'/></center>");
+								$.ajax({
+									url: "<?php echo $this->getPath() ?>/chart",
+									type: 'POST',
+									data: {
+										de : de,
+										ate : ate
+									},
+									//dataType: 'json',
+									success: function(dt){
+										$(".visitors-chart").html(dt);
+									}, complete: function() {
+									}
+								});
+							}
+						}
+					});
+                <?php endif;?>
+            });
+
+            var querystring = '<?=$_SERVER["QUERY_STRING"]?>';
+            function queryFilter(aoData) {
+                if(querystring === null) window.history.replaceState(null, '','<?=$this->system_path.$this->getPath();?>/?'+$.param(aoData));
+                else if(querystring !== '') aoData = decodeURIComponent(querystring);
+                querystring = null;
+                return aoData;
+            }
+            function clearQuery(){
+                window.history.replaceState(null, '','<?=$this->system_path.$this->getPath();?>');
+                querystring = '';
+            }
+            angular.module('nova', ['novaServices'])
+            .controller('IndexCtrl',function($scope, $http, $sce, NS, $window) {
+                this.listPlanos = <?=json_encode(array_values($this->planos));?>;
+                this.datade = '';
+                this.dataate = '';
+                this.plano = [];
+                $window.updateStatusItem = async (id) => {
+                    await NS.actionHandler($http.put("<?php echo $this->system_path.$this->getPath(); ?>/updateStatus", { id: id }));
+                    oTable.fnFilter();
+                }
+                $window.deleteItem = async (id) => {
+                    if(!confirm('Apagar consultor?')) return;
+                    await NS.actionHandler($http.delete("<?php echo $this->system_path.$this->getPath(); ?>/del/id/"+id));
+                    oTable.fnFilter();
+                }
+                this.onInit = () => {
+                    $('body').show();
+                    this.datade = getParam('datade');
+                    this.dataate = getParam('dataate');
+                    this.plano = getParam('plano',true);
+                    this.classificacao = '';
+                }
+                $window.getParameter = (aoData) => {
+                    aoData.push({ "name": 'datade', "value": this.datade });
+                    aoData.push({ "name": 'dataate', "value": this.dataate });
+                    aoData.push({ "name": 'plano', "value": this.plano });
+                    aoData.push({ "name": 'classificacao', "value": this.classificacao });
+                }
+                this.clearFilter = () => {
+                    clearQuery();
+                    this.datade = '';
+                    this.dataate = '';
+                    this.plano = [];
+                    this.classificacao = '';
+                    oTable.fnFilter('');
+                }
+                this.filter = () => {
+                    $('.groupfilter').hide();
+                    oTable.fnFilter();
+                }
+                getParam = (prop, mult = false) => {
+                    let params = new URLSearchParams(querystring);
+                    if(mult) {
+                        let a = [];
+                        (params.get(prop) || '').split(",").forEach(x => { a[x] = x; });
+                        return a;
+                    } else return params.get(prop);
+                }
+                <?php if ($this->permissions('masscomunication', 'gravar')): ?>
+                    this.submitmasswp = async () => {
+                        if(!confirm('Deseja enviar comunicado em massa?')) return;
+                        await NS.actionHandler($http.post("<?php echo $this->system_path.$this->getPath(); ?>/comunicadoWhatsapp", this.masswp),'#modalWhats');
+                        $('#modalWhats').modal('toggle');
+                    }
+                <?php endif ?>
+                this.copy = async (toCopy) => {
+                    await navigator.clipboard.writeText(toCopy);
+                    NS.notifSucess('Variável copiada');
+                    $('#modalvariaveis').modal('toggle')
+                }
+
+                var lastChecked = null;
+                
+                $window.selectListItem = (e, ev) => {
+                    var $chkboxes = $('.selecionados');
+                    if(e.checked) {
+                        if (ev.shiftKey && lastChecked) {
+                            var start = $chkboxes.index(e);
+                            var end = $chkboxes.index(lastChecked);
+                            var selecionados = $.map($chkboxes.slice(Math.min(start,end), Math.max(start,end)+ 1), (e) => { return {id: $(e).attr('id'), nome: $(e).attr('nome')}});
+                            this.managerSelecionados(selecionados);
+                        } else {
+                            this.managerSelecionados([{id: $(e).attr('id'), nome: $(e).attr('nome')}]);
+                        }
+                    } else {
+                        if (ev.shiftKey && lastChecked) {
+                            var start = $chkboxes.index(e);
+                            var end = $chkboxes.index(lastChecked);
+                            var selecionados = $.map($chkboxes.slice(Math.min(start,end), Math.max(start,end)+ 1), (e) => { return {id: $(e).attr('id'), nome: $(e).attr('nome')}});
+                            this.managerSelecionados(selecionados, false);
+                        } else {
+                            this.managerSelecionados([{id: $(e).attr('id'), nome: $(e).attr('nome')}], false)
+                        }
+                    }
+                    $scope.$digest();
+                    lastChecked = e;
+                }
+                uniqueArrayOfObject = (array, keyToBeUnique) => array.filter((x, xi) => !array.slice(xi + 1).some(y => y[keyToBeUnique] === x[keyToBeUnique]));
+                this.managerSelecionados = (selecionados, add = true) => {
+                    if(add) {
+                        this.selecionados = this.selecionados.concat(selecionados);
+                        this.selecionados = uniqueArrayOfObject(this.selecionados,'id');
+                    } else {
+                        selecionados.forEach((x) =>  {
+                            let e = this.selecionados.map(x => x.id).indexOf(x.id); 
+					        this.selecionados.splice(e,1); 
+                        });
+                    }
+                    marcarSelecionados();
+                }
+                $window.marcarSelecionados = () => {
+                    $('.selecionados[type=checkbox]').attr('checked', false);
+                    this.selecionados.forEach(x => $(`.checkbox[id=${x.id}]`).attr('checked', true));
+                }
+                this.changeSelecionartodos = () => {
+                    var selecionados = $.map($('.selecionados[type=checkbox]'), (e) => { return {id: $(e).attr('id'), nome: $(e).attr('nome')}});
+                    if (this.selecionar_todos) {
+                        this.managerSelecionados(selecionados);
+                    } else {
+                        this.managerSelecionados(selecionados, false);
+                    }
+                }
+                $window.resetSelecionar = () => {
+                    this.selecionar_todos = false;
+                    $scope.$digest();
+                }
+                this.limparSelecionados = () => {
+                    this.selecionados = [];
+                    this.selecionar_todos = false;
+                    $('.checkbox').attr('checked', false);
+                    $('.tooltip.in').remove();
+                }
+                this.openModalRel = () => {
+                    $('#modalRelatorios').modal({'show': true});
+                }
+                this.submitRelPdf = async () => {
+                    var data = $.param(this.relPdf);
+                    if(this.selecionados.length) data += '&id=' + this.selecionados.map(x => x.id).join();
+                    window.open("<?= $this->getPath();?>/exportPdf?"+data, "_blank");
+                    $('#modalRelatorios').modal("toggle");
+                }
+    
+            });
+            function openRel(url) {
+                if(totalReg > 5000) { if(!confirm(`Há ${$("#totalwp").html()} registros selecionados, um numero grande de registros que pode gerar erros. Filtros podem diminuir essa quantidade. \nDeseja continuar?`)) return; }
+                window.open(url);
+            }
+            function openRelPDF(url) {
+                if(totalReg > 1000) {
+                    alert(`Há ${$("#totalwp").html()} registros selecionados, um numero grande de registros que pode gerar erros. No máximo 1.000 registros. Adicione Filtros para diminuir essa quantidade.`);
+                } else {
+                    window.open(url);
+                }
+            }
+        </script>
+        <style>
+            .dataTables_filter {
+                margin-right: 0px !important;
+                margin-left: 0px !important;
+            }
+        </style>
+    </body>
+</html>

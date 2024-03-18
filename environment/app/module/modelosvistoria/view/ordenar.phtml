@@ -1,0 +1,142 @@
+<?php require_once $this->main_layouts . "headers.phtml";?>
+    <script type="text/javascript">
+        var pagina = "<?= $this->getPath(); ?>";
+        var permissao = "<?= $this->permissao_ref; ?>";
+        var controller = "<?= $this->getPath(); ?>";
+    </script>
+    </head>
+    <body>
+		<?php require_once $this->main_layouts . "header.phtml"; ?>
+        <div id="wrapper">
+			<?php require_once $this->main_layouts . "sidebar.phtml"; ?>
+            <div id="content" class="page-content clearfix">
+                <div class="contentwrapper">
+                    <div class="heading">
+                        <h3><?= $this->module_title; ?></h3>
+                        <ul class="breadcrumb">
+                            <li>Você está aqui:</li>
+                            <li>
+                                <a href="#" class="tip" title="Painel">
+                                    <i class="s16 icomoon-icon-screen-2"></i>
+                                </a>
+                                <span class="divider">
+                                    <i class="s16 icomoon-icon-arrow-right-3"></i>
+                                </span>
+                            </li>
+                            <li class="active"><?= $this->module_title;?></li>
+                        </ul>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default toggle ">
+                                <div class="panel-body">
+                                    <table cellpadding="0" cellspacing="0" border="0" class="tabletools table table-striped table-bordered sortable " width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th width="50px" class="tal">Ordem</th>
+                                                <th class="tal">Descricao</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php $i =0; foreach($this->items as $registro): $i++?>
+                                            <tr id="<?= $registro['id'];?>">
+                                                <td class="center"><?= $i ?></td>
+                                                <td class="tal"><?= $registro['descricao'];?> <?= $registro['required'] == 1 ? '*' : '' ?></td>
+                                            </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+
+                    <div class="fixed_option_space"></div>
+                    <div class="fixed_options_footer">
+                        <div class="flex-main">
+                            <div class="flex-div sortable_save">
+                                <?php if (!$this->permissions($this->permissao_ref,'editar')): ?>
+                                    <span class="label label-warning"><i class="s24 icomoon-icon-warning"></i>Você não tem permissão para reordenar esta tabela.</span>
+                                <?php else: ?>
+                                    <button style="vertical-align:top" type="button" class="btn btn-info inspectModelSortable">Salvar Ordenação</button>
+                                <?php endif ?>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+		    <?php require_once $this->main_layouts . "footer.phtml"; ?>
+        </div>
+		<?php require_once $this->main_layouts . "plugins.phtml"; ?>
+        
+        <script src="<?= $this->main_template;?>plugins/tables/dataTables/jquery.dataTables.js"></script>
+        <script src="<?= $this->main_template;?>plugins/tables/dataTables/dataTables.tableTools.js"></script>
+        <script src="<?= $this->main_template;?>plugins/tables/dataTables/dataTables.bootstrap.js"></script>
+        <script src="<?= $this->main_template;?>plugins/tables/dataTables/dataTables.responsive.js"></script>
+        
+        <script type="text/javascript">
+            $(document).ready(function(){
+                //--------------- Data tables ------------------//
+                if($('table').hasClass('tabletools')){
+                    $('.tabletools').dataTable( {
+                        "pageLength": 100,
+                        "lengthMenu": [100],
+                        "searching": false,
+                        "ordering": false,
+                        "oLanguage": {
+                            "sSearch": "",
+                            "sLengthMenu": "<span>_MENU_</span>",
+                            "sProcessing":   "Processando...",                    
+                            "sZeroRecords":  "Não foram encontrados resultados",
+                            "sInfo":         "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                            "sInfoEmpty":    "Mostrando de 0 até 0 de 0 registros",
+                            "sInfoFiltered": "",
+                            "sInfoPostFix":  "",
+                            "sUrl":         "",
+
+                            "oPaginate": {
+                                "sFirst":    "Primeiro",
+                                "sPrevious": "Anterior",
+                                "sNext":     "Seguinte",
+                                "sLast":     "Último"
+                            }
+                        },
+                        "sDom": "T<'row'<'col-md-6 col-xs-12 'l><'col-md-6 col-xs-12'f>r>t<'row'<'col-md-4 col-xs-12'i><'col-md-8 col-xs-12'p>>",
+                        "aaSorting":[[0,"asc"]],
+                        tableTools: {
+                            "sSwfPath": "http://cdn.datatables.net/tabletools/2.2.2/swf/copy_csv_xls_pdf.swf",
+                            "aButtons": [
+                          ]
+                        }
+                    });
+
+                    if ($("table.sortable").length > 0) {
+                        var sortable_array = [];
+                        $(".sortable_save .inspectModelSortable").live("click", function () {
+                            var id = this.id;
+                            if (id != "")
+                                controller = id;
+                            $("table.sortable").fadeTo(500, 0.5, function () {
+                                $.post(system_path + controller + "/orderItems", { "array": sortable_array }, function (data) {
+                                    location.href = controller + '/edit/id/'+<?= $this->id ?>;
+                                });
+                            });
+                        });
+
+
+                        $("table.sortable").sortable({
+                            opacity: 0.7, cursor: 'move', axis: 'y', items: "tbody tr", update: function (e, ui) {
+                                sortable_array = $(this).sortable("toArray");
+                                $(".fixed_options_footer, .fixed_option_space, .sortable_save").show();
+                            }
+                        });
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>

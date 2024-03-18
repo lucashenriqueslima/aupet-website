@@ -1,0 +1,30 @@
+<table border="1">
+    <tr>
+        <td colspan="7" align="center"><h1><?= "Relatório Pets"; ?></h1></td>
+    </tr>
+    <tr>
+        <th align="left" >Nome</th>
+        <th align="left" >Responsável</th>
+        <th align="left" >Cor</th>
+        <th align="left" >Porte</th>
+        <th align="left" >Espécie</th>
+        <th align="left" >Raça</th>
+        <th align="left" >Status</th>
+    </tr>
+    <?php
+    if ($this->dados->num_rows) {
+        foreach ($this->dados->rows as $registro) { ?>
+            <tr>
+                <td align="left"><?= $registro["nome"]; ?></td>
+                <td align="left"><?= $registro["responsavel"]; ?></td>
+                <td align="left"><?= $registro["cor"]; ?></td>
+                <td align="left"><?= $registro["porte"]; ?></td>
+                <td align="right"><?= $registro["especie"]; ?></td>
+                <td align="right"><?= $registro['raca']; ?></td>
+                <td align="right"><?= ucfirst($registro['situacao']); ?></td>
+            </tr>
+            <?php
+		}
+    }
+    ?>
+</table>

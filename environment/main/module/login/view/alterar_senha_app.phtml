@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <base href="<?php echo $this->system_path; ?>" />
+    <meta charset="utf-8">
+    <meta name="revisit-after" content="5" />
+    <meta name="url" content="<?php echo $this->system_path ?>" />
+    <meta name="description" content="Sistema v3" />
+    <meta name="keywords" content="sistema sistemav3 sys system sysv3 sistema-v3" />
+    <title>LOGIN ADMINISTRAÇÃO</title>
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <link href="<?php echo $this->main_template; ?>css/bootstrap.css" rel="stylesheet" />
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?php echo $this->main_template; ?>images/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="<?php echo $this->main_template; ?>images/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="<?php echo $this->main_template; ?>images/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="<?php echo $this->main_template; ?>images/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="icon" href="<?php echo $this->main_template; ?>images/ico/favicon.ico" type="image/png">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+</head>
+<body ng-app='nova' ng-controller="Ctrl as ctrl" ng-init='ctrl.onInit()' style='display:none;'>
+    <div class="background"></div>
+    <div class="target">
+        <div class="login-page">
+        <div id="header" class="animated fadeInDown">
+            <div class="row">
+                <div class="navbar">
+                    <div class="container text-center" style="margin-top: -5px">
+                        <div class="logo-login-custom"><a href="http://www.hibridaweb.com.br" target="_blank"><span class="slogan-custom"><img src="https://aupetheinsten.com.br/website/img/temporario/header/logo.svg" /></span></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>    
+        <div class="container login-container">
+            <div class="login-panel panel panel-default plain animated bounceIn">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <h3 for="">Olá <?= $this->pessoa['nome'] ?> esse é o formulario para alterar sua senha.</h3>
+                        </div>
+                    </div>
+                    <form class="form-horizontal" ng-submit="ctrl.submit()">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label for="">Nova senha:</label>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="input-group input-icon">
+                                    <input type="password" required class="form-control" ng-model="ctrl.registro.senha1" autocomplete="new-password">
+                                    <span class="input-group-addon"><i class="icomoon-icon-lock s16"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group div-senha">
+                            <div class="col-md-12">
+                                <label for="">Repita a senha:</label>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="input-group input-icon">
+                                    <input type="password" required class="form-control" ng-model="ctrl.registro.senha2" autocomplete="new-password">
+                                    <span class="input-group-addon"><i class="icomoon-icon-lock s16"></i></span> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb0">
+                            <div class="clearfix col-lg-6 col-md-6 col-sm-6 col-xs-8">
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-4 mb25">
+                                <button class="btn btn-default pull-right" type="submit" id="loginBtn">Alterar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var root_path = "<?php echo $this->root_path ?>";
+        var system_path = "<?php echo $this->system_path ?>";
+        var main_template = "<?php echo $this->main_template ?>";
+        var main_scripts = "<?php echo $this->main_scripts ?>";
+    </script>
+    <link href="/environment/externo/assinatura/css/plugins.css" rel="stylesheet" />
+	<link href="/main/templates/supradmin/css/icons.css" rel="stylesheet" />
+
+    <script type="text/javascript" src="<?php echo $this->main_template; ?>js/jquery-3.2.1.min.js"></script>
+    <script src="/environment/externo/assinatura/plugins/notify/jquery.gritter.js"></script>
+	<script src="//rawcdn.githack.com/CarlosBonetti/jquery-loading/v1.3.0/dist/jquery.loading.js"></script>
+	<link href="//rawcdn.githack.com/CarlosBonetti/jquery-loading/v1.3.0/dist/jquery.loading.css" type="text/css" rel="stylesheet" />
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.min.js"></script>
+    <script type="text/javascript" src="<?php echo $this->main_template; ?>js/novaServices.js"></script>
+    <script type="text/javascript" src="<?php echo $this->main_template; ?>plugins/forms/clickform/jquery.clickform.js"></script>
+    <script>
+        angular.module('nova', ['novaServices'])
+        .controller('Ctrl', function($scope, $http, $sce, NS, $window) {   
+            this.onInit = () => {
+                $('body').show();
+            }
+            this.submit = async () => {
+                if(this.registro.senha1 != this.registro.senha2) return NS.notifInfo("Senhas divergentes");
+                this.registro.code = "<?= $_GET['code'] ?>";
+                await NS.actionHandler($http.post(`<?= $this->getPath();?>/senhaApp`,this.registro));
+                alert("Sua senha foi alterada com sucesso!");
+                window.location = "https://app.aupetheinsten.com.br/#/login";
+            }
+        });
+    </script>
+</body>
+</html>

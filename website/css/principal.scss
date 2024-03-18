@@ -1,0 +1,44 @@
+
+@import "../fonts/_fonts.scss";
+
+@import "responsivo/core.scss";
+
+@import "responsivo/animacao.scss";
+
+
+//404
+section{
+    &.content_404{
+        border-top: 170px solid #772e8a;
+        padding: 150px 0;
+
+        svg{
+            width: 160px;
+            height: auto;
+            display: block;
+            margin: 0 auto 5px;
+            *{
+                fill: #772e8a;
+            }
+        }
+        p{
+            font-size: 25px;
+            font-weight: 300;
+            color: #772e8a;
+            text-align: center;
+            margin: 0;
+            font-weight: 600;
+        }
+        @media (max-width: 600px){
+            padding: 80px 0;
+            border-top: 110px solid #772e8a;
+            
+            svg{
+                width: 120px;
+            }
+            p{
+                font-size: 20px;
+            }
+        }
+    }
+}

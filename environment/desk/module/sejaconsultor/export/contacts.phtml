@@ -1,0 +1,30 @@
+<table border="1">
+    <tr>
+        <th align="left"><?php echo utf8_decode("Data Solicitação"); ?></th>
+        <th align="left">Nome</th>
+        <th align="left">E-mail</th>
+        <th align="left">Telefone</th>
+        <th align="left"><?php echo utf8_decode("Empresa"); ?></th>
+        <th align="left"><?php echo utf8_decode("Segmento"); ?></th>
+        <th align="left">Mensagem</th>
+        <th align="left"><?php echo utf8_decode("Situação"); ?></th>
+    </tr>
+    <?php
+    if ($this->dados->num_rows) {
+        foreach ($this->dados->rows as $registro) {
+            ?>
+            <tr>
+                <td><?php echo $registro["data"]; ?></td>
+                <td><?php echo utf8_decode($registro["nome"]); ?></td>
+                <td><?php echo $registro["email"]; ?></td>
+                <td><?php echo $registro["telefone"]; ?></td>
+                <td><?php echo utf8_decode($registro["empresa"]); ?></td>
+                <td><?php echo utf8_decode($registro["segmento"]); ?></td>
+                <td><?php echo utf8_decode($registro["mensagem"]); ?></td>
+                <td><?php echo utf8_decode($registro["situacao"]); ?></td>
+            </tr>
+            <?php
+        }
+    }
+    ?>
+</table>

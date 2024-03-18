@@ -1,0 +1,190 @@
+<div id="sidebarbg" class="hidden-lg hidden-md hidden-sm hidden-xs"></div>
+<div id="sidebar" class="page-sidebar hidden-lg hidden-md hidden-sm hidden-xs">
+
+    <?php if ($this->allowedService("main")) : ?>
+        <div class="shortcuts">
+            <ul>
+                <?php if ($this->permissions['group']['ler']) : ?>
+                    <li>
+                        <a href="main/group" title="Grupos de Usuário" class="tip"><i class="s24 icomoon-icon-users-2"></i></a>
+                    </li>
+                <?php endif; ?>
+                <?php if ($this->permissions['user']['ler']) : ?>
+                    <li>
+                        <a href="main/user" title="Usuários" class="tip"><i class="s24 icomoon-icon-users"></i></a>
+                    </li>
+                <?php endif; ?>
+                <?php if ($this->permissions['log']['ler']) : ?>
+                    <li>
+                        <a href="main/log" title="Logs" class="tip"><i class="s24 icomoon-icon-stack"></i></a>
+                    </li>
+                <?php endif; ?>
+                <?php if ($this->permissions['smtp']['ler']) : ?>
+                    <li>
+                        <a href="main/smtp" title="SMTP" class="tip"><i class="s24 icomoon-icon-envelop-2"></i></a>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </div>
+    <?php endif; ?>
+
+    <div class="sidebar-inner" <?php if (!$this->allowedMain()) echo "style='margin-top:0'" ?>>
+        <div class="sidebar-scrollarea">
+            <div class="sidenav">
+                <div class="sidebar-widget mb0">
+                    <h6 class="title mb0">Navegação</h6>
+                </div>
+                <div class="mainnav">
+                    <ul>
+                        <?php if ($this->allowedService("cms")) : ?>
+                            <?php if ($this->permissions['dashboard']['ler']) : ?>
+                                <li><a href="main/dashboard"><i class="s16 icomoon-icon-screen-2"></i><span class="txt">Dashboard</span></a></li>
+                            <?php endif; ?>
+                            <?php if ($this->permissions['configuracao']['ler']) : ?>
+                                <li>
+                                    <a href="#"><i class="s16 icomoon-icon-cogs"></i><span class="txt">Configurações</span></a>
+                                    <ul class="sub two">
+                                        <?php if ($this->permissions['company']['ler']) : ?>
+                                            <li><a href="cms/company"><i class="s16 icomoon-icon-cog"></i><span class="txt">Configurações Gerais</span></a></li>
+                                        <?php endif; ?>
+                                        <!-- <?php if ($this->permissions['integration']['ler']) : ?>
+                                            <li><a href="cms/integration"><i class="s16 icomoon-icon-cloud"></i><span class="txt">Integrações</span></a></li>
+                                        <?php endif; ?> -->
+                                    </ul>
+                                </li>
+                            <?php endif ?>
+                            <?php if ($this->permissions['paginas']['ler']) : ?>
+                                <li><a href="cms/paginas"><i class="s16 icomoon-icon-stats-up"></i><span class="txt">SEO / Páginas</span></a></li>
+                            <?php endif; ?>
+                            <?php if ($this->permissions['home']['ler']) : ?>
+                                <li><a href="cms/home-app-infos"><i class="s16 icomoon-icon-paragraph-left"></i><span class="txt">Home Infomações App</span></a>
+                                <li><a href="cms/home-rede-credenciada"><i class="s16 icomoon-icon-paragraph-left"></i><span class="txt">Home Infomações cred</span></a>
+                                <li><a href="main/banner"><i class="s16 icomoon-icon-paragraph-left"></i><span class="txt">Home Banner</span></a>
+                                <?php endif; ?>
+                                <?php if ($this->permissions['sobre']['ler']) : ?>
+                                <li><a href="cms/sobre"><i class="s16 icomoon-icon-image-3"></i><span class="txt">Sobre</span></a></li>
+                            <?php endif; ?>
+                            <?php if ($this->permissions['blog']['ler']) : ?>
+                                <li>
+                                    <a href="#"><i class="s16 icomoon-icon-newspaper"></i><span class="txt">Blog</span></a>
+                                    <ul class="sub">
+                                        <li><a href="cms/blog"><i class="s16 icomoon-icon-newspaper"></i><span class="txt">Blogs</span></a></li>
+                                        <li><a href="cms/blog-categorias"><i class="s16 minia-icon-list-3"></i><span class="txt">Categorias</span></a></li>
+                                    </ul>
+                                </li>
+                            <?php endif; ?>
+                            <?php if ($this->permissions['lista-emails']['ler']) : ?>
+                                <li>
+                                    <a href="#"><i class="s16 brocco-icon-envelope"></i><span class="txt">Listas e E-mails</span></a>
+                                    <ul class="sub">
+                                        <li><a href="cms/email"><i class="s16 entypo-icon-email"></i><span class="txt">Todos E-mails</span></a></li>
+                                        <li><a href="cms/listas-email"><i class="s16 minia-icon-list-3"></i><span class="txt">Minhas Listas</span></a></li>
+                                    </ul>
+                                </li>
+                            <?php endif; ?>
+
+                            <?php if ($this->permissions['contato']['ler']) : ?>
+                                <li>
+                                    <a href="#"><i class="s16 entypo-icon-email"></i><span class="txt">Contato</span></a>
+                                    <ul class="sub">
+                                        <li><a href="desk/contato/descricao"><i class="s16 entypo-icon-email"></i><span class="txt">Descricao</span></a></li>
+                                        <li><a href="desk/contato"><i class="s16 entypo-icon-email"></i><span class="txt">Registros</span></a></li>
+                                        <li><a href="desk/contato-configuracao"><i class="s16 minia-icon-list-3"></i><span class="txt">Configurações</span></a></li>
+                                    </ul>
+                                </li>
+                            <?php endif; ?>
+
+                            <!-- <?php if ($this->permissions['departamentos']['ler']) : ?>
+                                <li><a href="cms/departamentos"><i class="s16 icomoon-icon-grid"></i><span class="txt">Departamentos</span></a></li>
+                            <?php endif; ?> -->
+                            <!-- <?php if ($this->permissions['notification']['ler']) : ?>
+                                <li><a href="desk/notification"><i class="s16 icomoon-icon-bubble-notification"></i><span class="txt">Notificações</span></a></li>
+                            <?php endif; ?>    -->
+
+                        <?php endif; ?>
+                        
+                        <?php if ($this->allowedService("app")) : ?>
+                            <?php if ($this->permissions['dashboard']['ler']) : ?>
+                                <li><a href="main/dashboard"><i class="s16 icomoon-icon-screen-2"></i><span class="txt">Dashboard</span></a></li>
+                            <?php endif; ?>
+                            <?php if ($this->permissions['planos']['ler']) : ?><li><a href="app/planos"><i class="fa fa-money"></i><span class="txt">Planos</span></a></li><?php endif; ?>
+                            <?php if ($this->permissions['planos']['ler']) : ?><li><a href="app/beneficioplano"><i class="fa fa-money"></i><span class="txt">Beneficios de plano</span></a></li><?php endif; ?>
+                            <li>
+                                <?php $this->solicitados_consultores = $this->DB_fetch_array("SELECT DATE_FORMAT(B.create_at, '%d/%m/%Y às %H:%i') criado_em, B.nome, A.id, B.cpf, B.email, B.telefone, C.titulo equipe FROM hbrd_app_consultor A INNER JOIN hbrd_app_pessoa B ON B.id = A.id_pessoa INNER JOIN hbrd_app_equipe C ON C.id = A.id_equipe WHERE A.delete_at IS NULL AND A.solicitado = 1")->rows; ?>
+                                <?php
+                                $this->solicitacao_adesao = $this->DB_fetch_array("SELECT DATE_FORMAT(PROP.create_at, '%d/%m/%Y às %H:%i') prop_criacao,
+                                    PET.id id_pet,
+                                    PET.nome pet_nome,
+                                    ASSOC.nome assoc_nome,
+                                    ASSOC.telefone assoc_telefone,
+                                    PET_VISTORIA.status vistoria,
+                                    DATE_FORMAT(PET.activated_at, '%d/%m/%Y às %H:%i') pet_ativado_em,PET.valor pet_valor,
+                                    PET_STATUS.titulo pet_status_titulo, PET.classificacao pet_classificacao FROM
+                                    hbrd_app_pet PET
+                                    INNER JOIN hbrd_app_proposta PROP ON (PROP.id = PET.id_proposta)
+                                    INNER JOIN hbrd_app_pessoa ASSOC ON (ASSOC.id = PROP.id_pessoa)
+                                    LEFT JOIN hbrd_app_pet_proposta_status PET_STATUS ON (PET_STATUS.id = PET.id_status)
+                                    LEFT JOIN hbrd_app_pet_vistoria PET_VISTORIA ON (PET.id = PET_VISTORIA.id_pet)
+                                    WHERE PROP.id_consultor IS NULL AND  PROP.id_clinica IS NULL AND PET_VISTORIA.status = 'Pendente'")->rows;
+                                ?>
+                                <?php $countAdesao = count($this->solicitacao_adesao);  ?>
+                                <?php $count = count($this->solicitados_consultores); ?>
+                                <a href="#"><i class="fa fa-line-chart"></i><span class="txt">Comercial</span><?= ($count || $countAdesao) ? '<span class="notification blue">' . ($count + $countAdesao) . '</span>' : '' ?></a>
+                                <ul class="sub two">
+                                    <?php if ($this->permissions['indication']['ler']) : ?><li><a href="app/proposta"><i class="s16 icomoon-icon-enter"></i><span class="txt">Propostas</span><?= $countAdesao ? '<span class="notification blue">' . $countAdesao . '</span>' : '' ?></a></li><?php endif; ?>
+                                    <?php if ($this->permissions['consultor']['ler']) : ?><li><a href="app/consultor"><i class="s16 icomoon-icon-user-4"></i><span class="txt"> Consultores </span><?= $count ? '<span class="notification blue">' . $count . '</span>' : '' ?></a></li><?php endif; ?>
+                                    <?php if ($this->permissions['consultor']['ler']) : ?><li><a href="app/equipes"><i class="s16 icomoon-icon-users"></i><span class="txt"> Equipes </span></a></li><?php endif; ?>
+                                    <?php if ($this->permissions['sectional']['ler']) : ?><li><a href="app/regionais"><i class="s16 icomoon-icon-map-2"></i><span class="txt">Regionais</span></a></li><?php endif; ?>
+                                </ul>
+                            </li>
+                            <?php //endif; 
+                            ?>
+                            <li>
+                                <a href="@"><i class="s16 icomoon-icon-paw"></i><span class="txt">Pets</span></a>
+                                <ul class="sub two">
+                                    <?php if ($this->permissions['pets']['ler']) : ?><li><a class="multi-line" href="app/pets"><i class="s16 icomoon-icon-paw multi-line"></i><span class="txt multi-line">Pets</span></a></li><?php endif; ?>
+                                    <?php if ($this->permissions['especies']['ler']) : ?><li><a class="multi-line" href="app/especies"><i class="s16 icomoon-icon-paw multi-line"></i><span class="txt multi-line">Espécies</span></a></li><?php endif; ?>
+                                    <?php if ($this->permissions['racas']['ler']) : ?><li><a class="multi-line" href="app/racas"><i class="s16 icomoon-icon-paw multi-line"></i><span class="txt multi-line">Raças</span></a></li><?php endif; ?>
+                                    <?php if ($this->permissions['tipotratamento']['ler']) : ?><li><a class="multi-line" href="app/tipotratamento"><i class="s16 icomoon-icon-paw multi-line"></i><span class="txt multi-line">Tipos de Tratamentos</span></a></li><?php endif; ?>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="@"><i class="s16 icomoon-icon-mobile"></i><span class="txt">Aplicativo</span></a>
+                                <ul class="sub two">
+                                    <!-- <?php if ($this->permissions['status']['ler']) : ?><li><a href="app/situacoes"><i class="s16 minia-icon-checkmark"></i><span class="txt">Situações</span></a></li><?php endif; ?> -->
+                                    <?php if ($this->permissions['motive']['ler']) : ?><li><a href="app/motivos"><i class="s16 icomoon-icon-list-2"></i><span class="txt">Arquivamento</span></a></li><?php endif; ?>
+                                    <?php if ($this->permissions['motive']['ler']) : ?><li><a href="app/textosapp"><i class="s16 icomoon-icon-list-2"></i><span class="txt">Textos</span></a></li><?php endif; ?>
+                                </ul>
+                            </li>
+                            <li>
+                                <?php $this->solicitados_clinicas = $this->DB_fetch_array("SELECT DATE_FORMAT(B.create_at, '%d/%m/%Y às %H:%i') criado_em, B.nome, A.id, A.cnpj, B.email, B.telefone FROM hbrd_app_clinica A INNER JOIN hbrd_app_pessoa B ON B.id = A.id_pessoa WHERE A.delete_at IS NULL AND A.solicitado = 1")->rows; ?>
+                                <?php $countClin = count($this->solicitados_clinicas); ?>
+                                <a href="@"><i class="s16 icomoon-icon-storage-2"></i><span class="txt">Cadastros</span><?= $countClin ? '<span class="notification blue">' . $countClin . '</span>' : '' ?></a>
+                                <ul class="sub two">
+                                    <?php if ($this->permissions['associado']['ler']) : ?><li><a href="app/associado"><i class="s16 icomoon-icon-user"></i><span class="txt">Associados</span></a></li><?php endif; ?>
+                                    <?php if ($this->permissions['store']['ler']) : ?><li><a class="multi-line" href="app/clinicas"><i class="s16 icomoon-icon-office multi-line"></i><span class="txt multi-line">Clinicas</span><?= $countClin ? '<span class="notification blue">' . $countClin . '</span>' : '' ?></a></li><?php endif; ?>
+                                    <?php if ($this->permissions['ongs']['ler']) : ?><li><a class="multi-line" href="app/ongs"><i class="s16 icomoon-icon-users multi-line"></i><span class="txt multi-line">Ongs</span></a></li><?php endif; ?>
+                                    <?php if ($this->permissions['ongs']['ler']) : ?><li><a class="multi-line" href="app/campanhadoacao"><i class="s16 icomoon-icon-users multi-line"></i><span class="txt multi-line">Campanhas de Doação</span></a></li><?php endif; ?>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="@"><i class="s16 icomoon-icon-pen"></i><span class="txt">Termos</span></a>
+                                <ul class="sub two">
+                                    <!-- <?php if ($this->permissions['assinaturas']['ler']) : ?><li><a href="app/assinaturas"><i class="s16 icomoon-icon-pen"></i><span class="txt">Termos de filiação</span></a></li><?php endif ?> -->
+                                    <?php if ($this->permissions['plantemplates']['ler']) : ?><li><a href="app/termos"><i class="s16 icomoon-icon-file-6"></i><span class="txt">Modelos de termos</span></a></li><?php endif ?>
+                                </ul>
+                            </li>
+                            <?php if ($this->permissions['apptemplates']['ler']) : ?><li><a href="app/notificacoes"><i class="s16 icomoon-icon-pencil-3"></i><span class="txt">Templates</span></a></li><?php endif; ?>
+                            <?php if ($this->permissions['integration']['ler']) : ?>
+                                <li><a href="app/whatsapp"><i class="s16 icomoon-icon-cloud"></i><span class="txt">Integrações</span></a></li>
+                            <?php endif; ?>
+                            <?php if ($_SESSION['admin_id'] == 1) : ?>
+                                <li><a href="app/trasacoesmp"><i class="s16 fa fa-dollar"></i><span class="txt">Transações MP</span></a></li>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

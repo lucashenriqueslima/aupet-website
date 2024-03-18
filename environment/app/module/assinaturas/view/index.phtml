@@ -1,0 +1,337 @@
+<?php require_once $this->main_layouts."headers.phtml"; ?>
+    <link href="<?= $this->main_template ?>plugins/tables/dataTables/jquery.dataTables.css" type="text/css" rel="stylesheet" />
+    <link href="<?= $this->main_template ?>plugins/tables/dataTables/TableTools.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript">
+        var pagina = "<?= $this->getPath(); ?>";
+        var permissao = "<?= $this->permissao_ref; ?>";
+        var controller = "<?= $this->getPath(); ?>";
+    </script>
+    </head>  
+    <body ng-app='nova' ng-controller="Ctrl as ctrl" style='display:none' ng-init='ctrl.onInit()'>
+		<?php require_once $this->main_layouts."header.phtml"; ?>
+        <div id="wrapper">
+			<?php require_once $this->main_layouts."sidebar.phtml"; ?>
+            <div id="content" class="page-content clearfix">
+                <div class="contentwrapper">
+                    <div class="heading">
+                        <h3><?= $this->module_title; ?></h3>
+                        <ul class="breadcrumb">
+                            <li>Você está aqui:</li>
+                            <li> <a href="#" class="tip" title="Painel"> <i class="s16 icomoon-icon-screen-2"></i> </a> <span class="divider"> <i class="s16 icomoon-icon-arrow-right-3"></i> </span> </li>
+                            <li class="active"><?= $this->module_title;?></li>
+                        </ul>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default toggle ">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"><i class="<?= $this->module_icon ?>"></i> Tabela de termos
+                                    </h4>
+                                </div>
+                                <div class="panel-body">
+                                <div class="col-md-12 filters" >
+                                        <i class="fa fa-filter"></i>
+                                        <button class='btn-filter'> Dt Proposta
+                                            <div class="panel groupfilter" style='display:none'>
+                                                <div class="panel-body" >
+                                                    <form class="form-horizontal" >
+                                                        <div class="form-group">
+                                                            <label class="col-lg-12 control-label" for="">De</label>
+                                                            <div class="col-lg-12">
+                                                                <input class="form-control date datepicker"  ng-model='ctrl.datade'>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-12 control-label" for="">Até</label>
+                                                            <div class="col-lg-12">
+                                                                <input class="form-control date datepicker" ng-model='ctrl.dataate'>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-lg-12">
+                                                                <a ng-click='ctrl.filter()' class="btn btn-default btn-filtrar">Filtrar</a>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </button>
+
+                                        <button class='btn-filter'> Dt Envio Assinatura
+                                            <div class="panel groupfilter" style='display:none'>
+                                                <div class="panel-body" >
+                                                    <form class="form-horizontal" >
+                                                        <div class="form-group">
+                                                            <label class="col-lg-12 control-label" for="">De</label>
+                                                            <div class="col-lg-12">
+                                                                <input class="form-control date datepicker"  ng-model='ctrl.dtenvde'>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="col-lg-12 control-label" for="">Até</label>
+                                                            <div class="col-lg-12">
+                                                                <input class="form-control date datepicker" ng-model='ctrl.dtenvate'>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-lg-12">
+                                                                <a ng-click='ctrl.filter()' class="btn btn-default btn-filtrar">Filtrar</a>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </button>
+
+                                        <button class='btn-filter'> Indicador
+                                            <div class="panel groupfilter" style='display:none'>
+                                                <div class="panel-body" >
+                                                    <form class="form-horizontal" >
+                                                        <div class="col-md-12 form-group box-filter">
+                                                            <div class="input-group input-icon">
+                                                                <input type="text" class="form-control" placeholder="Filtrar ..." ng-model="consultoresFiltro">
+                                                                <span class="input-group-addon"><i class="icomoon-icon-search-3 s16"></i></span>
+                                                            </div>
+                                                            <div class="checkbox-custom" style='text-align: left;' ng-repeat='row in ctrl.listConsultores | filter:consultoresFiltro'>
+                                                                <input type="checkbox" id="consultores{{$index}}" ng-true-value='"{{row.id}}"' ng-false-value="''" ng-model='ctrl.consultores[row.id]'>
+                                                                <label for="consultores{{$index}}" >{{row.nome}}</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-lg-12">
+                                                                <a ng-click='ctrl.filter()' class="btn btn-default btn-filtrar">Filtrar</a>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </button>
+                                    
+                                        <button class='btn-filter'> Equipe
+                                            <div class="panel groupfilter" style='display:none'>
+                                                <div class="panel-body" >
+                                                    <form class="form-horizontal" >
+                                                        <div class="col-md-12 form-group box-filter">
+                                                            <div class="input-group input-icon">
+                                                                <input type="text" class="form-control" placeholder="Filtrar ..." ng-model="equipeFiltro">
+                                                                <span class="input-group-addon"><i class="icomoon-icon-search-3 s16"></i></span>
+                                                            </div>
+                                                            <div class="checkbox-custom" style='text-align: left;' ng-repeat='row in ctrl.listEquipes | filter:equipeFiltro'>
+                                                                <input type="checkbox" id="equipes{{$index}}" ng-true-value='"{{row.id}}"' ng-false-value="''" ng-model='ctrl.equipes[row.id]'>
+                                                                <label for="equipes{{$index}}" >{{row.titulo}}</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-lg-12">
+                                                                <a ng-click='ctrl.filter()' class="btn btn-default btn-filtrar">Filtrar</a>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </button>
+
+                                        <button class='btn-filter'> Espécie
+                                            <div class="panel groupfilter" style='display:none'>
+                                                <div class="panel-body" >
+                                                <form class="form-horizontal" >
+                                                        <div class="col-md-12 form-group box-filter">
+                                                            <div class="input-group input-icon">
+                                                                <input type="text" class="form-control" placeholder="Filtrar ..." ng-model="especieFiltro">
+                                                                <span class="input-group-addon"><i class="icomoon-icon-search-3 s16"></i></span>
+                                                            </div>
+                                                            <div class="checkbox-custom" style='text-align: left;' ng-repeat='row in ctrl.listEspecies | filter:especieFiltro'>
+                                                                <input type="checkbox" id="especies{{$index}}" ng-true-value='"{{row.id}}"' ng-false-value="''" ng-model='ctrl.especies[row.id]'>
+                                                                <label for="especies{{$index}}" >{{row.titulo}}</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-lg-12">
+                                                                <a ng-click='ctrl.filter()' class="btn btn-default btn-filtrar">Filtrar</a>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </button>
+                                       
+                                        <button class='btn-filter'> Status
+                                            <div class="panel groupfilter" style='display:none'>
+                                                <div class="panel-body" >
+                                                    <form class="form-horizontal" >
+                                                        <div class="form-group col-md-12 box-filter">
+                                                            <select  class="form-control" ng-model='ctrl.classificacao'>
+                                                                <option value="pendente">Pendente</option>
+                                                                <option value="aprovada">Aprovada</option>
+                                                                <option value="reanalise">Reanalise</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-lg-12">
+                                                                <a ng-click='ctrl.filter()' class="btn btn-default btn-filtrar">Filtrar</a>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </button>
+
+                                        <i ng-click='ctrl.clearFilter()' class="icomoon-icon-remove-3 btn-filter cursor tip" data-original-title="Limpar Filtros"></i>
+                                    </div>
+                                    <table cellpadding="0" cellspacing="0" border="0" class="tabletools table table-striped table-bordered" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="tal">Dt. proposta</th>
+                                                <th class="tal">Dt. envio assinatura</th>
+                                                <th class="tal">Associado</th>
+                                                <th class="tal">Indicador</th>
+                                                <th class="tal">Equipe</th>
+                                                <th class="tal">Nome do pet</th>
+                                                <th class="tal">Espécie do pet</th>
+                                                <th class="tal">Mensalidade R$</th>
+                                                <th class="center">Status</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php require_once $this->main_layouts."options.phtml"; ?>
+                </div>
+            </div>
+            <?php require_once $this->main_layouts."footer.phtml"; ?>
+        </div>
+        <?php require_once $this->main_layouts."plugins.phtml"; ?>
+        <script src="<?= $this->main_template;?>plugins/tables/dataTables/jquery.dataTables.js"></script>
+        <script src="<?= $this->main_template;?>plugins/tables/dataTables/dataTables.tableTools.js"></script>
+        <script src="<?= $this->main_template;?>plugins/tables/dataTables/dataTables.bootstrap.js"></script>
+        <script src="<?= $this->main_template;?>plugins/tables/dataTables/dataTables.responsive.js"></script>
+        <script type="text/javascript">
+            var oTable;
+            $(document).ready(function() {
+                $(".datepicker").mask("##/##/####");
+                $(".datepicker").datepicker({});
+                var timeOut;
+                oTable = $('.tabletools').dataTable({
+                    "bProcessing": true,
+                    "bServerSide": true,
+                    "sAjaxSource": "<?= $this->system_path.$this->getPath();?>/datatable",
+                    "fnServerParams": function ( aoData ) {
+                        getParameter(aoData);
+                    },
+                    "fnServerData": function ( sSource, aoData, fnCallback, oSettings ) {
+                        aoData = queryFilter(aoData);
+                        oSettings.jqXHR = $.ajax( { "dataType": 'json', "type": "POST", "url": sSource, "data": aoData, "success": fnCallback })
+                        .done(function() {
+							uniform();
+                            if(timeOut) clearTimeout(timeOut);
+                            timeOut = setTimeout(() => oTable.fnFilter(), 60000);
+                            $('#DataTables_Table_0_processing').hide();
+                        });
+                    },
+                    "sDom": "<'row'<'col-lg-1'l><'col-lg-11'f>r>t<'row'<'col-lg-6'i><'col-lg-6'p>>",
+                    "sPaginationType": "bootstrap",
+                    "bJQueryUI": false,
+                    "bAutoWidth": false,
+                    "iDisplayLength": 50,
+                    "oLanguage": { "sProcessing": "<img src='<?= $this->main_template; ?>images/loaders/horizontal/006.gif'><br>Processando...", "sLengthMenu": "_MENU_", "sZeroRecords": "Não foram encontrados resultados", "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros", "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros", "sInfoFiltered": "", "sInfoPostFix": "", "sSearch": "", "sUrl": "", "oPaginate": { "sFirst": "Primeiro", "sPrevious": "Anterior", "sNext": "Seguinte", "sLast": "Último" } },
+                });
+                $(".dataTables_filter input").attr('title', "Tecle ENTER Para Pesquisar");
+                $(".dataTables_filter input").unbind();
+                $(".dataTables_filter input").removeClass('input-sm');
+                $(".dataTables_filter input").keyup( function (e) { if (e.keyCode == 13) oTable.fnFilter( this.value); });
+            });
+            var querystring = '<?=$_SERVER["QUERY_STRING"]?>';
+            function queryFilter(aoData) {
+                if(querystring === null) window.history.replaceState(null, '','<?=$this->system_path . $this->getPath();?>/?'+$.param(aoData));
+                else if(querystring !== '') aoData = decodeURIComponent(querystring);
+                querystring = null;
+                return aoData;
+            }
+            function clearQuery(){
+                window.history.replaceState(null, '','<?=$this->system_path . $this->getPath();?>');
+                querystring = '';
+            }
+            angular.module('nova', ['novaServices'])
+            .controller('Ctrl',function($scope, $http, $sce, NS, $window) {
+                this.listEquipes = <?=json_encode(array_values($this->equipes->rows));?>;
+                this.listEspecies = <?=json_encode(array_values($this->especies->rows));?>;
+                this.listConsultores = <?=json_encode(array_values($this->consultores->rows));?>;
+
+
+                this.status = '';
+                this.regional = '';
+                this.equipe = '';
+                this.colaborador = '';
+
+                this.datade = '', this.dataate = '', this.dtenvde = '', this.dtenvate = '', this.consultores = [], this.equipes = [],
+                this.especies = [], this.classificacao = '';
+                this.onInit = () => {
+                    $('body').show();
+                    this.status = getParam('status');
+                    this.regional = getParam('regional');
+                    this.equipe = getParam('equipe');
+                    this.colaborador = getParam('colaborador');
+
+                    this.datade = getParam('datade');
+                    this.dataate = getParam('dataate');
+                    this.dtenvde = getParam('dtenvde');
+                    this.dtenvate = getParam('dtenvate');
+
+                    this.consultores = getParam('consultores', true);
+                    this.equipes = getParam('equipes', true);
+                    this.especies = getParam('especies', true);
+                    this.classificacao = getParam('classificacao');
+                }
+                getParam = (prop, mult = false) => {
+                    let params = new URLSearchParams(querystring);
+                    if(mult) {
+                        let a = [];
+                        (params.get(prop) || '').split(",").forEach(x => { a[x] = x; });
+                        return a;
+                    } else return params.get(prop);
+                }
+                $window.getParameter = (aoData) => {
+                    aoData.push({"name": 'status', "value": this.status});
+                    aoData.push({"name": 'regional', "value": this.regional});
+                    aoData.push({"name": 'equipe', "value": this.equipe});
+                    aoData.push({"name": 'colaborador', "value": this.colaborador});
+
+                    aoData.push({ "name": 'datade', "value": this.datade });
+                    aoData.push({ "name": 'dataate', "value": this.dataate });
+                    aoData.push({ "name": 'dtenvde', "value": this.dtenvde });
+                    aoData.push({ "name": 'dtenvate', "value": this.dtenvate });
+                    aoData.push({ "name": 'consultores', "value": this.consultores.filter(x => x) });
+                    aoData.push({ "name": 'especies', "value": this.especies.filter(x => x) });
+                    aoData.push({ "name": 'classificacao', "value": this.classificacao });
+                    aoData.push({ "name": 'equipes', "value": this.equipes.filter(x => x) });
+
+                }
+                this.clearFilter = () => {
+                    clearQuery();
+                    this.status = '';
+                    this.regional = '';
+                    this.equipe = '';
+                    this.colaborador = '';
+
+                    this.datade = '';
+                    this.dataate =  '';
+                    this.dtenvde =  '';
+                    this.dtenvate =  '';
+
+                    this.consultores = [], 
+                    this.equipes = [], 
+                    this.especies = [], 
+                    this.classificacao = '';
+
+                    oTable.fnFilter('');
+                }
+                this.filter = () => {
+                    $('.groupfilter').hide();
+                    oTable.fnFilter();
+                }
+            });
+        </script>
+    </body>
+</html>

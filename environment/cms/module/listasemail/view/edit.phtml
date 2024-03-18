@@ -1,0 +1,292 @@
+<?php require_once $this->main_layouts . "headers.phtml"; ?>
+<link href="<?php echo $this->main_template; ?>plugins/tables/dataTables/jquery.dataTables.css" type="text/css" rel="stylesheet" />
+<link href="<?php echo $this->main_template; ?>plugins/tables/dataTables/TableTools.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript">
+    var pagina = "<?php echo $this->getPath(); ?>";
+    var permissao = "<?php echo $this->permissao_ref; ?>";
+    var controller = "<?php echo $this->getPath(); ?>/save";
+    var retorno = "<?php echo $this->retorno; ?>";
+</script>
+</head>
+<body>
+<?php require_once $this->main_layouts . "header.phtml"; ?>
+<!-- / #header -->
+<div id="wrapper">
+    <!-- #wrapper -->
+    <?php require_once $this->main_layouts . "sidebar.phtml"; ?>
+    <!--Body content-->
+    <div id="content" class="page-content clearfix">
+        <div class="contentwrapper">
+            <!--Content wrapper-->
+            <div class="heading">
+                <!--  .heading-->
+                <h3><?php echo $this->module_title; ?></h3>
+                <ul class="breadcrumb">
+                    <li>Você está aqui:</li>
+                    <li>
+                        <a href="#" class="tip" title="Painel">
+                            <i class="s16 icomoon-icon-screen-2"></i>
+                        </a>
+                        <span class="divider">
+                            <i class="s16 icomoon-icon-arrow-right-3"></i>
+                        </span>
+                    </li>
+                    <li>
+                        <a class="tip" title="<?php echo $this->module_title; ?>" href="<?php echo $this->module_link;?>">
+                            <i class="s16 <?php echo $this->module_icon; ?>"></i>
+                        </a>
+                    </li>
+                    <span class="divider">
+                        <i class="s16 icomoon-icon-arrow-right-3"></i>
+                    </span>
+                    <li class="active">Registro</li>
+                </ul>
+            </div>
+            <!-- End  / heading-->
+            <form name="main" enctype="multipart/form-data" method="post" class="form-horizontal group-border">
+                <input type="hidden" name="id" value="<?php echo $this->id; ?>" />
+                <input type="hidden" name="retorno" value="<?php echo $this->retorno; ?>">
+                <!-- Start .row -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default toggle">
+                            <!-- Start .panel -->
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Dados da Lista</h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label" for="nome">Nome da Lista:</label>
+                                    <div class="col-lg-10">
+                                        <input class="form-control" name="nome" id="nome" type="text" value="<?php echo $this->registro['nome'] ?>" />
+                                    </div><!-- End .form-group  -->
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <?php if ($this->id ==""): ?>
+                        <?php if (!$this->permissions[$this->permissao_ref]['gravar']): ?>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <span class="label label-warning "><span class="icon24 typ-icon-warning"></span>Você não tem permissão para gravar esta função.</span>
+                                </div>
+                            </div><!-- End .form-group  -->
+                        <?php else : ?>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <button type="button" class="btn btn-info clickformsubmit">Salvar novo</button>
+                                </div>
+                            </div><!-- End .form-group  -->
+                        <?php endif ?>
+                    <?php else : ?>
+                        <?php if (!$this->permissions[$this->permissao_ref]['editar']): ?>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <span class="label label-warning"><span class="icon24 icomoon-icon-warning "></span>Você não tem permissão para editar esta função.</span>
+                                </div>
+                            </div><!-- End .form-group  -->
+                        <?php else : ?>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <button type="button" class="btn btn-info clickformsubmit">Salvar alterações</button>
+                                </div>
+                            </div><!-- End .form-group  -->
+                        <?php endif ?>
+                    <?php endif ?>
+                </div><!-- End .row -->
+            </form>
+            <?php if ($this->id !=""): ?>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default toggle">
+                            <!-- Start .panel -->
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Cadastrar/Importar</h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <form name="main-add-email" enctype="multipart/form-data" method="post" class="form-horizontal group-border" style="display:inline-block; vertical-align: top;">
+                                        <input type="hidden" name="id_lista" value="<?php echo $this->id; ?>" />
+                                        <input type="hidden" name="retorno" value="<?php echo $this->getPath()."/edit/id/".$this->id; ?>">
+                                        <input type="hidden" id="data-redirect" value="<?php echo $this->getPath()."/edit/id/".$this->id; ?>">
+                                        <div class="panel-body box-header-forms" style="border-style: none">
+                                            <input class="add-nome form-control" placeholder="Nome:" name="nome" id="nome_email"type="text" value="" />
+                                            <input class="add-email form-control" placeholder="E-mail:" name="email" id="email" type="text" value="" />
+                                            <input class="add-email form-control datepicker" placeholder="Data de Nascimento:" name="nascimento" id="nascimento" type="text" value="" />
+                                            <button type="button" class="btn btn-primary clickformsubmit">Salvar novo</button>
+                                        </div>
+                                    </form>
+                                    <form name="main-import-list" enctype="multipart/form-data" method="post" class="form-horizontal group-border" style="display:inline-block; vertical-align: top">
+                                        <input type="hidden" name="id_lista" value="<?php echo $this->id; ?>" />
+                                        <input type="hidden" id="data-redirect" value="<?php echo $this->getPath()."/edit/id/".$this->id; ?>">
+                                        <div class="panel-body box-header-forms" style="border-style: none">
+                                            <select name="id_lista_import" id="id_lista_import" class="form-control">
+                                                <option value="" >Lista...</option>
+                                                <?php if(!$this->listas->num_rows) : ?>
+                                                    <option value="">Nenhuma lista...</option>
+                                                <?php endif; ?>
+                                                <?php foreach($this->listas->rows as $lista){?>
+                                                    <?php if ($lista['id'] != $this->id) : ?>
+                                                        <option value="<?php echo $lista['id']; ?>"><?php echo $lista['nome']; ?></option>
+                                                    <?php endif; ?>
+                                                <?php } ?>
+                                            </select>
+                                            <button type="button" class="btn btn-primary clickformsubmit">Importar de outra lista</button>
+                                        </div>
+                                    </form>
+                                    <form name="main-import-email" enctype="multipart/form-data" method="post" class="form-horizontal group-border" style="display:inline-block; vertical-align: top">
+                                        <input type="hidden" name="id_lista" value="<?php echo $this->id; ?>" />
+                                        <input type="hidden" id="data-redirect" value="<?php echo $this->getPath()."/edit/id/".$this->id; ?>">
+                                        <div class="panel-body box-header-forms" style="border-style: none">
+                                            <input type="file" name="csv"  class="files btn btn-default tip" title="O tipo do arquivo deve ser .csv e deve ter no mínimo duas e no máximo três colunas, nome, e-mail e data de nascimento (formato: 23/04/1980), sem cabeçalho (E-mail é obrigatório, e caso não possua nome, sua coluna deve existir mesmo que com o valor em branco).">
+                                            <button type="button" class="btn btn-primary clickformsubmit">Importar e-mails *.csv</button>
+                                        </div>
+                                    </form>
+                                    <div style="display:inline-block;">
+                                        <div class="panel-body box-header-forms" style="border-style: none">
+                                            <a style="margin-top: 5px" href="<?php echo $this->system_path.$this->getPath();?>/exportList/id/<?php echo $this->id; ?>" class="btn btn-info"><span class="icon16 icomoon-icon-file-excel color-white"></span> Exportar e-mails *.csv</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default toggle">
+                            <!-- Start .panel -->
+                            <div class="panel-heading">
+                                <h4 class="panel-title">E-mails
+                                    <label class="select-all">Selecionar estes<input type="checkbox" id="apagar_todos"></label>
+                                </h4>
+                            </div>
+                            <div class="panel-body">
+                                <table cellpadding="0" cellspacing="0" border="0" class="tabletools table table-striped table-bordered" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th width="30%" class="tal">Nome</th>
+                                        <th width="40%" class="tal">E-mail</th>
+                                        <th width="20%" class="tal">Data de Nascimento</th>
+                                        <th width="10%">Ação</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php require_once $this->main_layouts . "options.phtml"; ?>
+            <?php endif ?>
+        </div>
+        <!-- End contentwrapper -->
+    </div>
+    <!-- End #content -->
+    <?php require_once $this->main_layouts . "footer.phtml"; ?>
+</div>
+<?php require_once $this->main_layouts . "plugins.phtml"; ?>
+<!-- Init plugins only for page -->
+<!-- Table plugins -->
+<script src="<?php echo $this->main_template;?>plugins/tables/dataTables/jquery.dataTables.js"></script>
+<script src="<?php echo $this->main_template;?>plugins/tables/dataTables/dataTables.tableTools.js"></script>
+<script src="<?php echo $this->main_template;?>plugins/tables/dataTables/dataTables.bootstrap.js"></script>
+<script src="<?php echo $this->main_template;?>plugins/tables/dataTables/dataTables.responsive.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        if ($("form[name=main-add-email]").length > 0) {
+            $("form[name=main-add-email]").clickform({"validateUrl": "<?php echo $this->system_path;?>/cms/email/save"}, function (data) {
+                redirect = $("#data-redirect").val();
+                if (data.type == "success") {
+                    if (data.retorno) {
+                        redirect = data.retorno;
+                    }
+
+                    window.location.href = redirect;
+                }
+
+            });
+        }
+        if ($("form[name=main-import-list]").length > 0) {
+
+            $("form[name=main-import-list]").clickform({"validateUrl": "<?php echo $this->system_path.$this->getPath();?>/importList"}, function (data) {
+                redirect = $("#data-redirect").val();
+                if (data.type == "success") {
+                    if (data.retorno) {
+                        redirect = data.retorno;
+                    }
+                    window.location.href = redirect;
+                }
+
+            });
+        }
+        if ($("form[name=main-import-email]").length > 0) {
+
+            $("form[name=main-import-email]").clickform({"validateUrl": "<?php echo $this->system_path.$this->getPath();?>/importEmail"}, function (data) {
+                redirect = $("#data-redirect").val();
+                if (data.type == "success") {
+                    if (data.retorno) {
+                        redirect = data.retorno;
+                    }
+                    window.location.href = redirect;
+                }
+            });
+        }
+        var oTable = $('.tabletools').dataTable( {
+            "bProcessing": true,
+            "bServerSide": true,
+            "sAjaxSource": "<?php echo $this->system_path.$this->getPath();?>/datatableEmails/lista/<?php echo $this->id; ?>",
+            "fnServerData": function ( sSource, aoData, fnCallback, oSettings ) {
+                oSettings.jqXHR = $.ajax( {
+                    "dataType": 'json',
+                    "type": "POST",
+                    "url": sSource,
+                    "data": aoData,
+                    "success": fnCallback
+                });
+            },
+            "sDom": "<'row'<'col-lg-6'l><'col-lg-6'f>r>t<'row'<'col-lg-6'i><'col-lg-6'p>>",
+            "aaSorting":[[0,"desc"]],
+            "sPaginationType": "bootstrap",
+            "bJQueryUI": false,
+            "bAutoWidth": false,
+            "iDisplayLength": 50,
+            "oLanguage": {
+                "sProcessing":   "<img src='<?php echo $this->system_path.$this->main_template; ?>images/loaders/horizontal/006.gif'><br>Processando...",
+                "sLengthMenu":   "_MENU_",
+                "sZeroRecords":  "Não foram encontrados resultados",
+                "sInfo":         "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+                "sInfoEmpty":    "Mostrando de 0 até 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros no total)",
+                "sInfoPostFix":  "",
+                "sSearch":       "",
+                "sUrl":          "",
+                "oPaginate": {
+                    "sFirst":    "Primeiro",
+                    "sPrevious": "Anterior",
+                    "sNext":     "Seguinte",
+                    "sLast":     "Último"
+                }
+            }
+        });
+        /*
+         * HABILITA BUSCA APENAS APÓS TECLAR ENTER
+         */
+        $(".dataTables_filter input").attr('title', "Tecle ENTER Para Pesquisar");
+        $(".dataTables_filter input").unbind();
+
+        $(".dataTables_filter input").keyup( function (e) {
+            if (e.keyCode == 13) {
+                oTable.fnFilter( this.value);
+            }
+        });
+        setInterval(function(){ uniform(); },5);
+        $("#nascimento").mask("##/##/####");
+        $(".datepicker").datepicker({});
+    });
+</script>
+</body>
+</html>

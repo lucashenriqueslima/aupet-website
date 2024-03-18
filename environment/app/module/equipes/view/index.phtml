@@ -1,0 +1,232 @@
+<?php require_once $this->main_layouts."headers.phtml"; ?>
+    <script type="text/javascript">
+        var pagina = "<?= $this->getPath(); ?>";
+        var permissao = "<?= $this->permissao_ref; ?>";
+        var controller = "<?= $this->getPath(); ?>";
+    </script>
+    </head>  
+    <body ng-app='nova' ng-controller="IndexCtrl as ctrl" style='display:none' ng-init='ctrl.onInit()'>
+        <?php require_once $this->main_layouts."header.phtml"; ?>
+        <div id="wrapper">
+            <?php require_once $this->main_layouts."sidebar.phtml"; ?>
+            <div id="content" class="page-content clearfix">
+                <div class="contentwrapper">
+                    <div class="heading">
+                        <h3><?= $this->module_title; ?></h3>
+                        <ul class="breadcrumb">
+                            <li>Você está aqui:</li>
+                            <li><a href="#" class="tip" title="Painel"><i class="s16 icomoon-icon-screen-2"></i></a><span class="divider"><i class="s16 icomoon-icon-arrow-right-3"></i></span></li>
+                            <li class="active"><?= $this->module_title;?></li>
+                        </ul>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <?php if ($this->permissions($this->permissao_ref,'gravar')): ?>
+                            <a href="<?= $this->getPath();?>/edit"><button type="button" class="btn btn-default mr5 mb10"><i class="glyphicon glyphicon-plus mr5"></i> Novo registro</button></a>
+                            <?php endif ?>
+                        </div>
+						<div class="col-lg-6">
+                            <?php if ($this->custompermissions($this->permissao_ref,'relatorio')): ?>
+                            <div class="text-right" >
+                                <button class="btn btn-info mr5 mb10 " data-toggle="modal" data-target="#modalRelatorios"><span class="s14 icomoon-icon-file-pdf color-white" ></span>Ativações</button>
+                                <button class="btn btn-info mr5 mb10 " data-toggle="modal" data-target="#modalRelatoriosConsultores"><span class="s14 icomoon-icon-file-pdf color-white" ></span>Consultores</button>
+                            </div>
+                            <?php endif ?>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default toggle ">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title"><i class="<?= $this->module_icon ?>"></i> Tabela de Equipes
+                                    </h4>
+                                </div>
+                                <div class="panel-body">
+                                    <table cellpadding="0" cellspacing="0" border="0" class="tabletools table table-striped table-bordered " width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="tal">Nome</th>
+                                                <th class="tal">Regional</th>
+                                                <th class="tal">Coordenadores</th>
+                                                <th class="tal">Ind. Pendentes</th>
+                                                <th class="tal">Ind. Arquivadas</th>
+                                                <th class="tal">Ind. Ativas</th>
+                                                <th class="tal">Ind. Totais</th>
+                                                <th class="tal">Conversão (%)</th>
+                                                <th width="120px" class="center">Ação</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach($this->list as $registro):?>
+                                            <tr id="<?= $registro['id'];?>">
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id']; ?>"><?= $registro['titulo'];?></a></td>
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id']; ?>"><?= $registro['regional'];?></a></td>
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id']; ?>"><?= $registro['coordinators'];?></a></td>
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id']; ?>"><?= $registro['pendentes'];?></a></td>
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id']; ?>"><?= $registro['arquivadas'];?></a></td>
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id']; ?>"><?= $registro['ativadas'];?></a></td>
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id']; ?>"><?= $registro['total'];?></a></td>
+                                                <td class="tal"><a href="<?= $this->getPath()?>/edit/id/<?= $registro['id']; ?>"><?= $registro['converted'] ?></a></td>
+                                                <td class="center">
+                                                    <?php if($registro['stats']==0) : ?>
+                                                    <a href="#" class="bt_system_stats" data-permit="<?= $this->permissao_ref ?>" data-table="<?= $this->table; ?>" data-action="ativar" data-id="<?= $registro['id']; ?>" data-db="cms"><img src="<?= $this->main_template;?>images/status_vermelho.png" alt="Ativar"></a>
+                                                    <?php else : ?>
+                                                    <a href="#" class="bt_system_stats" data-permit="<?= $this->permissao_ref ?>" data-table="<?= $this->table; ?>" data-action="desativar" data-id="<?= $registro['id']; ?>" data-db="cms"><img src="<?= $this->main_template;?>images/status_verde.png" alt="Desativar"></a>
+                                                    <?php endif ?>
+                                                    <a href="<?= $this->getPath()?>/edit/id/<?= $registro['id']; ?>"><i class="s12 icomoon-icon-pencil"></i></a>
+                                                    <?php if ($this->permissions[$this->permissao_ref]['excluir']): ?>
+                                                    <a class='cursor' ng-click="ctrl.delete('<?= $registro['id'] ?>')" ><i class="s12 icomoon-icon-remove"></i></a>
+                                                    <?php endif ?>
+                                                </td>
+                                            </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="modalRelatorios" class="modal fade" tabindex="-1" role="dialog">
+                        <form enctype="multipart/form-data" action="<?= $this->getPath();?>/export" method="get" class="form-horizontal mt20" target='_blank'>
+                            <div class="modal-dialog" >
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <h4 class="modal-title">Relatório de indicações ativadas por equipes</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <label class="col-lg-2 control-label" for="equipe">Período:</label>
+                                        <div class="col-lg-10">
+                                            <input class="form-control datemodal date datepicker" required id="datade" name="datade" type="text" value="" maxlength="10" autocomplete="off" placeholder="De:">
+                                            <input class="form-control datemodal date datepicker" required id="dataate" name="dataate" type="text" value="" maxlength="10" autocomplete="off" placeholder="Até:">
+                                        </div>
+                                        <label class="col-lg-2 control-label" for="equipe">Metas:</label>
+                                        <div class="col-lg-10">
+                                            <div ng-repeat='row in ctrl.equipes_rel'>
+                                                <input class="form-control datemodal" disabled type="text" value="{{row.titulo}}">
+                                                <input class="form-control datemodal" type="number" name="{{row.id}}" value="{{row.meta}}">
+                                            </div>
+                                            <aviso>Equipes com metas vazias não aparecem no relatório.</aviso>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary ">Gerar</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <?php require_once $this->main_layouts."footer.phtml"; ?>
+            <div id="modalDelete" class="modal fade" tabindex="-1" role="dialog">
+                <form class="form-horizontal mt20" ng-submit='ctrl.submitDel()'>
+                    <div class="modal-dialog" >
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title">Excluir e mover consultores?</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class='form-group'>
+                                    <label class='col-lg-4 control-label' for='adesao'>Selecione a nova equipe</label>
+                                    <div class='col-lg-8'>
+                                        <select required class='form-control' ng-model='ctrl.del.id_equipe' >
+                                            <option value=''>selecione...</option>
+                                            <option ng-repeat='row in ctrl.equipes' ng-value='row.id'>{{row.equipe}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary ">Confimar</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div id="modalRelatoriosConsultores" class="modal fade" tabindex="-1" role="dialog">
+                <form enctype="multipart/form-data" action="<?= $this->getPath();?>/exportConsultores" method="get" class="form-horizontal mt20" target='_blank'>
+                    <div class="modal-dialog" >
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title">Relatório de novos consultores por equipes</h4>
+                            </div>
+                            <div class="modal-body">
+                                <label class="col-lg-2 control-label" for="equipe">Período:</label>
+                                <div class="col-lg-10">
+                                    <input class="form-control datemodal date datepicker" required id="datade" name="datade" type="text" value="" maxlength="10" autocomplete="off" placeholder="De:">
+                                    <input class="form-control datemodal date datepicker" required id="dataate" name="dataate" type="text" value="" maxlength="10" autocomplete="off" placeholder="Até:">
+                                </div>
+                                <label class="col-lg-2 control-label" for="equipe">Metas:</label>
+                                <div class="col-lg-10">
+                                    <div ng-repeat='row in ctrl.equipes_rel'>
+                                        <input class="form-control datemodal" disabled type="text" value="{{row.titulo}}">
+                                        <input class="form-control datemodal" type="number" name="{{row.id}}" value="{{row.meta_consultores}}">
+                                    </div>
+                                    <aviso>Equipes com metas vazias não aparecem no relatório.</aviso>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary ">Gerar</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <?php require_once $this->main_layouts."plugins.phtml"; ?>
+        <script src="<?= $this->main_template;?>plugins/tables/dataTables/jquery.dataTables.js"></script>
+        <script src="<?= $this->main_template;?>plugins/tables/dataTables/dataTables.tableTools.js"></script>
+        <script src="<?= $this->main_template;?>plugins/tables/dataTables/dataTables.bootstrap.js"></script>
+        <script src="<?= $this->main_template;?>plugins/tables/dataTables/dataTables.responsive.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $(".datepicker").mask("##/##/####");
+                $(".datepicker").datepicker({});
+                if($('table').hasClass('tabletools')) {
+                    $('.tabletools').dataTable( {
+                        "oLanguage": { "sSearch": "", "sLengthMenu": "<span>_MENU_</span>", "sProcessing": "Processando...", "sZeroRecords": "Não foram encontrados resultados", "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros", "sInfoEmpty": "Mostrando de 0 até 0 de 0 registros", "sInfoFiltered": "", "sInfoPostFix": "", "sUrl": "", "oPaginate": { "sFirst": "Primeiro", "sPrevious": "Anterior", "sNext": "Seguinte", "sLast": "Último" } },
+                        "sDom": "T<'row'<'col-md-6 col-xs-12 'l><'col-md-6 col-xs-12'f>r>t<'row'<'col-md-4 col-xs-12'i><'col-md-8 col-xs-12'p>>",
+                        "aaSorting":[[0,"asc"]],
+                        tableTools: { "sSwfPath": "http://cdn.datatables.net/tabletools/2.2.2/swf/copy_csv_xls_pdf.swf", "aButtons": [ ] }
+                    });
+				}
+			});
+            angular.module('nova', ['novaServices'])
+            .controller('IndexCtrl',function($scope, $http, $sce, NS, $window) {
+                this.list = <?= json_encode($this->list) ?>;
+                this.del = {id_equipe : ''};
+                this.onInit = () => {
+                    $('body').show();
+                    this.equipes_rel = this.list.filter(x => x.stats == 1);
+                }
+                this.delete = (id) => {
+                    this.del = { id : id};
+                    this.equipes = this.list.filter(x => x.stats == 1 && x.id != id);
+                    $('#modalDelete').modal('show');
+                }
+                this.submitDel = async () => {
+                    await NS.actionHandler($http.put("<?= $this->getPath(); ?>/del/id/",this.del), '#modalDelete');
+                    location.reload();
+                }
+            });
+        </script>
+		<style>
+			.datemodal {
+				float: left;
+				width: 200px;
+			}
+		</style>
+    </body>
+</html>

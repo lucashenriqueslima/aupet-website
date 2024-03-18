@@ -1,0 +1,21 @@
+<script>
+
+bootbox.setDefaults({locale: "sim"});
+bootbox.confirm({
+    buttons: {
+        confirm: {
+            label: 'Continuar',
+            className: 'btn-primary'
+        },
+        cancel: {
+            label: 'Voltar',
+            className: 'btn-default'
+        }
+    },
+    className: "modal-style2",
+    title: "Aviso",
+    message: '<?php $this->renderView('main', 'login', 'teste'); ?>'
+});
+
+        
+</script>

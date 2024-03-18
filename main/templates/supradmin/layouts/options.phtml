@@ -1,0 +1,56 @@
+
+                <div class="fixed_option_space"></div>
+                <div class="fixed_options_footer">
+                    <div class="flex-main">
+                        <div class="flex-div del-all">       
+                            <?php if ($this->permissions[$this->permissao_ref]['editar'] && $this->getPath() == "adm/fipe"): ?>
+                                <form name="main" enctype="multipart/form-data" method="post" class="form-horizontal seperator edit-lista relations" style="display:inline; padding-right: 20px;">
+                                    <input type="hidden" name="tipo" class="tipo" value="carro" />
+                                    <input type="hidden" name="a" value="del-all" />
+                                    <input type="hidden" class="del-registros" name="del-registros" value="" />
+                                    <input type="hidden" class="data-controller" name="data-controller"/>
+                                    <input type="hidden" class="registros-geral" name="registros-geral" value="0" />
+                                    <input type="hidden" class="data-id-segmentacao" name="data-id-segmentacao" value="" />
+                                    <div class="options-listas" style="display:inline-block">
+                                        <!-- <input type="text" autocomplete="off" class="listas-options-nomes form-control" placeholder="Categoria:" name="listas-options-nomes" id="listas-options-nomes" value=""> -->
+                                        <ul class="listas-options">
+                                            <?php foreach($this->categorias->rows as $categoria): ?>
+                                            <li data-tipo="<?= $categoria['tipo'] ?>"><label class="lista-options"><input class="id_categoria" type="radio" name="value" value="<?= $categoria["id"]; ?>" ><?= $categoria["nome"]; ?></label></li>
+                                            <?php endforeach; ?>
+                                            <li class='remover'><label ><input class="id_categoria" type="radio" name="value" value="remover" >Remover categoria</label></li>
+                                        </ul>
+                                    </div>
+                                    <button style="vertical-align:top" type="button" class="btn btn-primary bt_relacionar_fipe">Relacionar</button>
+                                </form>
+                            <?php elseif($this->permissions[$this->permissao_ref]['editar'] && $this->getPath() == "adm/paymentrequest"): ?>
+                                <form name="main" enctype="multipart/form-data" method="post" class="form-horizontal seperator" style="display:inline;" action="javascript:;">
+                                    <input type="hidden" name="a" value="del-all" />
+                                    <input type="hidden" class="del-registros" name="del-registros" value="" />
+                                    <input type="hidden" class="data-controller" name="data-controller" value="" />
+                                    <input type="hidden" class="data-id-lista" name="data-id-lista" value="" />
+                                    <input type="hidden" class="data-id-segmentacao" name="data-id-segmentacao" value="" />
+                                    <input type="hidden" class="registros-geral" name="registros-geral" value="0" />
+                                    <button style="vertical-align:top" type="button" class="btn btn-info bt_pay_all">Lançar pagamento</button>
+                                </form>
+                            <?php elseif($this->permissions[$this->permissao_ref]['excluir']): ?>
+                                <form name="main" enctype="multipart/form-data" method="post" class="form-horizontal seperator" style="display:inline;">
+                                    <input type="hidden" name="a" value="del-all" />
+                                    <input type="hidden" class="del-registros" name="del-registros" value="" />
+                                    <input type="hidden" class="data-controller" name="data-controller" value="" />
+                                    <input type="hidden" class="data-id-lista" name="data-id-lista" value="" />
+                                    <input type="hidden" class="data-id-segmentacao" name="data-id-segmentacao" value="" />
+                                    <input type="hidden" class="registros-geral" name="registros-geral" value="0" />
+                                    
+                                    <button style="vertical-align:top" type="button" class="btn btn-danger bt_system_delete_all">Apagar Selecionados</button>
+                                </form>
+                            <?php endif; ?>
+                        </div>
+                        <div class="flex-div sortable_save">
+                            <?php if (!$this->permissions[$this->permissao_ref]['editar']): ?>
+                                    <span class="label label-warning"><i class="s24 icomoon-icon-warning"></i>Você não tem permissão para reordenar esta tabela.</span>
+                            <?php else: ?>
+                                    <button style="vertical-align:top" type="button" class="btn btn-info sortablesubmit">Salvar Ordenação</button>
+                            <?php endif ?>
+                        </div>
+                    </div>
+                </div>

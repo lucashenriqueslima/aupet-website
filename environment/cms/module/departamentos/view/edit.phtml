@@ -1,0 +1,135 @@
+<?php
+    require_once $this->main_layouts . "headers.phtml";
+?>
+
+    <script type="text/javascript">
+        var pagina = "<?php echo $this->getPath(); ?>";
+        var permissao = "<?php echo $this->permissao_ref; ?>";
+        var controller = "<?php echo $this->getPath(); ?>/save";
+        var retorno = "<?php echo $this->retorno; ?>";
+    </script>
+    
+    </head>  
+    
+    
+    <body>
+<?php  require_once $this->main_layouts . "header.phtml"; ?>
+
+        <!-- / #header -->
+        <div id="wrapper">
+        <!-- #wrapper -->
+
+<?php  require_once $this->main_layouts . "sidebar.phtml"; ?>
+            
+            <!--Body content-->
+            <div id="content" class="page-content clearfix">
+                <div class="contentwrapper">
+                    <!--Content wrapper-->
+                    <div class="heading">
+                        <!--  .heading-->
+                        <h3><?php echo $this->module_title; ?></h3>
+
+                        <ul class="breadcrumb">
+                            <li>Você está aqui:</li>
+                            <li>
+                                <a href="#" class="tip" title="Painel">
+                                    <i class="s16 icomoon-icon-screen-2"></i>
+                                </a>
+                                <span class="divider">
+                                    <i class="s16 icomoon-icon-arrow-right-3"></i>
+                                </span>
+                            </li>
+                            <li>
+                                <a class="tip" title="<?php echo $this->module_title; ?>" href="<?php echo $this->getPath();?>">
+                                    <i class="s16 <?php echo $this->module_icon; ?>"></i>                                    
+                                </a>
+                            </li>
+                            <span class="divider">
+                                <i class="s16 icomoon-icon-arrow-right-3"></i>
+                            </span>
+                            <li class="active">Registro</li>
+                        </ul>
+                    </div>
+                    <!-- End  / heading-->
+                    <!-- Start .row -->
+                  
+                    <form name="main" enctype="multipart/form-data" method="post" class="form-horizontal group-border">
+                        <input type="hidden" name="id" value="<?php echo $this->id; ?>" />
+                        <input type="hidden" name="retorno" value="<?php echo $this->retorno; ?>">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="panel panel-default toggle">
+                                    <!-- Start .panel -->
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">Dados do Departamento</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="nome">Nome:</label>
+                                            <div class="col-lg-10">
+                                                <input class="form-control" name="nome" id="nome" type="text" value="<?php echo $this->registro['nome'] ?>" />
+                                            </div>
+                                        </div><!-- End .form-group  -->
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label" for="descricao">Descrição:</label>
+                                            <div class="col-lg-10">
+                                                <textarea class="form-control elastic" name="descricao" id="descricao"><?php echo $this->registro['descricao'] ?></textarea>
+                                            </div>
+                                        </div><!-- End .form-group  -->              
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <?php if ($this->id==""): ?>
+                                <?php if (!$this->permissions[$this->permissao_ref]['gravar']): ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <span class="label label-warning "><span class="icon24 typ-icon-warning"></span>Você não tem permissão para gravar esta função.</span>
+                                        </div>
+                                    </div><!-- End .form-group  -->   
+                                <?php else: ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <button type="button" class="btn btn-info clickformsubmit">Salvar novo</button>
+                                        </div>
+                                    </div><!-- End .form-group  -->
+                                <?php endif ?>
+                            <?php else: ?>
+                                <?php if (!$this->permissions[$this->permissao_ref]['editar']): ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <span class="label label-warning"><span class="icon24 icomoon-icon-warning "></span>Você não tem permissão para editar esta função.</span>
+                                        </div>
+                                    </div><!-- End .form-group  -->   
+                                <?php else: ?>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-10">
+                                            <button type="button" class="btn btn-info clickformsubmit">Salvar alterações</button>
+                                        </div>
+                                    </div><!-- End .form-group  -->
+                                <?php endif ?>
+                            <?php endif ?>
+                        </div><!-- End .row -->  
+                    </form>
+                </div>
+                <!-- End contentwrapper -->
+            </div>
+            <!-- End #content -->
+            
+            
+<?php  require_once $this->main_layouts . "footer.phtml"; ?>
+        
+        </div>
+        
+<?php  require_once $this->main_layouts . "plugins.phtml"; ?>
+        <!-- Init plugins only for page -->
+        <script src="<?php echo $this->main_template;?>plugins/forms/autosize/jquery.autosize.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('.elastic').autosize();
+            });
+        </script>
+    </body>
+</html>
