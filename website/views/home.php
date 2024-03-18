@@ -46,7 +46,11 @@
     $beneficios = $sistema->DB_fetch_array("SELECT * FROM hbrd_app_plano_beneficio A WHERE A.delete_at IS NULL AND A.stats = 1 ORDER BY A.ordem")->rows;
     $rede_infos = $sistema->DB_fetch_array("SELECT * FROM hbrd_cms_home_rede_credenciada WHERE id = 1")->rows[0];
     $banners = $sistema->DB_fetch_array("SELECT * FROM hbrd_main_banners A WHERE A.id=1 ORDER BY A.ordem")->rows[0];
-
+    $broches_imgs = [
+        'bronze',
+        'prata',
+        'ouro',
+    ]
 ?>
 <?php include "_inc_headers.php"; ?>
 <body id="<?= $pagina; ?>">
@@ -73,10 +77,13 @@
     <h2><b>Escolha o plano</b> com que seu filho de 4 patas se encaixa melhor!</h2>
     <div class="planos">
         <div class="planos_content">
-            <?php foreach ($planos as $plano) : ?>
+            <?php foreach ($planos as $key=>$plano) : ?>
                 <?php
                 $planoBeneficios =  $sistema->DB_fetch_array("SELECT * FROM hbrd_app_plano_use_beneficio A WHERE A.id_plano = {$plano['id']}")->rows;
                 ?>
+                <div>
+                <img class="broche" width="200px" height="250px" src="<?php echo $sistema->root_path;?>website/img/home/broche_<?= $broches_imgs[$key] ?>.png" alt="">
+
                 <div class="item">
                     <div class="header">
                         <h3>
@@ -109,9 +116,10 @@
                     <p class="valor_centavo">,<?= substr($plano['valor'], strrpos($plano['valor'], '.') + 1) ?>/mês</p>            
                 </div>
                     </div>
-                    <a href="https://app.aupetheinsten.com.br/#/cadastro/usuario/<?= $plano['id'] ?>" style="background-image: url(<?php echo $sistema->root_path;?>website/img/home/bg_plan_button.svg);" class="quero_esse_plano">Assinar</a>
+                    <a href="https://app.aupetheinsten.com.br/#/cadastro/usuario/<?= $plano['id'] ?>" style="background-image: url(<?php echo $sistema->root_path;?>website/img/home/bg_plan_button.png);" class="quero_esse_plano">Assinar</a>
                     <!-- <a href="http://192.168.1.10:8100/#/cadastro/usuario/<?= $plano['id'] ?>" class="quero_esse_plano">quero esse plano</a> -->
                 </div>
+        </div>
             <?php endforeach; ?>
         </div>
     </div>

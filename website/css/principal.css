@@ -656,7 +656,7 @@ section.home_planos {
   section.home_planos h2 {
     position: relative;
     z-index: 1;
-    margin: 0 auto 55px;
+    margin: 0 auto 0;
     font-size: 36px;
     text-align: center;
     color: #772E8A;
@@ -689,10 +689,16 @@ section.home_planos {
         border-radius: 20px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
         width: 395px;
-        margin: 0 20px;
+        margin: 60px 20px;
         padding: 25px 40px 40px;
         background: rgb(10,10,42);
         background: linear-gradient(132deg, rgba(10,10,42,1) 15%, rgba(26,17,68,1) 39%);}
+        section.home_planos .planos .planos_content .broche {
+          position: relative;
+          left: 50%;
+          top: 180px;
+          transform: translateX(-50%);
+        }
       section.home_planos .planos .planos_content .item .content {
         margin-bottom: 20px;
       }
@@ -754,8 +760,8 @@ section.home_planos {
           padding: 0;
           margin: 0 0 10px; }
           section.home_planos .planos .planos_content .item .header h3 {
-          margin: 0;
-          font-size: 34px;
+          margin: 100px 0 0;
+          font-size: 40px;
           font-weight: bold;
           color: white; }
           section.home_planos .planos .planos_content .item .header p.valor {
@@ -780,22 +786,20 @@ section.home_planos {
           section.home_planos .planos .planos_content .item .content .item_list[active="false"] {
             background-image: url(./../img/home/negativo.svg); }
         section.home_planos .planos .planos_content .item a.quero_esse_plano {
-          -webkit-border-radius: 40px;
-          -moz-border-radius: 40px;
-          border-radius: 40px;
-          background-size: cover;
+          background-size: inherit;
           background-position: center;
           background-repeat: no-repeat;
           display: block;
-          font-size: 18px;
+          font-size: 17px !important;
           font-weight: bold;
           letter-spacing: 3px;
           text-transform: uppercase;
           text-align: center;
           color: black;
           border-radius: 40px;
-          padding: 14px 0;
-          margin: 30px 0 0; }
+          padding: 20px 0;
+          margin: 30px 0 0; 
+        }
   @media (max-width: 1300px) {
     section.home_planos {
       padding: 170px 0 0; }
@@ -807,7 +811,11 @@ section.home_planos {
           width: 310px;
           margin: 0 15px; }
           section.home_planos .planos .planos_content .item a.quero_esse_plano {
-            font-size: 12px; } }
+            font-size: 12px; }
+            section.home_planos .planos .planos_content .broche {
+              top: 130px; 
+            }
+          }
   @media (max-width: 1050px) {
     section.home_planos {
       padding: 170px 0 40px; }
@@ -821,13 +829,15 @@ section.home_planos {
         width: 395px; }
         section.home_planos .planos .planos_content .item {
           width: 395px;
-          margin: 0 0 20px; } }
+          margin: 0 0 20px; } 
+        
+        }
   @media (max-width: 550px) {
     section.home_planos {
       padding: 155px 0 40px; }
       section.home_planos h2 {
         font-size: 24px;
-        margin: 0 auto 40px; }
+        margin: 0 auto 0; }
       section.home_planos .planos .planos_content {
         width: 100%; }
         section.home_planos .planos .planos_content .item {
