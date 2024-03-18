@@ -610,7 +610,9 @@ section.home_header {
       background-size: 360px; }
       section.home_header .content {
         overflow: hidden;
-        padding: 0 0 260px; }
+        padding: 0 0 260px; 
+        margin: 0 0 10px;
+      }
         section.home_header .content .text {
           width: 100%;
           padding: 135px 25px 0; }
@@ -675,7 +677,7 @@ section.home_planos {
       background-size: cover; }
     section.home_planos .planos .planos_content {
       position: relative;
-      width: 1245px;
+      width: 1305px;
       margin: 0 auto;
       display: flex;
       display: -webkit-flex;
@@ -686,22 +688,62 @@ section.home_planos {
       section.home_planos .planos .planos_content .item {
         border-radius: 20px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-        width: 375px;
+        width: 395px;
         margin: 0 20px;
         padding: 25px 40px 40px;
-        background: white; }
-        section.home_planos .planos .planos_content .item:nth-child(1) .header p.valor {
-          color: #0098C5; }
-        section.home_planos .planos .planos_content .item:nth-child(1) a.quero_esse_plano {
-          background: #0098C5; }
-        section.home_planos .planos .planos_content .item:nth-child(2) .header p.valor {
-          color: #772E8A; }
+        background: rgb(10,10,42);
+        background: linear-gradient(132deg, rgba(10,10,42,1) 15%, rgba(26,17,68,1) 39%);}
+      section.home_planos .planos .planos_content .item .content {
+        margin-bottom: 20px;
+      }
+        section.home_planos .planos .planos_content .item .valor_content {
+          display: flex;
+          flex-direction: column;
+          align-items: center; }
+          section.home_planos .planos .planos_content .item p.prefixo_valor {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+           }
+          section.home_planos .planos .planos_content .item .sifra_valor_content {
+            display: flex;
+            align-items: center;
+            }
+          section.home_planos .planos .planos_content .item p.sifra {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            align-self: start;
+            justify-content: space-evenly;
+            padding-top: 12px;
+            padding-right: 6px;
+          }
+          section.home_planos .planos .planos_content .item .valor_content .sifra_valor_content p.valor {
+            font-size: 50px;
+            font-weight: bold;
+            color: white; 
+          }
+
+          section.home_planos .planos .planos_content .item p.valor_centavo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            padding-top: 21px;
+          }
+        /* section.home_planos .planos .planos_content .item:nth-child(1) a.quero_esse_plano {
+          -webkit-border-radius: 50px;
+          -moz-border-radius: 50px;
+          border-radius: 50px;
+          background-image: url(http://localhost:8000/website/img/home/bg_plan_button.svg); 
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+        }
         section.home_planos .planos .planos_content .item:nth-child(2) a.quero_esse_plano {
           background: #772E8A; }
-        section.home_planos .planos .planos_content .item:nth-child(3) .header p.valor {
-          color: #E59400; }
         section.home_planos .planos .planos_content .item:nth-child(3) a.quero_esse_plano {
-          background: #E59400; }
+          background: #E59400; } */
         section.home_planos .planos .planos_content .item .header {
           display: flex;
           display: -webkit-flex;
@@ -712,10 +754,10 @@ section.home_planos {
           padding: 0;
           margin: 0 0 10px; }
           section.home_planos .planos .planos_content .item .header h3 {
-            margin: 0;
-            font-size: 18px;
-            font-weight: bold;
-            color: #4D4D4D; }
+          margin: 0;
+          font-size: 34px;
+          font-weight: bold;
+          color: white; }
           section.home_planos .planos .planos_content .item .header p.valor {
             margin: 0;
             font-size: 24px;
@@ -727,25 +769,30 @@ section.home_planos {
           padding: 0 0 10px;
           margin: 0; }
         section.home_planos .planos .planos_content .item .content .item_list {
-          font-size: 14px;
-          color: #4D4D4D;
-          background-position: right center;
+          font-size: 20px;
+          color: white;
+          font-weight: 300;
+          background-position: left center;
           background-repeat: no-repeat;
-          border-bottom: 1px solid #D8D8D8;
-          padding: 8px 35px 8px 0; }
+          padding: 8px 35px 8px 30px }
           section.home_planos .planos .planos_content .item .content .item_list[active="true"] {
             background-image: url(./../img/home/positivo.svg); }
           section.home_planos .planos .planos_content .item .content .item_list[active="false"] {
             background-image: url(./../img/home/negativo.svg); }
         section.home_planos .planos .planos_content .item a.quero_esse_plano {
+          -webkit-border-radius: 40px;
+          -moz-border-radius: 40px;
+          border-radius: 40px;
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
           display: block;
-          width: 100%;
-          font-size: 15px;
+          font-size: 18px;
           font-weight: bold;
           letter-spacing: 3px;
           text-transform: uppercase;
           text-align: center;
-          color: white;
+          color: black;
           border-radius: 40px;
           padding: 14px 0;
           margin: 30px 0 0; }
@@ -771,9 +818,9 @@ section.home_planos {
       section.home_planos .planos:before {
         display: none; }
       section.home_planos .planos .planos_content {
-        width: 375px; }
+        width: 395px; }
         section.home_planos .planos .planos_content .item {
-          width: 375px;
+          width: 395px;
           margin: 0 0 20px; } }
   @media (max-width: 550px) {
     section.home_planos {

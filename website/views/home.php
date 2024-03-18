@@ -79,11 +79,13 @@
                 ?>
                 <div class="item">
                     <div class="header">
-                        <h3><?= $plano['titulo']; ?></h3>
-                        <p class="valor">R$ <?= str_replace('.',',',$plano['valor']); ?></p>
+                        <h3>
+                            Plano <br> 
+                            <?= ucfirst(strtolower($plano['titulo'])); ?>
+                        </h3>
                     </div>
                     <?php if (!empty($plano['descricao'])) : ?>
-                        <p class="descricao"><?=$plano['descricao'] ?></p>
+                        <!-- <p class="descricao"><?=$plano['descricao'] ?></p> -->
                     <?php endif; ?>
 
                     <div class="content">
@@ -99,7 +101,15 @@
                             <div class="item_list" active="<?= $benf; ?>"><?= $beneficio['nome']; ?></div>
                         <?php endforeach; ?>
                     </div>
-                    <a href="https://app.aupetheinsten.com.br/#/cadastro/usuario/<?= $plano['id'] ?>" class="quero_esse_plano">quero esse plano</a>
+                    <div class="valor_content">
+                    <p class="prefixo_valor">Por Apenas:</p>
+                    <div class="sifra_valor_content">
+                    <p class="sifra">R$</p>
+                    <p class="valor"><?= substr($plano['valor'], 0, -3); ?></p>
+                    <p class="valor_centavo">,<?= substr($plano['valor'], strrpos($plano['valor'], '.') + 1) ?>/mês</p>            
+                </div>
+                    </div>
+                    <a href="https://app.aupetheinsten.com.br/#/cadastro/usuario/<?= $plano['id'] ?>" style="background-image: url(<?php echo $sistema->root_path;?>website/img/home/bg_plan_button.svg);" class="quero_esse_plano">Assinar</a>
                     <!-- <a href="http://192.168.1.10:8100/#/cadastro/usuario/<?= $plano['id'] ?>" class="quero_esse_plano">quero esse plano</a> -->
                 </div>
             <?php endforeach; ?>
